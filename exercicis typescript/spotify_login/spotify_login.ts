@@ -16,11 +16,11 @@ function autentificacio(usuari: usuari): boolean {
     return correcte;
 }
 
-function imprimir(auth: boolean): void {
+function imprimir1(auth: boolean): void {
     if (auth) {
-        console.log("Usuari autentificat")
+        console.log("Usuari autentificat");
     } else {
-        console.log("Usuari, contrasenya o edat no valids")
+        console.log("Usuari, contrasenya o edat no valids");
     }
 }
 
@@ -32,7 +32,7 @@ const usuariCorrecte: usuari = {
 
 let autOk: boolean = autentificacio(usuariCorrecte)
 
-imprimir(autOk);
+imprimir1(autOk);
 console.log(autentificacio(usuariCorrecte));
 
 //la versio complicada
