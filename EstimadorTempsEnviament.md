@@ -1,7 +1,7 @@
 ### hola miquel aqui tens 
 
 
-'''typescript
+
 ```typescript
 type TipusEntrega = "express" | "estandar";
 
@@ -80,4 +80,3 @@ console.log("Entrega estàndard:", tempsEstandard, "dies");
 console.log("Entrega express:", tempsExpress, "dies");
 ```
 
-'''
