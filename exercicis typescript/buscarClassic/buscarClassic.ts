@@ -12,6 +12,20 @@ function imprimir(trobat: boolean): void {
         console.log("Canço no existeix");
     }
 }
+function imprimirLl(trobat: Canco): void {
+    if (trobat) {
+        console.log("Canço existeix");
+    } else {
+        console.log("Canço no existeix");
+    }
+}
+
+function imprimirArray(cancons: Canco[]): void {
+    for (let i: number = 0; i < cancons.length; i++) {
+
+        imprimirLl(cancons[i]);
+    }
+}
 
 const cancoABuscar: Canco = {
     id: "2B-CA",
@@ -55,3 +69,22 @@ function buscarCanco(canco: Canco, cancoList: Canco[]): boolean {
 
 let existeixCanco: boolean = buscarCanco(cancoABuscar, cancons);
 imprimir(existeixCanco);
+
+function buscarCancoLlarga(durada: number, cancoList: Canco[]): Canco[] {
+    const totalCancons: number = cancoList.length;
+    const canconsLlargues: Canco[] = [];
+
+    for (let i: number = 0; i < totalCancons; i++) {
+        if (cancoList[i].durada >= durada) {
+            canconsLlargues.push(cancoList[i]);
+        }
+    }
+
+    return canconsLlargues;
+}
+
+const canconsLl: Canco[] = buscarCancoLlarga(30, cancons);
+imprimirArray(canconsLl);
+export { }
+
+//1. fer servir filter i retornar totes les cancons d'un artista,2. hi ha varis usuaris que cada un te varies llistes cada llista amb varies cancons,

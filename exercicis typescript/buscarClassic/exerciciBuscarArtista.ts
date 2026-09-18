@@ -5,21 +5,6 @@ interface Canco {
     id: string;
 }
 
-function imprimir(trobat: boolean): void {
-    if (trobat) {
-        console.log("Canço existeix");
-    } else {
-        console.log("Canço no existeix");
-    }
-}
-
-const cancoABuscar: Canco = {
-    id: "2B-CA",
-    titol: "Rattle and Ham",
-    artista: "U2",
-    durada: 90
-}
-
 const cancons: Canco[] = [
 
     {
@@ -29,26 +14,32 @@ const cancons: Canco[] = [
         durada: 90
     },
     {
+        id: "oj-ek",
+        titol: "Fist of fury",
+        artista: "U2",
+        durada: 190
+    },
+    {
         id: "5f-JK",
         titol: "Chicago",
         artista: "Michael Jackson",
         durada: 190
     },
+    {
+        id: "Df-ei",
+        titol: "Thriller",
+        artista: "Michael Jackson",
+        durada: 180
+
+    }
 ]
 
 
 
-console.log(cancoABuscar);
-
-
-let titol: string = "Chicago";
+let artista: string = "Michael Jackson";
 const CancorBuscador: Canco[] = cancons.filter(
     (c: Canco) => {
-        return c.titol === titol;
+        return c.artista === artista;
     }
 );
 
-
-console.log(CancorBuscador);
-
-export { }
