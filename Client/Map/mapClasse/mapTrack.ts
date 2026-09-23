@@ -56,9 +56,8 @@ const songString: string[] = cancons.map(
 const fullCanco: string[] = cancons.map(
 
     (c: Canco) => {
-        let temps: number = c.durada;
-        let minuts: number = Math.floor(temps / 60);
-        let segons: number = temps - minuts;
+        let minuts: number = Math.floor(c.durada / 60);
+        let segons: number = c.durada % 60;
         let text: string = `titol: ${c.titol}, durada: ${minuts} minuts, ${segons} segons)`
 
         console.log(text)
