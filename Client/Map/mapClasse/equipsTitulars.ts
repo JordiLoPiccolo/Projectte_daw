@@ -44,17 +44,22 @@ const Partit: Equip[] = [{
 }
 ]
 
-function crearTitular(equip: Equip, jugador: Jugador[]): Equip[] {
-    let EquipTitular: Equip;
+const nomEquip: string = "Equip Real";
 
-    const player: Jugador[] = jugador.filter(
-        (j: jugador) => (j.titular === true)
-    )
-        (e: Equip) => {
+const jugadorsTitulars: Jugador[] = equipTitular(Partit, nomEquip)
 
+function equipTitular(equip: Equip[], nomEquip: string): Jugador[] {
+
+    let titulars: Jugador[] = [];
+    for (let i: number = 0; i <= equip.length; i++) {
+        for (let j: number = 0; equip[i].players.length; j++) {
+            if (equip[i].players[j].titular === true) {
+                titulars.push(equip[i].players[j]);
+            }
+        }
     }
-
-    return equip
+    console.log(titulars);
+    return titulars;
 }
 
 
