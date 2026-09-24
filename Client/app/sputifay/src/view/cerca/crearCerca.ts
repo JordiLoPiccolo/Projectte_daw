@@ -12,6 +12,7 @@ export function crearCerca(): HTMLFormElement {
 
     label.textContent = "Buscar";
     label.appendChild(input);
-    label.appendChild(button);
+    form.appendChild(label);
+    form.appendChild(button);
     return form
 }

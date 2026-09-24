@@ -5,14 +5,7 @@ import { viewListTracks } from './view/tableSongs/viewListTracks';
 
 const appObj: HTMLElement = document.querySelector<HTMLDivElement>('#app')!;
 
-const titol: HTMLHeadElement = crearTitol();
+appObj.appendChild(crearTitol());
+appObj.appendChild(viewListTracks());
+appObj.appendChild(crearCerca());
 
-const table: HTMLTableElement = viewListTracks();
-
-const form: HTMLFormElement = crearCerca(); 
-
-appObj.appendChild(titol);
-
-appObj.appendChild(table);
-
-appObj.appendChild(form);
