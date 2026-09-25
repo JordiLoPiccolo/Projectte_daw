@@ -1,7 +1,9 @@
 import express, { Express, Request, Response } from "express";
 import { APICONFIG } from "./config/apiConfig";
 import { tracks } from "./data/track/track";
-import { TrackBD } from "./interfaces/track/track";
+import { TrackBD } from "./interfaces/track/trackBD";
+import { Track } from "./interfaces/track/track";
+import { isValidTrack } from "./validators/trackValidator";
 
 const app: Express = express();
 app.use(express.json());
@@ -65,8 +67,13 @@ app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició r
 
 
 app.post("/tracks/:id", (req: Request, res: Response) => {
+    const track: Track = req.body;
+    if (!isValidTrack(track)) {
+        return res.status(400).json({ message: "fuck you"});
+    }
+    // les corretes son dades
 
-    return res.status(201).json(req.body);
+    return res.status(201).json(track);
 });
 
 

@@ -1,4 +1,4 @@
-import { TrackBD } from "../../interfaces/track/track";
+import { TrackBD } from "../../interfaces/track/trackBD";
 
 export const tracks: TrackBD[] = [{
     id: "3456-abd1-c2d1-ef12",
