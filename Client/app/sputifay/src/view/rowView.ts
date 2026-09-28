@@ -1,7 +1,6 @@
 import type { Canco } from "../interface/canco";
-import { viewCancoTriada } from "./tableSongs/viewCancoTriada";
 
-export function createRowSong(canco: Canco): HTMLTableRowElement {
+export function createRowSong(canco: Canco/*afegeix una funció aqui que agafi la id*/ ): HTMLTableRowElement {
     const songTr: HTMLTableRowElement = document.createElement("tr");
 
     const titleTd: HTMLTableCellElement = document.createElement("td");

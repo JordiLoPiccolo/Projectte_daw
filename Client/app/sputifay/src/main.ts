@@ -4,6 +4,7 @@ import './style.css';
 import { crearCerca } from './view/cerca/crearCerca';
 import { crearTitol } from './view/crearTitol';
 import { llistaCancons } from './view/tableSongs/llistaCancons';
+import { viewCancoTriada } from './view/tableSongs/viewCancoTriada';
 import { viewListTracks } from './view/tableSongs/viewListTracks';
 
 const appObj: HTMLElement = document.querySelector<HTMLDivElement>('#app')!;
@@ -18,8 +19,9 @@ const cercar: (textABuscar: string) => void = (textABuscar: string) => {
     llistaCancons(llistaTracks, tbody);
 }
 
+
 appObj.appendChild(crearTitol());
 appObj.appendChild(crearCerca(cercar));
 appObj.appendChild(viewListTracks(tbody));
-appObj.appendChild(cardCanco)
+appObj.appendChild(viewCancoTriada(ola,cardCanco))
 

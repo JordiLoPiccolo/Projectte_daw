@@ -1,9 +1,13 @@
 import { cancons } from "../../data/canco";
-import type { Canco } from "../../interface/canco";
+
 
 import { cancoTriada } from "./CancoTriada";
 
-export function viewCancoTriada(tbody: HTMLDivElement, canco: Canco): void {
+export function viewCancoTriada(cancoId:string,tbody: HTMLDivElement):HTMLDivElement {
+    
+    const carta: HTMLDivElement = document.createElement("div");
 
-    cancoTriada(cancons, canco, tbody);
+
+    cancoTriada(cancons,cancoId,tbody)
+    return carta;
 }
