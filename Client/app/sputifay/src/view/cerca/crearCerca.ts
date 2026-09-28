@@ -7,9 +7,11 @@ export function crearCerca(): HTMLFormElement {
     const form: HTMLFormElement = document.createElement("form");
     const label: HTMLLabelElement = document.createElement("label");
     const input: HTMLInputElement = crearInputCerca();
-    const button: HTMLButtonElement = crearBotoCerca();
 
+    const getValueSearch: () => string = () => { return input.value.trim(); }
+    const button: HTMLButtonElement = crearBotoCerca(getValueSearch);
 
+    
     label.textContent = "Buscar";
     label.appendChild(input);
     form.appendChild(label);
