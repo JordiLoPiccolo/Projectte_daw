@@ -12,6 +12,11 @@ export function createRowSong(canco: Canco): HTMLTableRowElement {
     songTr.appendChild(titleTd);
     songTr.appendChild(duradaTd);
 
+    songTr.addEventListener("click", () => {
+
+        console.log(canco.id);
+    });
+
     return songTr;
 
 }

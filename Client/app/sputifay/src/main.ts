@@ -11,7 +11,7 @@ const tbody: HTMLTableSectionElement = document.createElement("tbody");
 
 const cercar: (textABuscar: string) => void = (textABuscar: string) => {
     const llistaTracks: Canco[] = cancons.filter(
-        (c: Canco) => { return c.titol.trim().toLowerCase().includes(textABuscar.toLowerCase()) }
+        (c: Canco) => { return c.titol.trim().toLowerCase().includes(textABuscar.trim().toLowerCase()) }
     );
     tbody.innerHTML = "";
     llistaCancons(llistaTracks, tbody);
