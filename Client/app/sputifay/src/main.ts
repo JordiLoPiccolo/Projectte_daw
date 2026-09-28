@@ -8,6 +8,7 @@ import { viewListTracks } from './view/tableSongs/viewListTracks';
 
 const appObj: HTMLElement = document.querySelector<HTMLDivElement>('#app')!;
 const tbody: HTMLTableSectionElement = document.createElement("tbody");
+const cardCanco: HTMLDivElement = document.createElement("div");
 
 const cercar: (textABuscar: string) => void = (textABuscar: string) => {
     const llistaTracks: Canco[] = cancons.filter(
@@ -20,5 +21,5 @@ const cercar: (textABuscar: string) => void = (textABuscar: string) => {
 appObj.appendChild(crearTitol());
 appObj.appendChild(crearCerca(cercar));
 appObj.appendChild(viewListTracks(tbody));
-
+appObj.appendChild(cardCanco)
 

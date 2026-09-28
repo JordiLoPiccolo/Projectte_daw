@@ -1,4 +1,5 @@
 import type { Canco } from "../interface/canco";
+import { viewCancoTriada } from "./tableSongs/viewCancoTriada";
 
 export function createRowSong(canco: Canco): HTMLTableRowElement {
     const songTr: HTMLTableRowElement = document.createElement("tr");
@@ -14,9 +15,15 @@ export function createRowSong(canco: Canco): HTMLTableRowElement {
 
     songTr.addEventListener("click", () => {
 
-        console.log(canco.id);
+        getIdCanco();
     });
+
+    function getIdCanco(){
+        return canco.id;
+    }
 
     return songTr;
 
 }
+
+
