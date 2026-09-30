@@ -20,6 +20,8 @@ export function createRowSong(canco: Canco, getIdCanco: (id: string) => void): H
     songTr.appendChild(reproduccionsTd);
     songTr.appendChild(botoRepTd);
 
+  
+
     songTr.addEventListener("click", () => {
 
         getIdCanco(canco.id);
