@@ -11,17 +11,27 @@ const appObj: HTMLElement = document.querySelector<HTMLDivElement>('#app')!;
 const tbody: HTMLTableSectionElement = document.createElement("tbody");
 const cardCanco: HTMLDivElement = document.createElement("div");
 
+export function getIdCanco(id: string): void {
+    cardCanco.replaceChildren(viewCancoTriada(id));
+}
+
+/*const cercarId: (idCanco: string) => string =
+    (searchText: string) => {
+        const canco: Canco[] = cancons.filter((c: Canco) => { return c.id })
+        
+    }*/
 const cercar: (textABuscar: string) => void = (textABuscar: string) => {
     const llistaTracks: Canco[] = cancons.filter(
         (c: Canco) => { return c.titol.trim().toLowerCase().includes(textABuscar.trim().toLowerCase()) }
     );
     tbody.innerHTML = "";
-    llistaCancons(llistaTracks, tbody);
+    llistaCancons(llistaTracks, tbody, getIdCanco);
 }
+
 
 
 appObj.appendChild(crearTitol());
 appObj.appendChild(crearCerca(cercar));
-appObj.appendChild(viewListTracks(tbody));
-appObj.appendChild(viewCancoTriada(ola,cardCanco))
+appObj.appendChild(viewListTracks(tbody, getIdCanco));
+appObj.appendChild(cardCanco);
 

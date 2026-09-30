@@ -1,6 +1,6 @@
 import type { Canco } from "../interface/canco";
 
-export function createRowSong(canco: Canco/*afegeix una funció aqui que agafi la id*/ ): HTMLTableRowElement {
+export function createRowSong(canco: Canco, getIdCanco: (id: string) => void): HTMLTableRowElement {
     const songTr: HTMLTableRowElement = document.createElement("tr");
 
     const titleTd: HTMLTableCellElement = document.createElement("td");
@@ -14,12 +14,10 @@ export function createRowSong(canco: Canco/*afegeix una funció aqui que agafi l
 
     songTr.addEventListener("click", () => {
 
-        getIdCanco();
+        getIdCanco(canco.id);
     });
 
-    function getIdCanco(){
-        return canco.id;
-    }
+
 
     return songTr;
 
