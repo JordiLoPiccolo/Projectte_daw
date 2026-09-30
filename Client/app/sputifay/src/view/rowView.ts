@@ -10,10 +10,14 @@ export function createRowSong(canco: Canco, getIdCanco: (id: string) => void): H
     const duradaTd: HTMLTableCellElement = document.createElement("td");
     duradaTd.textContent = canco.durada.toString();
 
-    const botoRepTd: HTMLButtonElement = crearBotoPlay();
+    const reproduccionsTd: HTMLTableCellElement = document.createElement("td");
+    reproduccionsTd.textContent = canco.reproduccions.toString();
+
+    const botoRepTd: HTMLButtonElement = crearBotoPlay(canco, reproduccionsTd);
 
     songTr.appendChild(titleTd);
     songTr.appendChild(duradaTd);
+    songTr.appendChild(reproduccionsTd);
     songTr.appendChild(botoRepTd);
 
     songTr.addEventListener("click", () => {

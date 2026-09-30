@@ -1,13 +1,16 @@
-export function crearBotoPlay() {
+import type { Canco } from "../../interface/canco";
+import { mesReproduccions } from "./mesReproduccions";
 
-    let reproduccions: number = 0;
+export function crearBotoPlay(canco: Canco, reproduccionsTd: HTMLTableCellElement): HTMLButtonElement {
+
     const button: HTMLButtonElement = document.createElement("button");
     button.type = "button";
     button.textContent = "Play";
     button.addEventListener("click", () => {
-       
+
         if (button.textContent === "Play") {
-            reproduccions++;
+            canco.reproduccions = mesReproduccions(canco.reproduccions);
+            reproduccionsTd.textContent = canco.reproduccions.toString();
             button.textContent = "Playing"
         } else {
             button.textContent = "Play"
