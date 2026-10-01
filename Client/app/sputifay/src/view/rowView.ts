@@ -1,7 +1,7 @@
 import type { Canco } from "../interface/canco";
 import { crearBotoPlay } from "./play/crearBotoPlay";
 
-export function createRowSong(canco: Canco, getIdCanco: (id: string) => void): HTMLTableRowElement {
+export function createRowSong(canco: Canco, getIdCanco: (id: string) => void, botoEnReproduccio: HTMLButtonElement | null): HTMLTableRowElement {
     const songTr: HTMLTableRowElement = document.createElement("tr");
 
     const titleTd: HTMLTableCellElement = document.createElement("td");
@@ -13,7 +13,7 @@ export function createRowSong(canco: Canco, getIdCanco: (id: string) => void): H
     const reproduccionsTd: HTMLTableCellElement = document.createElement("td");
     reproduccionsTd.textContent = canco.reproduccions.toString();
 
-    const botoRepTd: HTMLButtonElement = crearBotoPlay(canco);
+    const botoRepTd: HTMLButtonElement = crearBotoPlay(canco,botoEnReproduccio);
 
 
     songTr.appendChild(titleTd);

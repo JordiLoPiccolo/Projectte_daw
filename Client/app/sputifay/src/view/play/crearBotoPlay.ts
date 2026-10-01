@@ -1,12 +1,9 @@
 import type { Canco } from "../../interface/canco";
 import { mesReproduccions } from "./mesReproduccions";
-
-let botoEnReproduccio: HTMLButtonElement | null = null;
-
 let jugant: string = "playing";
 let parat: string = "play";
 
-export function crearBotoPlay(canco: Canco): HTMLButtonElement {
+export function crearBotoPlay(canco: Canco,botoEnReproduccio:HTMLButtonElement | null): HTMLButtonElement {
 
     const button: HTMLButtonElement = document.createElement("button");
     button.type = "button";
