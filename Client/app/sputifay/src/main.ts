@@ -11,15 +11,10 @@ const appObj: HTMLElement = document.querySelector<HTMLDivElement>('#app')!;
 const tbody: HTMLTableSectionElement = document.createElement("tbody");
 const cardCanco: HTMLDivElement = document.createElement("div");
 
-export function getIdCanco(id: string): void {
+const getIdCanco: (id: string) => void = (id:string) =>{
     cardCanco.replaceChildren(viewCancoTriada(id));
 }
 
-/*const cercarId: (idCanco: string) => string =
-    (searchText: string) => {
-        const canco: Canco[] = cancons.filter((c: Canco) => { return c.id })
-        
-    }*/
 const cercar: (textABuscar: string) => void = (textABuscar: string) => {
     const llistaTracks: Canco[] = cancons.filter(
         (c: Canco) => { return c.titol.trim().toLowerCase().includes(textABuscar.trim().toLowerCase()) }

@@ -1,5 +1,7 @@
-export function mesReproduccions(reproduccions: number): number{
+import type { Canco } from "../../interface/canco";
+
+export function mesReproduccions(canco: Canco): Canco{
     
-    reproduccions++;
-    return reproduccions;
+    canco.reproduccions++;
+    return canco;
 }

@@ -3,24 +3,33 @@ import { mesReproduccions } from "./mesReproduccions";
 
 let botoEnReproduccio: HTMLButtonElement | null = null;
 
-export function crearBotoPlay(canco: Canco, reproduccionsTd: HTMLTableCellElement): HTMLButtonElement {
+let jugant: string = "playing";
+let parat: string = "play";
+
+export function crearBotoPlay(canco: Canco): HTMLButtonElement {
 
     const button: HTMLButtonElement = document.createElement("button");
     button.type = "button";
-    button.textContent = "Play";
+
+    let playing: boolean = false;
+
+  
+
     button.addEventListener("click", () => {
 
-        if (button.textContent === "Play") {
+     
+        if (!playing) {
             if (botoEnReproduccio !== null) {
-                botoEnReproduccio.textContent = "Play";
+                botoEnReproduccio.textContent = parat;
             }
-            canco.reproduccions = mesReproduccions(canco.reproduccions);
-            reproduccionsTd.textContent = canco.reproduccions.toString();
-            button.textContent = "Playing";
+            mesReproduccions(canco);
+            playing = true;
             botoEnReproduccio = button;
+            button.textContent = jugant;
         } else {
-            button.textContent = "Play";
+            playing = false;
             botoEnReproduccio = null;
+            button.textContent = parat;
         }
     });
     return button

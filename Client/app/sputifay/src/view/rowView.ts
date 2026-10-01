@@ -13,19 +13,22 @@ export function createRowSong(canco: Canco, getIdCanco: (id: string) => void): H
     const reproduccionsTd: HTMLTableCellElement = document.createElement("td");
     reproduccionsTd.textContent = canco.reproduccions.toString();
 
-    const botoRepTd: HTMLButtonElement = crearBotoPlay(canco, reproduccionsTd);
+    const botoRepTd: HTMLButtonElement = crearBotoPlay(canco);
+
 
     songTr.appendChild(titleTd);
     songTr.appendChild(duradaTd);
     songTr.appendChild(reproduccionsTd);
     songTr.appendChild(botoRepTd);
 
-  
 
-    songTr.addEventListener("click", () => {
 
+    const selectSong = (): void => {
         getIdCanco(canco.id);
-    });
+    };
+
+    titleTd.addEventListener("click", selectSong);
+    duradaTd.addEventListener("click", selectSong);
 
 
 
