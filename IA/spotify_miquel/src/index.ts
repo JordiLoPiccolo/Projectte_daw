@@ -85,6 +85,7 @@ app.post("/tracks/:id", (req: Request, res: Response) => {
         duration: track.duration
     };
 
+
     return res.status(201).json(trackRecord);
 });
 
@@ -98,7 +99,7 @@ app.post("/artists/:id", (req: Request, res:Response) => {
         country: artist.country.trim().replace(/\s+/g, " "),
     };
     if (!validCountry(artistRecord.country)) {
-        return res.status(400).json({ message: "pais equivocat fuck you" });
+        return res.status(400).json({ message: "pais no valid" });
     }
     return res.status(201).json(artistRecord);
     

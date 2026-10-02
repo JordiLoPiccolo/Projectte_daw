@@ -1,10 +1,11 @@
 import { validCountries } from "../interfaces/artist/paisos";
 
-export function validCountry(country: string): boolean { 
+export function validCountry(country: string): string | undefined { 
 
-    validCountries.forEach(element => {
-        if (country === element) return true;
-    });
+    return validCountries.find(
+        (c: string) => { return c == country }
+    );
+        
     
-    return false;
+   
 }
