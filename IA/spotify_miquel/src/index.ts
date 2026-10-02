@@ -5,6 +5,8 @@ import { TrackBD } from "./interfaces/track/trackBD";
 import { Track } from "./interfaces/track/track";
 import { isValidTrack } from "./validators/trackValidator";
 import { randomUUID } from "crypto";
+import { Artist } from "./interfaces/artist/artist";
+import { validCountry } from "./validators/countryValidator";
 
 
 const app: Express = express();
@@ -71,20 +73,33 @@ app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició r
 app.post("/tracks/:id", (req: Request, res: Response) => {
     const track: Track = req.body;
     if (!isValidTrack(track)) {
-        return res.status(400).json({ message: "fuck you"});
+        return res.status(400).json({ message: "fuck you" });
     }
     // les correctes son dades
     const uuid: string = randomUUID();
 
     const trackRecord: TrackBD = {
         id: uuid,
-        title: track.title.trim().replace(/\s+/g," "),
+        title: track.title.trim().replace(/\s+/g, " "),
         artist: track.artist.trim().replace(/\s+/g, " "),
         duration: track.duration
     };
-    
+
     return res.status(201).json(trackRecord);
 });
+
+app.post("/artists/:id", (req: Request, res:Response) => {
+
+    const artistRecord: Artist = {
+        aName: "Salibex",
+        rName: "Sali Bechivo",
+        country: "Chekoslovakia"
+    };
+    if (!validCountry(artistRecord.country)) {
+        return res.status(400).json({ message: "pais equivocat fuck you" });
+    }
+    
+})
 
 
 app.listen(APICONFIG.port, APICONFIG.host, () => {
