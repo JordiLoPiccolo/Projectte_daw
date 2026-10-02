@@ -1,17 +1,6 @@
-export function validCountry(country: string): boolean {
-    
-    const validCountries: string[] = [
-        "Spain",
-        "France",
-        "Germany",
-        "Italy",
-        "Portugal",
-        "United Kingdom",
-        "United States",
-        "Canada",
-        "Japan",
-        "Australia",
-    ];
+import { validCountries } from "../interfaces/artist/paisos";
+
+export function validCountry(country: string): boolean { 
 
     validCountries.forEach(element => {
         if (country === element) return true;

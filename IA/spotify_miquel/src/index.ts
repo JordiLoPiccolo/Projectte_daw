@@ -90,14 +90,17 @@ app.post("/tracks/:id", (req: Request, res: Response) => {
 
 app.post("/artists/:id", (req: Request, res:Response) => {
 
+    const artist: Artist = req.body;
+
     const artistRecord: Artist = {
-        aName: "Salibex",
-        rName: "Sali Bechivo",
-        country: "Chekoslovakia"
+        aName: artist.aName.trim().replace(/\s+/g, " "),
+        rName: artist.rName.trim().replace(/\s+/g, " "),
+        country: artist.country.trim().replace(/\s+/g, " "),
     };
     if (!validCountry(artistRecord.country)) {
         return res.status(400).json({ message: "pais equivocat fuck you" });
     }
+    return res.status(201).json(artistRecord);
     
 })
 
