@@ -92,7 +92,7 @@ app.post("/tracks", (req: Request, res: Response) => {
     return res.status(201).json(trackRecord);
 });
 
-app.put("/tracks:id", (req: Request, res: Response) => {
+app.put("/tracks/:id", (req: Request, res: Response) => {
     const track: Track = req.body;
 
     if (!isValidTrack(track)) {
@@ -116,6 +116,22 @@ app.put("/tracks:id", (req: Request, res: Response) => {
     };
     return res.status(200).json(tracks[index]);
 });
+
+app.delete("/tracks/:id", (req: Request, res: Response) => {
+
+    const idTrack: string = req.params.id as string;
+    const index: number = tracks.findIndex(
+        (t: TrackBD) => { return t.id === idTrack }
+    );
+    if (index === -1) {
+        return res.status(404).json({ message: `Track ${idTrack} not found lol` });
+    }
+
+    tracks.splice(index,1);
+
+    return res.status(204).json({ message: `Truck delated`});
+});
+
 
 
 app.post("/artists", (req: Request, res:Response) => {
