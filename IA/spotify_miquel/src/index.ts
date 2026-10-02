@@ -6,7 +6,9 @@ import { Track } from "./interfaces/track/track";
 import { isValidTrack } from "./validators/trackValidator";
 import { randomUUID } from "crypto";
 import { Artist } from "./interfaces/artist/artist";
-import { validCountry } from "./validators/countryValidator";
+import { isValidArtist } from "./validators/artistValidator";
+import { ArtistBD } from "./interfaces/artist/artistBD";
+import { artists } from "./data/data.artist";
 
 
 const app: Express = express();
@@ -70,7 +72,7 @@ app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició r
 
 
 
-app.post("/tracks/:id", (req: Request, res: Response) => {
+app.post("/tracks", (req: Request, res: Response) => {
     const track: Track = req.body;
     if (!isValidTrack(track)) {
         return res.status(400).json({ message: "fuck you" });
@@ -84,23 +86,26 @@ app.post("/tracks/:id", (req: Request, res: Response) => {
         artist: track.artist.trim().replace(/\s+/g, " "),
         duration: track.duration
     };
-
+    tracks.push(trackRecord)
 
     return res.status(201).json(trackRecord);
 });
 
-app.post("/artists/:id", (req: Request, res:Response) => {
+app.post("/artists", (req: Request, res:Response) => {
 
     const artist: Artist = req.body;
+    const uuid: string = randomUUID();
 
-    const artistRecord: Artist = {
+    const artistRecord: ArtistBD = {
+        id: uuid,
         aName: artist.aName.trim().replace(/\s+/g, " "),
         rName: artist.rName.trim().replace(/\s+/g, " "),
         country: artist.country.trim().replace(/\s+/g, " "),
     };
-    if (!validCountry(artistRecord.country)) {
-        return res.status(400).json({ message: "pais no valid" });
+    if (!isValidArtist(artist)) {
+        return res.status(400).json({ message: "artista no valid" });
     }
+    artists.push(artistRecord)
     return res.status(201).json(artistRecord);
     
 })
