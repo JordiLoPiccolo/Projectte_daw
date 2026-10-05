@@ -9,10 +9,11 @@ import { Artist } from "./interfaces/artist/artist";
 import { isValidArtist } from "./validators/artistValidator";
 import { ArtistBD } from "./interfaces/artist/artistBD";
 import { artists } from "./data/data.artist";
-import { User, UserInput } from "./interfaces/user/user";
+import { User } from "./interfaces/user/user";
+import { UserBD } from "./interfaces/user/userBD";
 import { users } from "./data/user/users";
 import { isValidUser } from "./validators/userValidator";
-import { Country } from "./interfaces/country";
+import { Country } from "./interfaces/countries/country";
 import { validCountry } from "./validators/countryValidator";
 
 
@@ -46,7 +47,9 @@ app.get("/users", (_req: Request, res: Response) => {
 
 app.get("/users/:id", (req: Request, res: Response) => {
     const idUser: string = req.params.id as string;
-    const user: User | undefined = users.find((u: User) => u.id === idUser);
+    const user: UserBD[] = users.filter(
+        (u: UserBD) => { return u.id === idUser }
+    );
 
     if (!user) {
         return res.status(404).json({ message: `User ${idUser} not found` });
@@ -89,7 +92,6 @@ app.get("/users/:id", (req: Request, res: Response) => {
  * 
  *      /artist/users/reproductions
  */
-
 
 
 
@@ -147,9 +149,9 @@ app.delete("/tracks/:id", (req: Request, res: Response) => {
         return res.status(404).json({ message: `Track ${idTrack} not found lol` });
     }
 
-    tracks.splice(index,1);
+    tracks.splice(index, 1);
 
-    return res.status(204).json({ message: `Truck delated`});
+    return res.status(204).json({ message: `Truck delated` });
 });
 
 app.post("/artists", (req: Request, res: Response) => {
@@ -174,46 +176,49 @@ app.post("/artists", (req: Request, res: Response) => {
 
 })
 
-
-
-
 app.post("/users", (req: Request, res: Response) => {
+    const user: User = req.body;
+    
     if (!isValidUser(req.body)) {
         return res.status(400).json({ message: "Invalid user. Provide a valid email and country with id and name." });
     }
 
-    const userInput: UserInput = req.body;
-    const user: User = {
+
+    const userBD: UserBD = {
         id: randomUUID(),
-        email: userInput.email.trim(),
+        email: user.email.trim(),
         country: {
-            id: userInput.country.id.trim(),
-            name: userInput.country.name.trim(),
+            id: user.country.id.trim(),
+            name: user.country.name.trim(),
         },
     };
-    users.push(user);
+    users.push(userBD);
 
-    return res.status(201).json(user);
+    return res.status(201).json(userBD);
 });
 
 app.put("/users/:id", (req: Request, res: Response) => {
+    const user: User = req.body;
+
     if (!isValidUser(req.body)) {
-        return res.status(400).json({ message: "Invalid user. Provide a valid email and country with id and name." });
+        return res.status(400).json({ message: "Usuari invalid. Com tu." });
     }
 
     const idUser: string = req.params.id as string;
-    const index: number = users.findIndex((user: User) => user.id === idUser);
+    const index: number = users.findIndex(
+        (u: UserBD) => { return u.id === idUser }
+    );
+
     if (index === -1) {
         return res.status(404).json({ message: `User ${idUser} not found` });
     }
 
-    const userInput: UserInput = req.body;
     users[index] = {
         id: idUser,
-        email: userInput.email.trim(),
+        email: user.email.trim(),
         country: {
-            id: userInput.country.id.trim(),
-            name: userInput.country.name.trim(),
+            id: user.country.id.trim(),
+            name: user.country.name.trim(),
         },
     };
     return res.status(200).json(users[index]);
@@ -221,7 +226,7 @@ app.put("/users/:id", (req: Request, res: Response) => {
 
 app.delete("/users/:id", (req: Request, res: Response) => {
     const idUser: string = req.params.id as string;
-    const index: number = users.findIndex((user: User) => user.id === idUser);
+    const index: number = users.findIndex((user: UserBD) => user.id === idUser);
     if (index === -1) {
         return res.status(404).json({ message: `User ${idUser} not found` });
     }
@@ -229,9 +234,6 @@ app.delete("/users/:id", (req: Request, res: Response) => {
     users.splice(index, 1);
     return res.status(204).send();
 });
-
-
-
 
 app.listen(APICONFIG.port, APICONFIG.host, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);

@@ -1,4 +1,4 @@
-import { Country } from "../country";
+import { Country } from "../countries/country";
 
 export const validCountries: Country[] = [
     { id: "ES", name: "Spain" },

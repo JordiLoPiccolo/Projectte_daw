@@ -1,4 +1,4 @@
-import { Country } from "../interfaces/country";
+import { Country } from "../interfaces/countries/country";
 import { validCountries } from "../interfaces/artist/paisos";
 
 export function validCountry(country: unknown): Country | undefined {

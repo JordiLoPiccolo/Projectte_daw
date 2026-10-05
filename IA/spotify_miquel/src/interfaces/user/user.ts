@@ -1,9 +1,7 @@
-import { Country } from "../country";
+import { Country } from "../countries/country";
 
 export interface User {
-    id: string; //pk
     email: string;
     country: Country; //FK
 }
 
-export type UserInput = Omit<User, "id">;
