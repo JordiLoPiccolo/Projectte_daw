@@ -5,3 +5,5 @@ export interface User {
     email: string;
     country: Country; //FK
 }
+
+export type UserInput = Omit<User, "id">;

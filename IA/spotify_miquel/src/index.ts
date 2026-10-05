@@ -9,6 +9,12 @@ import { Artist } from "./interfaces/artist/artist";
 import { isValidArtist } from "./validators/artistValidator";
 import { ArtistBD } from "./interfaces/artist/artistBD";
 import { artists } from "./data/data.artist";
+import { User, UserInput } from "./interfaces/user/user";
+import { users } from "./data/user/users";
+import { isValidUser } from "./validators/userValidator";
+import { Country } from "./interfaces/country";
+import { validCountry } from "./validators/countryValidator";
+
 
 
 const app: Express = express();
@@ -32,6 +38,20 @@ app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició r
         return res.status(404).json({ message: `Track ${idTrack} not found lol` });
     }
     return res.status(200).json(track);
+});
+
+app.get("/users", (_req: Request, res: Response) => {
+    return res.status(200).json(users);
+});
+
+app.get("/users/:id", (req: Request, res: Response) => {
+    const idUser: string = req.params.id as string;
+    const user: User | undefined = users.find((u: User) => u.id === idUser);
+
+    if (!user) {
+        return res.status(404).json({ message: `User ${idUser} not found` });
+    }
+    return res.status(200).json(user);
 });
 
 
@@ -132,29 +152,87 @@ app.delete("/tracks/:id", (req: Request, res: Response) => {
     return res.status(204).json({ message: `Truck delated`});
 });
 
+app.post("/artists", (req: Request, res: Response) => {
 
-
-app.post("/artists", (req: Request, res:Response) => {
-
-    const artist: Artist = req.body;
-    const uuid: string = randomUUID();
-
-    const artistRecord: ArtistBD = {
-        id: uuid,
-        aName: artist.aName.trim().replace(/\s+/g, " "),
-        rName: artist.rName.trim().replace(/\s+/g, " "),
-        country: artist.country,
-    };
-    if (!isValidArtist(artist)) {
+    if (!isValidArtist(req.body)) {
         return res.status(400).json({ message: "artista no valid" });
     }
+
+    const artist: Artist = req.body;
+    const country: Country | undefined = validCountry(artist.country);
+    if (country === undefined) {
+        return res.status(400).json({ message: "artista no valid" });
+    }
+    const artistRecord: ArtistBD = {
+        id: randomUUID(),
+        aName: artist.aName.trim().replace(/\s+/g, " "),
+        rName: artist.rName.trim().replace(/\s+/g, " "),
+        country,
+    };
     artists.push(artistRecord)
     return res.status(201).json(artistRecord);
-    
+
 })
+
+
+
+
+app.post("/users", (req: Request, res: Response) => {
+    if (!isValidUser(req.body)) {
+        return res.status(400).json({ message: "Invalid user. Provide a valid email and country with id and name." });
+    }
+
+    const userInput: UserInput = req.body;
+    const user: User = {
+        id: randomUUID(),
+        email: userInput.email.trim(),
+        country: {
+            id: userInput.country.id.trim(),
+            name: userInput.country.name.trim(),
+        },
+    };
+    users.push(user);
+
+    return res.status(201).json(user);
+});
+
+app.put("/users/:id", (req: Request, res: Response) => {
+    if (!isValidUser(req.body)) {
+        return res.status(400).json({ message: "Invalid user. Provide a valid email and country with id and name." });
+    }
+
+    const idUser: string = req.params.id as string;
+    const index: number = users.findIndex((user: User) => user.id === idUser);
+    if (index === -1) {
+        return res.status(404).json({ message: `User ${idUser} not found` });
+    }
+
+    const userInput: UserInput = req.body;
+    users[index] = {
+        id: idUser,
+        email: userInput.email.trim(),
+        country: {
+            id: userInput.country.id.trim(),
+            name: userInput.country.name.trim(),
+        },
+    };
+    return res.status(200).json(users[index]);
+});
+
+app.delete("/users/:id", (req: Request, res: Response) => {
+    const idUser: string = req.params.id as string;
+    const index: number = users.findIndex((user: User) => user.id === idUser);
+    if (index === -1) {
+        return res.status(404).json({ message: `User ${idUser} not found` });
+    }
+
+    users.splice(index, 1);
+    return res.status(204).send();
+});
+
+
 
 
 app.listen(APICONFIG.port, APICONFIG.host, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
 });
-

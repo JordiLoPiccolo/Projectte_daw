@@ -1,12 +1,14 @@
-export const validCountries: string[] = [
-    "Spain",
-    "France",
-    "Germany",
-    "Italy",
-    "Portugal",
-    "United Kingdom",
-    "United States",
-    "Canada",
-    "Japan",
-    "Australia",
+import { Country } from "../country";
+
+export const validCountries: Country[] = [
+    { id: "ES", name: "Spain" },
+    { id: "FR", name: "France" },
+    { id: "DE", name: "Germany" },
+    { id: "IT", name: "Italy" },
+    { id: "PT", name: "Portugal" },
+    { id: "GB", name: "United Kingdom" },
+    { id: "US", name: "United States" },
+    { id: "CA", name: "Canada" },
+    { id: "JP", name: "Japan" },
+    { id: "AU", name: "Australia" },
 ];
