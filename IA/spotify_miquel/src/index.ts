@@ -84,7 +84,7 @@ app.post("/tracks", (req: Request, res: Response) => {
     const trackRecord: TrackBD = {
         id: uuid,
         title: track.title.trim().replace(/\s+/g, " "),
-        artist: track.artist.trim().replace(/\s+/g, " "),
+        artist: track.artist,
         duration: track.duration
     };
     tracks.push(trackRecord)
@@ -111,7 +111,7 @@ app.put("/tracks/:id", (req: Request, res: Response) => {
     tracks[index] = {
         id: idTrack,
         title: track.title.trim().replace(/\s+/g, " "),
-        artist: track.artist.trim().replace(/\s+/g, " "),
+        artist: track.artist,
         duration: track.duration
     };
     return res.status(200).json(tracks[index]);
@@ -143,7 +143,7 @@ app.post("/artists", (req: Request, res:Response) => {
         id: uuid,
         aName: artist.aName.trim().replace(/\s+/g, " "),
         rName: artist.rName.trim().replace(/\s+/g, " "),
-        country: artist.country.trim().replace(/\s+/g, " "),
+        country: artist.country,
     };
     if (!isValidArtist(artist)) {
         return res.status(400).json({ message: "artista no valid" });
