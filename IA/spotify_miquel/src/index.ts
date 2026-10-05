@@ -12,9 +12,12 @@ import { artists } from "./data/data.artist";
 import { User } from "./interfaces/user/user";
 import { UserBD } from "./interfaces/user/userBD";
 import { users } from "./data/user/users";
+import { countries } from "./data/country/country";
 import { isValidUser } from "./validators/userValidator";
 import { Country } from "./interfaces/countries/country";
-import { validCountry } from "./validators/countryValidator";
+import { isValidCountry } from "./validators/countryValidator";
+import { validCountries } from "./interfaces/artist/paisos";
+import { CountryBD } from "./interfaces/countries/countryBD";
 
 
 
@@ -154,6 +157,22 @@ app.delete("/tracks/:id", (req: Request, res: Response) => {
     return res.status(204).json({ message: `Truck delated` });
 });
 
+app.get("/countries", (_req: Request, res: Response) => {
+    return res.status(200).json(countries);
+});
+
+app.get("/countries/:id", (req: Request, res: Response) => {
+    const idCountry: string = req.params.id as string;
+    const country: CountryBD[] = countries.filter(
+        (u: CountryBD) => { return u.id === idCountry }
+    );
+
+    if (!country) {
+        return res.status(404).json({ message: `User ${idCountry} not found` });
+    }
+    return res.status(200).json(country);
+});
+
 app.post("/artists", (req: Request, res: Response) => {
 
     if (!isValidArtist(req.body)) {
@@ -161,7 +180,7 @@ app.post("/artists", (req: Request, res: Response) => {
     }
 
     const artist: Artist = req.body;
-    const country: Country | undefined = validCountry(artist.country);
+    const country: Country | undefined = isValidCountry(artist.country);
     if (country === undefined) {
         return res.status(400).json({ message: "artista no valid" });
     }
@@ -175,6 +194,62 @@ app.post("/artists", (req: Request, res: Response) => {
     return res.status(201).json(artistRecord);
 
 })
+app.post("/countries", (req: Request, res: Response) => {
+    const country: Country = req.body;
+
+    if (!isValidCountry(country)) {
+        return res.status(400).json({ message: "Invalid country. Provide a non-empty id and name." });
+    }
+
+    const countryRecord: Country = {
+        id: country.id.trim().toUpperCase(),
+        name: country.name.trim().replace(/\s+/g, " "),
+    };
+    if (validCountries.some((existing: Country) => existing.id === countryRecord.id)) {
+        return res.status(409).json({ message: `Country ${countryRecord.id} already exists` });
+    }
+
+    validCountries.push(countryRecord); 
+
+    return res.status(201).json(countryRecord);
+});
+app.put("/countries/:id", (req: Request, res: Response) => {
+    const country: Country = req.body;
+
+    if (!isValidCountry(req.body)) {
+        return res.status(400).json({ message: "Pais invalid. Com tu." });
+    }
+
+    const idCountry: string = req.params.id as string;
+    const index: number = countries.findIndex(
+        (c: CountryBD) => { return c.id === idCountry }
+    );
+
+    if (index === -1) {
+        return res.status(404).json({ message: `User ${idCountry} not found` });
+    }
+
+    countries[index] = {
+        id: idCountry,
+        name: country.name.trim(),
+       
+    };
+    return res.status(200).json(countries[index]);
+});
+app.delete("/countries/:id", (req: Request, res: Response) => {
+
+    const idCountry: string = req.params.id as string;
+    const index: number = countries.findIndex(
+        (t: CountryBD) => { return t.id === idCountry }
+    );
+    if (index === -1) {
+        return res.status(404).json({ message: `Track ${idCountry} not found lol` });
+    }
+
+    countries.splice(index, 1);
+
+    return res.status(204).json({ message: `Truck delated` });
+});
 
 app.post("/users", (req: Request, res: Response) => {
     const user: User = req.body;
@@ -221,7 +296,7 @@ app.put("/users/:id", (req: Request, res: Response) => {
             name: user.country.name.trim(),
         },
     };
-    return res.status(200).json(users[index]);
+    return res.status(200).json(countries[index]);
 });
 
 app.delete("/users/:id", (req: Request, res: Response) => {
@@ -231,7 +306,7 @@ app.delete("/users/:id", (req: Request, res: Response) => {
         return res.status(404).json({ message: `User ${idUser} not found` });
     }
 
-    users.splice(index, 1);
+    countries.splice(index, 1);
     return res.status(204).send();
 });
 

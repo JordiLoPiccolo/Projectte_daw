@@ -1,17 +1,16 @@
 import { Country } from "../interfaces/countries/country";
+import { maxArtist, maxTitol } from "../interfaces/track/trackConstants";
 import { validCountries } from "../interfaces/artist/paisos";
 
-export function validCountry(country: unknown): Country | undefined {
-    if (typeof country !== "object" || country === null) {
-        return undefined;
-    }
-
-    const candidate = country as Record<string, unknown>;
-    if (typeof candidate.id !== "string" || typeof candidate.name !== "string") {
-        return undefined;
-    }
-
-    return validCountries.find(
-        (valid: Country) => valid.id === candidate.id && valid.name === candidate.name
-    );
+export function isValidCountry(country: Country):Country| undefined{
+    
+       if (country.id === null || country.name === null) {
+           return undefined
+       }
+       
+       const longTitol: number = country.name.trim().replace(/\s+/g, " ").length
+    
+       if (longTitol === 0 || longTitol > maxTitol) { return undefined }
+       
+       return country;
 }
