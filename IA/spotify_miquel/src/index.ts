@@ -18,6 +18,9 @@ import { Country } from "./interfaces/countries/country";
 import { isValidCountry } from "./validators/countryValidator";
 import { validCountries } from "./interfaces/artist/paisos";
 import { CountryBD } from "./interfaces/countries/countryBD";
+import { createTrack, getAllTracks, getTrackById, putTrack } from "./serveis/trackServeis";
+import { ErrorService } from "./interfaces/error/errorService";
+import { SuccessService } from "./interfaces/error/successService";
 
 
 
@@ -29,19 +32,21 @@ app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda per
     return res.json(JSON.stringify(APICONFIG));
 });
 
+app.get("/tracks", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
+    return res.status(200).json(getAllTracks());
+});
+
 
 
 
 app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    const idTrack: string = req.params.id as string;
-    const track: TrackBD[] = tracks.filter(
-        (t: TrackBD) => { return t.id === idTrack }
-    );
 
-    if (track.length === 0) {
-        return res.status(404).json({ message: `Track ${idTrack} not found lol` });
+    const findTrack: TrackBD | undefined = getTrackById(req.params.id as string);
+
+    if (findTrack) {
+        return res.status(404).json({ message: `Track ${findTrack} not found lol` });
     }
-    return res.status(200).json(track);
+    return res.status(200).json(findTrack);
 });
 
 app.get("/users", (_req: Request, res: Response) => {
@@ -99,47 +104,28 @@ app.get("/users/:id", (req: Request, res: Response) => {
 
 
 app.post("/tracks", (req: Request, res: Response) => {
-    const track: Track = req.body;
-    if (!isValidTrack(track)) {
-        return res.status(400).json({ message: "fuck you" });
+
+    const result: SuccessService<TrackBD> | ErrorService = createTrack(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService; 
+        return res.status(result.code).json({message: errorResult.message });
     }
-    // les correctes son dades
-    const uuid: string = randomUUID();
 
-    const trackRecord: TrackBD = {
-        id: uuid,
-        title: track.title.trim().replace(/\s+/g, " "),
-        artist: track.artist,
-        duration: track.duration
-    };
-    tracks.push(trackRecord)
 
-    return res.status(201).json(trackRecord);
+    tracks.push((result  as SuccessService<TrackBD>).data);
+    return res.status(201).json(result);
 });
 
 app.put("/tracks/:id", (req: Request, res: Response) => {
-    const track: Track = req.body;
+    const result: SuccessService<TrackBD> | ErrorService = putTrack(req.body);
 
-    if (!isValidTrack(track)) {
-        return res.status(400).json({ message: "fuck you" });
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const idTrack: string = req.params.id as string;
-    const index: number = tracks.findIndex(
-        (t: TrackBD) => { return t.id === idTrack }
-    );
-
-    if (index === -1) {
-        return res.status(404).json({ message: `Track ${idTrack} not found lol` });
-    }
-
-    tracks[index] = {
-        id: idTrack,
-        title: track.title.trim().replace(/\s+/g, " "),
-        artist: track.artist,
-        duration: track.duration
-    };
-    return res.status(200).json(tracks[index]);
+    return res.status(200).json(result);
 });
 
 app.delete("/tracks/:id", (req: Request, res: Response) => {
@@ -209,7 +195,7 @@ app.post("/countries", (req: Request, res: Response) => {
         return res.status(409).json({ message: `Country ${countryRecord.id} already exists` });
     }
 
-    validCountries.push(countryRecord); 
+    validCountries.push(countryRecord);
 
     return res.status(201).json(countryRecord);
 });
@@ -232,7 +218,7 @@ app.put("/countries/:id", (req: Request, res: Response) => {
     countries[index] = {
         id: idCountry,
         name: country.name.trim(),
-       
+
     };
     return res.status(200).json(countries[index]);
 });
@@ -253,7 +239,7 @@ app.delete("/countries/:id", (req: Request, res: Response) => {
 
 app.post("/users", (req: Request, res: Response) => {
     const user: User = req.body;
-    
+
     if (!isValidUser(req.body)) {
         return res.status(400).json({ message: "Invalid user. Provide a valid email and country with id and name." });
     }
