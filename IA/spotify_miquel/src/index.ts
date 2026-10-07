@@ -23,6 +23,7 @@ import { ErrorService } from "./interfaces/error/errorService";
 import { SuccessService } from "./interfaces/error/successService";
 import { PutSuccessService } from "./interfaces/error/putSuccesService";
 import { DeleteSuccessService } from "./interfaces/error/deleteSuccesService";
+import { createCountry, getAllCountries, getCountryById, putCountry } from "./serveis/countryServeis";
 
 
 
@@ -110,12 +111,12 @@ app.post("/tracks", (req: Request, res: Response) => {
     const result: SuccessService<TrackBD> | ErrorService = createTrack(req.body);
 
     if (!result.success) {
-        const errorResult = result as ErrorService; 
-        return res.status(result.code).json({message: errorResult.message });
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
     }
 
 
-    tracks.push((result  as SuccessService<TrackBD>).data);
+    tracks.push((result as SuccessService<TrackBD>).data);
     return res.status(201).json(result);
 });
 
@@ -130,39 +131,36 @@ app.put("/tracks/:id", (req: Request, res: Response) => {
     const index: number = (result as PutSuccessService<TrackBD>).index;
     tracks[index] = (result as PutSuccessService<TrackBD>).data;
 
-    
+
     return res.status(200).json(result);
 });
 
 app.delete("/tracks/:id", (req: Request, res: Response) => {
 
-    const result: DeleteSuccessService| ErrorService = deleteTrack(req.params.id as string);
+    const result: DeleteSuccessService | ErrorService = deleteTrack(req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const index: number = (result as PutSuccessService<TrackBD>).index;
+    const index: number = (result as DeleteSuccessService).index;
     tracks.splice(index, 1);
 
     return res.status(204).json({ message: `Truck delated` });
 });
 
 app.get("/countries", (_req: Request, res: Response) => {
-    return res.status(200).json(countries);
+    return res.status(200).json(getAllCountries());
 });
 
 app.get("/countries/:id", (req: Request, res: Response) => {
-    const idCountry: string = req.params.id as string;
-    const country: CountryBD[] = countries.filter(
-        (u: CountryBD) => { return u.id === idCountry }
-    );
+    const findCountry: CountryBD | undefined = getCountryById(req.params.id as string);
 
-    if (!country) {
-        return res.status(404).json({ message: `User ${idCountry} not found` });
+    if (findCountry) {
+        return res.status(404).json({ message: `Track ${findCountry} not found lol` });
     }
-    return res.status(200).json(country);
+    return res.status(200).json(findCountry);
 });
 
 app.post("/artists", (req: Request, res: Response) => {
@@ -187,45 +185,30 @@ app.post("/artists", (req: Request, res: Response) => {
 
 })
 app.post("/countries", (req: Request, res: Response) => {
-    const country: Country = req.body;
+    const result: SuccessService<CountryBD> | ErrorService = createCountry(req.body);
 
-    if (!isValidCountry(country)) {
-        return res.status(400).json({ message: "Invalid country. Provide a non-empty id and name." });
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const countryRecord: Country = {
-        id: country.id.trim().toUpperCase(),
-        name: country.name.trim().replace(/\s+/g, " "),
-    };
-    if (validCountries.some((existing: Country) => existing.id === countryRecord.id)) {
-        return res.status(409).json({ message: `Country ${countryRecord.id} already exists` });
-    }
 
-    validCountries.push(countryRecord);
+    countries.push((result as SuccessService<CountryBD>).data);
 
-    return res.status(201).json(countryRecord);
+    return res.status(201).json(result);
 });
 app.put("/countries/:id", (req: Request, res: Response) => {
-    const country: Country = req.body;
+    const result: SuccessService<CountryBD> | ErrorService = putCountry(req.body, req.params.id);
 
-    if (!isValidCountry(req.body)) {
-        return res.status(400).json({ message: "Pais invalid. Com tu." });
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const idCountry: string = req.params.id as string;
-    const index: number = countries.findIndex(
-        (c: CountryBD) => { return c.id === idCountry }
-    );
+    const index: number = (result as PutSuccessService<CountryBD>).index;
+    countries[index] = (result as PutSuccessService<CountryBD>).data;
 
-    if (index === -1) {
-        return res.status(404).json({ message: `User ${idCountry} not found` });
-    }
 
-    countries[index] = {
-        id: idCountry,
-        name: country.name.trim(),
-
-    };
     return res.status(200).json(countries[index]);
 });
 app.delete("/countries/:id", (req: Request, res: Response) => {

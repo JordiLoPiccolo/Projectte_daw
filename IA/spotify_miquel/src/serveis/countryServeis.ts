@@ -1,0 +1,86 @@
+import { randomUUID } from "crypto";
+import { tracks } from "../data/track/track";
+import { Track } from "../interfaces/track/track";
+import { TrackBD } from "../interfaces/track/trackBD";
+import { isValidTrack } from "../validators/trackValidator";
+import { ErrorService } from "../interfaces/error/errorService";
+import { SuccessService } from "../interfaces/error/successService";
+import { PutSuccessService } from "../interfaces/error/putSuccesService";
+import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
+import { CountryBD } from "../interfaces/countries/countryBD";
+import { countries } from "../data/country/country";
+import { Country } from "../interfaces/countries/country";
+import { isValidCountry } from "../validators/countryValidator";
+
+export function getAllCountries(): CountryBD[] {
+    return countries;
+}
+
+export function getCountryById(id: string): CountryBD | undefined {
+
+    return countries.find(
+        (c: CountryBD) => { return c.id === id }
+    );
+
+}
+
+export function createCountry(country: Country): SuccessService<CountryBD> | ErrorService {
+
+
+
+    if (!isValidCountry(country)) {
+        return { success: false, code: 400, message: "fuck you" };
+    }
+
+    // les correctes son dades
+    const uuid: string = randomUUID();
+
+    const countryRecord: CountryBD = {
+        id: uuid,
+        name: country.name.trim().replace(/\s+/g, " "),
+        
+    };
+    countries.push(countryRecord);
+
+    return { success: true, data: countryRecord, code: 201 };
+
+
+}
+
+export function putCountry(country: CountryBD, id: string | string[]): PutSuccessService<CountryBD> | ErrorService {
+    if (!isValidCountry(country)) {
+        return { success: false, code: 400, message: "adeu" };
+    }
+
+
+    const index: number = tracks.findIndex(
+        (t: TrackBD) => { return t.id === id }
+    );
+
+    if (index === -1) {
+        return { success: false, code: 404, message: `Pais invalid, com tu.` };
+    }
+
+    const countryBD: CountryBD = {
+        id: id as string,
+        name: country.name.trim().replace(/\s+/g, " "),
+
+    };
+
+    return { success: true, data: countryBD, code: 201, index: index };
+}
+
+export function deleteCountry(id: string | string[]): DeleteSuccessService | ErrorService {
+
+    const index: number = tracks.findIndex(
+        (t: TrackBD) => { return t.id === id }
+    );
+    if (index === -1) {
+        return { success: false, code: 404, message: `Track ${id} not found lol` };
+    }
+
+    return { success: true, code: 204, index: index }
+
+}
+
+

@@ -39,14 +39,14 @@ export function createTrack(track: Track): SuccessService<TrackBD> | ErrorServic
     };
     tracks.push(trackRecord);
 
-    return {success: true, data: trackRecord,code:201};
+    return { success: true, data: trackRecord, code: 201 };
 
 
 }
 
-export function putTrack(track: TrackBD,id: string | string[]): PutSuccessService<TrackBD> | ErrorService{
+export function putTrack(track: TrackBD, id: string | string[]): PutSuccessService<TrackBD> | ErrorService {
     if (!isValidTrack(track)) {
-        return { success: false, code:400, message: "adeu" };
+        return { success: false, code: 400, message: "adeu" };
     }
 
     const idTrack: string = track.id as string;
@@ -55,10 +55,10 @@ export function putTrack(track: TrackBD,id: string | string[]): PutSuccessServic
     );
 
     if (index === -1) {
-        return {success:false, code:404, message: `Track ${idTrack} not found lol` };
+        return { success: false, code: 404, message: `Track ${idTrack} not found lol` };
     }
 
-    const trackBD:TrackBD = {
+    const trackBD: TrackBD = {
         id: idTrack,
         title: track.title.trim().replace(/\s+/g, " "),
         artist: track.artist,
@@ -68,10 +68,10 @@ export function putTrack(track: TrackBD,id: string | string[]): PutSuccessServic
     return { success: true, data: trackBD, code: 201, index: index };
 }
 
-export function deleteTrack(id: string | string[]): DeleteSuccessService | ErrorService{
+export function deleteTrack(id: string | string[]): DeleteSuccessService | ErrorService {
 
     const index: number = tracks.findIndex(
-    (t: TrackBD) => { return t.id === id }
+        (t: TrackBD) => { return t.id === id }
     );
     if (index === -1) {
         return { success: false, code: 404, message: `Track ${id} not found lol` };
