@@ -18,9 +18,11 @@ import { Country } from "./interfaces/countries/country";
 import { isValidCountry } from "./validators/countryValidator";
 import { validCountries } from "./interfaces/artist/paisos";
 import { CountryBD } from "./interfaces/countries/countryBD";
-import { createTrack, getAllTracks, getTrackById, putTrack } from "./serveis/trackServeis";
+import { createTrack, deleteTrack, getAllTracks, getTrackById, putTrack } from "./serveis/trackServeis";
 import { ErrorService } from "./interfaces/error/errorService";
 import { SuccessService } from "./interfaces/error/successService";
+import { PutSuccessService } from "./interfaces/error/putSuccesService";
+import { DeleteSuccessService } from "./interfaces/error/deleteSuccesService";
 
 
 
@@ -118,26 +120,30 @@ app.post("/tracks", (req: Request, res: Response) => {
 });
 
 app.put("/tracks/:id", (req: Request, res: Response) => {
-    const result: SuccessService<TrackBD> | ErrorService = putTrack(req.body);
+    const result: SuccessService<TrackBD> | ErrorService = putTrack(req.body, req.params.id);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message });
     }
 
+    const index: number = (result as PutSuccessService<TrackBD>).index;
+    tracks[index] = (result as PutSuccessService<TrackBD>).data;
+
+    
     return res.status(200).json(result);
 });
 
 app.delete("/tracks/:id", (req: Request, res: Response) => {
 
-    const idTrack: string = req.params.id as string;
-    const index: number = tracks.findIndex(
-        (t: TrackBD) => { return t.id === idTrack }
-    );
-    if (index === -1) {
-        return res.status(404).json({ message: `Track ${idTrack} not found lol` });
+    const result: DeleteSuccessService| ErrorService = deleteTrack(req.params.id as string);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
     }
 
+    const index: number = (result as PutSuccessService<TrackBD>).index;
     tracks.splice(index, 1);
 
     return res.status(204).json({ message: `Truck delated` });

@@ -5,6 +5,8 @@ import { TrackBD } from "../interfaces/track/trackBD";
 import { isValidTrack } from "../validators/trackValidator";
 import { ErrorService } from "../interfaces/error/errorService";
 import { SuccessService } from "../interfaces/error/successService";
+import { PutSuccessService } from "../interfaces/error/putSuccesService";
+import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 
 export function getAllTracks(): TrackBD[] {
     return tracks;
@@ -42,9 +44,9 @@ export function createTrack(track: Track): SuccessService<TrackBD> | ErrorServic
 
 }
 
-export function putTrack(track: TrackBD): SuccessService<TrackBD> | ErrorService{
+export function putTrack(track: TrackBD,id: string | string[]): PutSuccessService<TrackBD> | ErrorService{
     if (!isValidTrack(track)) {
-        return { success: false, code:400, message: "fuck you" };
+        return { success: false, code:400, message: "adeu" };
     }
 
     const idTrack: string = track.id as string;
@@ -56,12 +58,27 @@ export function putTrack(track: TrackBD): SuccessService<TrackBD> | ErrorService
         return {success:false, code:404, message: `Track ${idTrack} not found lol` };
     }
 
-    tracks[index] = {
+    const trackBD:TrackBD = {
         id: idTrack,
         title: track.title.trim().replace(/\s+/g, " "),
         artist: track.artist,
         duration: track.duration
     };
 
-    return { success: true, data: tracks[index], code: 201 };
+    return { success: true, data: trackBD, code: 201, index: index };
 }
+
+export function deleteTrack(id: string | string[]): DeleteSuccessService | ErrorService{
+
+    const index: number = tracks.findIndex(
+    (t: TrackBD) => { return t.id === id }
+    );
+    if (index === -1) {
+        return { success: false, code: 404, message: `Track ${id} not found lol` };
+    }
+
+    return { success: true, code: 204, index: index }
+
+}
+
+
