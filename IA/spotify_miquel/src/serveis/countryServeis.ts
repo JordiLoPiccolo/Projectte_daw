@@ -1,8 +1,5 @@
 import { randomUUID } from "crypto";
-import { tracks } from "../data/track/track";
-import { Track } from "../interfaces/track/track";
-import { TrackBD } from "../interfaces/track/trackBD";
-import { isValidTrack } from "../validators/trackValidator";
+
 import { ErrorService } from "../interfaces/error/errorService";
 import { SuccessService } from "../interfaces/error/successService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
@@ -53,8 +50,8 @@ export function putCountry(country: CountryBD, id: string | string[]): PutSucces
     }
 
 
-    const index: number = tracks.findIndex(
-        (t: TrackBD) => { return t.id === id }
+    const index: number = countries.findIndex(
+        (t: CountryBD) => { return t.id === id }
     );
 
     if (index === -1) {
@@ -72,8 +69,8 @@ export function putCountry(country: CountryBD, id: string | string[]): PutSucces
 
 export function deleteCountry(id: string | string[]): DeleteSuccessService | ErrorService {
 
-    const index: number = tracks.findIndex(
-        (t: TrackBD) => { return t.id === id }
+    const index: number = countries.findIndex(
+        (t: CountryBD) => { return t.id === id }
     );
     if (index === -1) {
         return { success: false, code: 404, message: `Track ${id} not found lol` };

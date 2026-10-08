@@ -24,6 +24,7 @@ import { SuccessService } from "./interfaces/error/successService";
 import { PutSuccessService } from "./interfaces/error/putSuccesService";
 import { DeleteSuccessService } from "./interfaces/error/deleteSuccesService";
 import { createCountry, getAllCountries, getCountryById, putCountry } from "./serveis/countryServeis";
+import { getAllUsers, getUserById } from "./serveis/userServeis";
 
 
 
@@ -52,21 +53,6 @@ app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició r
     return res.status(200).json(findTrack);
 });
 
-app.get("/users", (_req: Request, res: Response) => {
-    return res.status(200).json(users);
-});
-
-app.get("/users/:id", (req: Request, res: Response) => {
-    const idUser: string = req.params.id as string;
-    const user: UserBD[] = users.filter(
-        (u: UserBD) => { return u.id === idUser }
-    );
-
-    if (!user) {
-        return res.status(404).json({ message: `User ${idUser} not found` });
-    }
-    return res.status(200).json(user);
-});
 
 
 /**
@@ -163,27 +149,7 @@ app.get("/countries/:id", (req: Request, res: Response) => {
     return res.status(200).json(findCountry);
 });
 
-app.post("/artists", (req: Request, res: Response) => {
 
-    if (!isValidArtist(req.body)) {
-        return res.status(400).json({ message: "artista no valid" });
-    }
-
-    const artist: Artist = req.body;
-    const country: Country | undefined = isValidCountry(artist.country);
-    if (country === undefined) {
-        return res.status(400).json({ message: "artista no valid" });
-    }
-    const artistRecord: ArtistBD = {
-        id: randomUUID(),
-        aName: artist.aName.trim().replace(/\s+/g, " "),
-        rName: artist.rName.trim().replace(/\s+/g, " "),
-        country,
-    };
-    artists.push(artistRecord)
-    return res.status(201).json(artistRecord);
-
-})
 app.post("/countries", (req: Request, res: Response) => {
     const result: SuccessService<CountryBD> | ErrorService = createCountry(req.body);
 
@@ -213,17 +179,33 @@ app.put("/countries/:id", (req: Request, res: Response) => {
 });
 app.delete("/countries/:id", (req: Request, res: Response) => {
 
-    const idCountry: string = req.params.id as string;
-    const index: number = countries.findIndex(
-        (t: CountryBD) => { return t.id === idCountry }
-    );
-    if (index === -1) {
-        return res.status(404).json({ message: `Track ${idCountry} not found lol` });
+    const result: SuccessService<CountryBD> | ErrorService = putCountry(req.body, req.params.id);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
     }
+
+    const index: number = (result as PutSuccessService<CountryBD>).index;
 
     countries.splice(index, 1);
 
     return res.status(204).json({ message: `Truck delated` });
+});
+
+
+app.get("/users", (_req: Request, res: Response) => {
+    return res.status(200).json(getAllUsers);
+});
+
+app.get("/users/:id", (req: Request, res: Response) => {
+
+    const findUser: UserBD | undefined = getUserById(req.params.id as string);
+
+    if (!findUser) {
+        return res.status(404).json({ message: `Track ${findUser} not found lol` });
+    }
+    return res.status(200).json(findUser);
 });
 
 app.post("/users", (req: Request, res: Response) => {
@@ -284,6 +266,28 @@ app.delete("/users/:id", (req: Request, res: Response) => {
     countries.splice(index, 1);
     return res.status(204).send();
 });
+
+app.post("/artists", (req: Request, res: Response) => {
+
+    if (!isValidArtist(req.body)) {
+        return res.status(400).json({ message: "artista no valid" });
+    }
+
+    const artist: Artist = req.body;
+    const country: Country | undefined = isValidCountry(artist.country);
+    if (country === undefined) {
+        return res.status(400).json({ message: "artista no valid" });
+    }
+    const artistRecord: ArtistBD = {
+        id: randomUUID(),
+        aName: artist.aName.trim().replace(/\s+/g, " "),
+        rName: artist.rName.trim().replace(/\s+/g, " "),
+        country,
+    };
+    artists.push(artistRecord)
+    return res.status(201).json(artistRecord);
+
+})
 
 app.listen(APICONFIG.port, APICONFIG.host, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
