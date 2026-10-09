@@ -26,37 +26,19 @@ import { DeleteSuccessService } from "./interfaces/error/deleteSuccesService";
 import { createCountry, getAllCountries, getCountryById, putCountry } from "./serveis/countryServeis";
 import { getAllUsers, getUserById } from "./serveis/userServeis";
 import { deleteTrackController, getAllTracksController, getTrackByIdController, postTrackController, putTrackController } from "./controllers/trackController";
+import { trackRouter } from "./rutes/trackRutes";
 
 
 
 const app: Express = express();
 app.use(express.json());
 
-
 app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
     return res.json(JSON.stringify(APICONFIG));
 });
 
-app.get("/tracks", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    return getAllTracksController(res);//res.status(200).json(getAllTracks());
-});
+app.use("/tracks", trackRouter);
 
-app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    return getTrackByIdController(req, res);
-});
-
-app.post("/tracks", (req: Request, res: Response) => {
-
-    return postTrackController(req, res);
-});
-
-app.put("/tracks/:id", (req: Request, res: Response) => {
-    return putTrackController(req, res);
-});
-
-app.delete("/tracks/:id", (req: Request, res: Response) => {
-    return deleteTrackController(req, res);
-});
 
 app.get("/countries", (_req: Request, res: Response) => {
     return res.status(200).json(getAllCountries());
