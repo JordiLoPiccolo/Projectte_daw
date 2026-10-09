@@ -7,10 +7,9 @@ export function isValidTrack(track: Track): boolean {
     }
 
     const longTitol: number = track.title.trim().replace(/\s+/g, " ").length
-    const longArtist: number = track.artist.aName.trim().replace(/\s+/g, " ").length
 
 
-    if (longArtist === 0 || longArtist > maxArtist) { return false; }
+
     if (longTitol === 0 || longTitol > maxTitol) { return false }
     if (track.duration < 1) { return false; }
 

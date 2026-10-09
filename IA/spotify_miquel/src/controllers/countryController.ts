@@ -67,5 +67,5 @@ export function deleteCountryController(req: Request, res: Response): Response {
 
     countries.splice(index, 1);
 
-    return res.status(204).json({ message: `Truck delated` });
+    return res.status(204).json({ message: `Cuntree delated` });
 }

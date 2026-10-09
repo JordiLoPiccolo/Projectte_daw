@@ -41,7 +41,7 @@ export function createUser(user: User): SuccessService<UserBD> | ErrorService {
 
 }
 
-export function putTrack(user: UserBD, id: string | string[]): PutSuccessService<UserBD> | ErrorService {
+export function putUser(user: UserBD, id: string | string[]): PutSuccessService<UserBD> | ErrorService {
     if (!isValidUser(user)) {
         return { success: false, code: 400, message: "adeu" };
     }
@@ -64,7 +64,7 @@ export function putTrack(user: UserBD, id: string | string[]): PutSuccessService
     return { success: true, data: userBD, code: 201, index: index };
 }
 
-export function deleteTrack(id: string | string[]): DeleteSuccessService | ErrorService {
+export function deleteUser(id: string | string[]): DeleteSuccessService | ErrorService {
 
     const index: number = users.findIndex(
         (t: UserBD) => { return t.id === id }
