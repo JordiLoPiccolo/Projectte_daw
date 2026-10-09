@@ -27,6 +27,8 @@ import { createCountry, getAllCountries, getCountryById, putCountry } from "./se
 import { getAllUsers, getUserById } from "./serveis/userServeis";
 import { deleteTrackController, getAllTracksController, getTrackByIdController, postTrackController, putTrackController } from "./controllers/trackController";
 import { trackRouter } from "./rutes/trackRutes";
+import { getAllCountryController } from "./controllers/countryController";
+import { countryRouter } from "./rutes/countryRutes";
 
 
 
@@ -40,62 +42,7 @@ app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda per
 app.use("/tracks", trackRouter);
 
 
-app.get("/countries", (_req: Request, res: Response) => {
-    return res.status(200).json(getAllCountries());
-});
-
-app.get("/countries/:id", (req: Request, res: Response) => {
-    const findCountry: CountryBD | undefined = getCountryById(req.params.id as string);
-
-    if (findCountry) {
-        return res.status(404).json({ message: `Track ${findCountry} not found lol` });
-    }
-    return res.status(200).json(findCountry);
-});
-
-
-app.post("/countries", (req: Request, res: Response) => {
-    const result: SuccessService<CountryBD> | ErrorService = createCountry(req.body);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
-    }
-
-
-    countries.push((result as SuccessService<CountryBD>).data);
-
-    return res.status(201).json(result);
-});
-app.put("/countries/:id", (req: Request, res: Response) => {
-    const result: SuccessService<CountryBD> | ErrorService = putCountry(req.body, req.params.id);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
-    }
-
-    const index: number = (result as PutSuccessService<CountryBD>).index;
-    countries[index] = (result as PutSuccessService<CountryBD>).data;
-
-
-    return res.status(200).json(countries[index]);
-});
-app.delete("/countries/:id", (req: Request, res: Response) => {
-
-    const result: SuccessService<CountryBD> | ErrorService = putCountry(req.body, req.params.id);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
-    }
-
-    const index: number = (result as PutSuccessService<CountryBD>).index;
-
-    countries.splice(index, 1);
-
-    return res.status(204).json({ message: `Truck delated` });
-});
+app.use("/countries", countryRouter);
 
 
 app.get("/users", (_req: Request, res: Response) => {
