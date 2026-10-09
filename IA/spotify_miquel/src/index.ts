@@ -25,6 +25,7 @@ import { PutSuccessService } from "./interfaces/error/putSuccesService";
 import { DeleteSuccessService } from "./interfaces/error/deleteSuccesService";
 import { createCountry, getAllCountries, getCountryById, putCountry } from "./serveis/countryServeis";
 import { getAllUsers, getUserById } from "./serveis/userServeis";
+import { deleteTrackController, getAllTracksController, getTrackByIdController, postTrackController, putTrackController } from "./controllers/trackController";
 
 
 
@@ -37,103 +38,24 @@ app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda per
 });
 
 app.get("/tracks", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    return res.status(200).json(getAllTracks());
+    return getAllTracksController(res);//res.status(200).json(getAllTracks());
 });
-
-
-
 
 app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-
-    const findTrack: TrackBD | undefined = getTrackById(req.params.id as string);
-
-    if (findTrack) {
-        return res.status(404).json({ message: `Track ${findTrack} not found lol` });
-    }
-    return res.status(200).json(findTrack);
+    return getTrackByIdController(req, res);
 });
-
-
-
-/**
- * Saber totes les llistes de reproduccio
- * /usuari/:id/playlists
- * 
- * Les ultimes canços que ha escoltat un usuari:
- * /usuari/:id/songs/latest
- * /ususaris/:id/historial
- * 
- * Les ultimes cançons (uploaded) a l'aplicatiu
- * 
- * /songs/uploaded/latest
- * 
- * Totes les cançons d'una playlist d'un usuari 
- * /usuaris/:id/playlist/:idPlayList/songs
- * 
- * El meu perfil 
- * /usuaris/profile (me)
- * 
- * /usuaris/:id/profile
- * 
- * Musica més reproduida
- * 
- * /songs/popular
- * 
- * Més reproduida d'un artista
- * 
- * statistics/
- * 
- *      /artist/:id/songs/popular
- * 
- *      /artists/followers/popular
- * 
- *      /artist/users/reproductions
- */
-
-
 
 app.post("/tracks", (req: Request, res: Response) => {
 
-    const result: SuccessService<TrackBD> | ErrorService = createTrack(req.body);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
-    }
-
-
-    tracks.push((result as SuccessService<TrackBD>).data);
-    return res.status(201).json(result);
+    return postTrackController(req, res);
 });
 
 app.put("/tracks/:id", (req: Request, res: Response) => {
-    const result: SuccessService<TrackBD> | ErrorService = putTrack(req.body, req.params.id);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
-    }
-
-    const index: number = (result as PutSuccessService<TrackBD>).index;
-    tracks[index] = (result as PutSuccessService<TrackBD>).data;
-
-
-    return res.status(200).json(result);
+    return putTrackController(req, res);
 });
 
 app.delete("/tracks/:id", (req: Request, res: Response) => {
-
-    const result: DeleteSuccessService | ErrorService = deleteTrack(req.params.id as string);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
-    }
-
-    const index: number = (result as DeleteSuccessService).index;
-    tracks.splice(index, 1);
-
-    return res.status(204).json({ message: `Truck delated` });
+    return deleteTrackController(req, res);
 });
 
 app.get("/countries", (_req: Request, res: Response) => {
