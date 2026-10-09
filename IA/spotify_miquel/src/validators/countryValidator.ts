@@ -3,7 +3,10 @@ import { maxArtist, maxTitol } from "../interfaces/track/trackConstants";
 import { validCountries } from "../interfaces/artist/paisos";
 
 export function isValidCountry(country: Country):Country| undefined{
-    
+    if (!country) {
+        return undefined;
+    }
+
        if (country.id === null || country.name === null) {
            return undefined
        }

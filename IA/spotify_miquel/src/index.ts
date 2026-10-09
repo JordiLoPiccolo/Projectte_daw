@@ -6,6 +6,8 @@ import { userRouter } from "./rutes/userRutes";
 import { artistRouter } from "./rutes/artistRutes";
 
 
+//albumTrack + playlistTrack, només fer put i delete
+//history no es fa de moment
 
 const app: Express = express();
 app.use(express.json());
