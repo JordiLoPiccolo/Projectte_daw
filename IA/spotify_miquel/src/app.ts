@@ -10,7 +10,7 @@ import { albumRouter } from "./rutes/albumRutes";
 //albumTrack + playlistTrack, només fer put i delete
 //history no es fa de moment
 
-const app: Express = express();
+export const app: Express = express();
 app.use(express.json());
 
 app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
