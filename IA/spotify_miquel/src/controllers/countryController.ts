@@ -1,13 +1,9 @@
 import { countries } from "../data/country/country";
-import { tracks } from "../data/track/track";
 import { CountryBD } from "../interfaces/countries/countryBD";
-import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { SuccessService } from "../interfaces/error/successService";
-import { TrackBD } from "../interfaces/track/trackBD";
 import { createCountry, getAllCountries, getCountryById, putCountry } from "../serveis/countryServeis";
-import { createTrack, deleteTrack, getAllTracks, getTrackById, putTrack } from "../serveis/trackServeis";
 import { Response,Request } from "express";
 
 export function getAllCountryController(_req:Request,res: Response): Response {

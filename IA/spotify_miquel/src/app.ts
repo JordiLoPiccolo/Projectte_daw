@@ -5,6 +5,7 @@ import { countryRouter } from "./rutes/countryRutes";
 import { userRouter } from "./rutes/userRutes";
 import { artistRouter } from "./rutes/artistRutes";
 import { albumRouter } from "./rutes/albumRutes";
+import { playlistRouter } from "./rutes/playlistRutes";
 
 
 //albumTrack + playlistTrack, només fer put i delete
@@ -26,6 +27,8 @@ app.use("/users", userRouter);
 app.use("/artists", artistRouter);
 
 app.use("/albums", albumRouter);
+
+app.use("/playlists", playlistRouter);
 
 app.listen(APICONFIG.port, APICONFIG.host, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
