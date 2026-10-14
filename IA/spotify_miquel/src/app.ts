@@ -8,6 +8,7 @@ import { albumRouter } from "./rutes/albumRutes";
 import { playlistRouter } from "./rutes/playlistRutes";
 import { albumTrackRouter } from "./rutes/albumTrackRutes";
 import { playlistTrackRouter } from "./rutes/playlistTrackRutes";
+import { historyRouter } from "./rutes/historyRutes";
 
 
 //albumTrack + playlistTrack, només fer put i delete
@@ -35,6 +36,8 @@ app.use("/playlists", playlistRouter);
 app.use("/albumtracks", albumTrackRouter);
 
 app.use("/playlisttracks", playlistTrackRouter);
+
+app.use("/histories", historyRouter);
 
 app.listen(APICONFIG.port, APICONFIG.host, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
