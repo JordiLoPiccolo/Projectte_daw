@@ -14,7 +14,7 @@ export function getCountryByIdController(req: Request, res: Response): Response 
 
     const findCountry: CountryBD | undefined = getCountryById(req.params.id as string);
 
-    if (findCountry) {
+    if (!findCountry) {
         return res.status(404).json({ message: `Track ${findCountry} not found lol` });
     }
     return res.status(200).json(findCountry);

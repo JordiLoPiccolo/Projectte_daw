@@ -1,15 +1,11 @@
-import { tracks } from "../data/track/track";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { SuccessService } from "../interfaces/error/successService";
-import { TrackBD } from "../interfaces/track/trackBD";
-import { createTrack, deleteTrack, getAllTracks, getTrackById, putTrack } from "../serveis/trackServeis";
 import { Response,Request } from "express";
 import { createUser, deleteUser, getAllUsers, getUserById, putUser } from "../serveis/userServeis";
 import { UserBD } from "../interfaces/user/userBD";
 import { users } from "../data/user/users";
-import { User } from "../interfaces/user/user";
 
 export function getAllUsersController(_req:Request,res: Response): Response {
     return res.status(200).json(getAllUsers());
@@ -20,7 +16,7 @@ export function getUserByIdController(req: Request, res: Response): Response {
 
     const findUser: UserBD | undefined = getUserById(req.params.id as string);
 
-    if (findUser) {
+    if (!findUser) {
         return res.status(404).json({ message: `Track ${findUser} not found lol` });
     }
     return res.status(200).json(findUser);

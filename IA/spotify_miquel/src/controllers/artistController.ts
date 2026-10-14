@@ -16,7 +16,7 @@ export function getArtistByIdController(req: Request, res: Response): Response {
 
     const findArtist: ArtistBD | undefined = getArtistById(req.params.id as string);
 
-    if (findArtist) {
+    if (!findArtist) {
         return res.status(404).json({ message: `Artist ${findArtist} not found lol` });
     }
     return res.status(200).json(findArtist);
