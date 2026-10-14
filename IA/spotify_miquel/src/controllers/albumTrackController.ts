@@ -1,10 +1,6 @@
 import { ErrorService } from "../interfaces/error/errorService";
-import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { SuccessService } from "../interfaces/error/successService";
 import { Response, Request } from "express";
-import { createPlaylist, getAllPlaylists, getPlaylistById, putPlayList } from "../serveis/playlistServeis";
-import { PlaylistBD } from "../interfaces/playlist/playlistBD";
-import { playlists } from "../data/playlist/data.playlist";
 import { createAlbumTrack, deleteAlbumTrack, getAllAlbumTracks } from "../serveis/albumTracksServeis";
 import { AlbumTrackBD } from "../interfaces/albumTracks/albumTracksBD";
 import { albumTracks } from "../data/albumTracks/data.albumTracks";
