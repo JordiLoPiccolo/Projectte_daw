@@ -16,7 +16,7 @@ export function getTrackByIdController(req: Request, res: Response): Response {
 
     const findTrack: TrackBD | undefined = getTrackById(req.params.id as string);
 
-    if (findTrack) {
+    if (!findTrack) {
         return res.status(404).json({ message: `Track ${findTrack} not found lol` });
     }
     return res.status(200).json(findTrack);

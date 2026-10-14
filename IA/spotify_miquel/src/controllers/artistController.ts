@@ -1,12 +1,10 @@
 import { artists } from "../data/artist/data.artist";
-import { tracks } from "../data/track/track";
 import { ArtistBD } from "../interfaces/artist/artistBD";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { SuccessService } from "../interfaces/error/successService";
 import { createArtist, deleteArtist, getAllArtist, getArtistById, putArtist } from "../serveis/artistServeis";
-import { createTrack, deleteTrack, getAllTracks, getTrackById, putTrack } from "../serveis/trackServeis";
 import { Response,Request } from "express";
 
 export function getAllArtistsController(_req:Request,res: Response): Response {
