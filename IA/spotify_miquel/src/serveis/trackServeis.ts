@@ -7,9 +7,19 @@ import { ErrorService } from "../interfaces/error/errorService";
 import { SuccessService } from "../interfaces/error/successService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
+import { ConnectionPool, IResult } from "mssql";
+import { getConnection } from "../config/database";
+import sql from "mssql";
 
-export function getAllTracks(): TrackBD[] {
-    return tracks;
+export async function getAllTracks(): Promise<TrackBD[]> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Select * from Track`;
+
+    const result: IResult<TrackBD> = await request.query(queryText);
+
+    return result.recordset;
 }
 
 export function getTrackById(idTrack: string): TrackBD | undefined {
