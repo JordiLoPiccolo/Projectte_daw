@@ -102,7 +102,7 @@ export async function putTrack(track: TrackBD, id: string | string[]): Promise<P
             message: "Track not found. fuck you"
         }
     }
-    return { success: true, data: result.rowsAffected[0], code: 201 };
+    return { success: true, data: result.rowsAffected[0], code: 200 };
 }
 
 export async function deleteTrack(id: string | string[]): Promise<DeleteSuccessService | ErrorService> {
