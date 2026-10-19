@@ -2,6 +2,7 @@ import { countries } from "../data/country/country";
 import { CountryBD } from "../interfaces/countries/countryBD";
 import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
+import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
 import { SuccessService } from "../interfaces/error/successService";
 import { createCountry, getAllCountries, getCountryById, putCountry } from "../serveis/countryServeis";
 import { Response,Request } from "express";
@@ -11,14 +12,15 @@ export async function getAllCountriesController(_req: Request, res: Response): P
     return res.status(200).json(countryBD);
 }
 
-export function getCountryByIdController(req: Request, res: Response): Response {
+export async function getCountryByIdController(req: Request, res: Response): Promise<Response> {
 
-    const findCountry: CountryBD | undefined = getCountryById(req.params.id as string);
+    const result: SelectSuccessService<CountryBD> | ErrorService = await getCountryById(req.params.id as string);
 
-    if (!findCountry) {
-        return res.status(404).json({ message: `Track ${findCountry} not found lol` });
+
+    if (!result.success) {
+        return res.status(result.code).json({ message: (result as ErrorService).message });
     }
-    return res.status(200).json(findCountry);
+    return res.status(result.code).json(result);
 }
 
 export function postCountryController(req: Request, res: Response): Response {
