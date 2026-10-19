@@ -23,16 +23,14 @@ export async function getCountryByIdController(req: Request, res: Response): Pro
     return res.status(result.code).json(result);
 }
 
-export function postCountryController(req: Request, res: Response): Response {
-     const result: SuccessService<CountryBD> | ErrorService = createCountry(req.body);
+export async function postCountryController(req: Request, res: Response): Promise<Response> {
+
+    const result: SuccessService<CountryBD> | ErrorService = await createCountry(req.body);
     
         if (!result.success) {
             const errorResult = result as ErrorService;
             return res.status(result.code).json({ message: errorResult.message });
         }
-    
-    
-        countries.push((result as SuccessService<CountryBD>).data);
     
         return res.status(201).json(result);
 }
