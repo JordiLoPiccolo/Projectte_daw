@@ -1,7 +1,7 @@
 export interface PutSuccessService<T> {
     success: boolean;
-    data: T;
+    data: number;
     code: number;
-    index: number;
+
 
 }
