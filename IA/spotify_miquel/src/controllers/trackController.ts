@@ -2,6 +2,7 @@ import { tracks } from "../data/track/track";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
+import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
 import { SuccessService } from "../interfaces/error/successService";
 import { TrackBD } from "../interfaces/track/trackBD";
 import { createTrack, deleteTrack, getAllTracks, getTrackById, putTrack } from "../serveis/trackServeis";
@@ -12,15 +13,15 @@ export async function getAllTracksController(_req: Request, res: Response): Prom
     return res.status(200).json(tracksBD);
 }
 
-export function getTrackByIdController(req: Request, res: Response): Response {
+export async function getTrackByIdController(req: Request, res: Response): Promise<Response> {
+
+    const result: SelectSuccessService<TrackBD> | ErrorService = await getTrackById(req.params.id as string);
 
 
-    const findTrack: TrackBD | undefined = getTrackById(req.params.id as string);
-
-    if (!findTrack) {
-        return res.status(404).json({ message: `Track ${findTrack} not found lol` });
+    if (!result.success) {
+        return res.status(result.code).json({ message: (result as ErrorService).message });
     }
-    return res.status(200).json(findTrack);
+    return res.status(result.code).json(result);
 }
 
 export function postTrackController(req: Request, res: Response): Response {

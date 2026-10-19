@@ -10,6 +10,7 @@ import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ConnectionPool, IResult } from "mssql";
 import { getConnection } from "../config/database";
 import sql from "mssql";
+import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
 
 export async function getAllTracks(): Promise<TrackBD[]> {
     const pool: ConnectionPool = await getConnection();
@@ -22,11 +23,34 @@ export async function getAllTracks(): Promise<TrackBD[]> {
     return result.recordset;
 }
 
-export function getTrackById(idTrack: string): TrackBD | undefined {
+export async function getTrackById(idTrack: string
+    ): Promise<SelectSuccessService<TrackBD> | ErrorService> {
 
-    return tracks.find(
-        (t: TrackBD) => { return t.id === idTrack }
-    );
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Select * from Track Where Track.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idTrack);
+
+    const result: IResult<TrackBD> = await request.query(queryText);
+
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found. fuck you"
+        }
+    }
+
+    return {
+        success: true,
+        code: 200,
+        data: result.recordset[0]
+    };
+
+   /* return tracks.find(
+        (t: Promise<TrackBD[]>) => { return t.id === idTrack }
+    );*/
 
 }
 
