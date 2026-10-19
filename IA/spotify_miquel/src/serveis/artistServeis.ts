@@ -7,10 +7,22 @@ import { ArtistBD } from "../interfaces/artist/artistBD";
 import { artists } from "../data/artist/data.artist";
 import { Artist } from "../interfaces/artist/artist";
 import { isValidArtist } from "../validators/artistValidator";
+import { CountryBD } from "../interfaces/countries/countryBD";
+import { ConnectionPool, IResult } from "mssql";
+import { getConnection } from "../config/database";
+import sql from "mssql";
 
-export function getAllArtist(): ArtistBD[] {
-    return artists;
+export async function getAllArtists(): Promise<ArtistBD[]> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Select * from Artist`;
+
+    const result: IResult<ArtistBD> = await request.query(queryText);
+
+    return result.recordset;
 }
+
 
 export function getArtistById(id: string): ArtistBD | undefined {
 
