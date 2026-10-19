@@ -78,28 +78,33 @@ export async function createArtist(artist: Artist): Promise<SuccessService<numbe
 
 }
 
-export function putArtist(artist: ArtistBD, id: string | string[]): PutSuccessService<ArtistBD> | ErrorService {
+export async function putArtist(artist: ArtistBD, id: string | string[]): Promise<PutSuccessService<number> | ErrorService> {
     if (!isValidArtist(artist)) {
-        return { success: false, code: 400, message: "adeu" };
+        return { success: false, code: 400, message: "fuck you" };
     }
 
-    const idTrack: string = artist.id as string;
-    const index: number = artists.findIndex(
-        (t: ArtistBD) => { return t.id === idTrack }
-    );
+    const title: string = artist.rName.trim().replace(/\s+/g, " ");
 
-    if (index === -1) {
-        return { success: false, code: 404, message: `Artist ${idTrack} not found lol` };
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `UPDATE Artist SET name=@name,pseudonym=@pseudonym,country_id=@country_id)
+        WHERE artist.id=@id `;
+
+    request.input("name", sql.NVarChar, title);
+    request.input("pseudonym", sql.NVarChar, artist.aName);
+    request.input("country_id", sql.UniqueIdentifier, artist.country);
+    request.input("id", sql.UniqueIdentifier, id);
+
+    const result: IResult<number> = await request.query(queryText);
+
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Artist not found. fuck you"
+        }
     }
-
-    const artistBD: ArtistBD = {
-        id: idTrack,
-        aName: artist.aName.trim().replace(/\s+/g, " "),
-        rName: artist.rName,
-        country: artist.country
-    };
-
-    return { success: true, data: artistBD, code: 201, index: index };
+    return { success: true, data: result.rowsAffected[0], code: 200 };
 }
 
 export function deleteArtist(id: string | string[]): DeleteSuccessService | ErrorService {
