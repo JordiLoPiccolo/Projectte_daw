@@ -107,15 +107,29 @@ export async function putArtist(artist: ArtistBD, id: string | string[]): Promis
     return { success: true, data: result.rowsAffected[0], code: 200 };
 }
 
-export function deleteArtist(id: string | string[]): DeleteSuccessService | ErrorService {
+export async function deleteArtist(id: string | string[]): Promise<DeleteSuccessService | ErrorService> {
 
-    const index: number = artists.findIndex(
-        (t: ArtistBD) => { return t.id === id }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: `Artist ${id} not found lol` };
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Delete from Artist Where Artist.id = @id`;
+    request.input("id", sql.UniqueIdentifier, id);
+
+    const result: IResult<ArtistBD> = await request.query(queryText);
+
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Artist not found. fuck you"
+        }
     }
 
-    return { success: true, code: 204, index: index }
-
+    return {
+        success: true,
+        code: 204
+    };
 }
+
+
+
