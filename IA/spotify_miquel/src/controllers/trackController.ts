@@ -47,17 +47,13 @@ export async function putTrackController(req: Request, res: Response): Promise<R
     return res.status(201).json(result);
 }
 
-export function deleteTrackController(req: Request, res: Response): Response {
+export async function deleteTrackController(req: Request, res: Response): Promise<Response> {
+    const result: DeleteSuccessService | ErrorService = await deleteTrack(req.params.id as string);
 
-     const result: DeleteSuccessService | ErrorService = deleteTrack(req.params.id as string);
-    
-        if (!result.success) {
-            const errorResult = result as ErrorService;
-            return res.status(result.code).json({ message: errorResult.message });
-        }
-    
-        const index: number = (result as DeleteSuccessService).index;
-        tracks.splice(index, 1);
-    
-        return res.status(204).json({ message: `Truck delated` });
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
+    }
+
+    return res.status(201).send();
 }
