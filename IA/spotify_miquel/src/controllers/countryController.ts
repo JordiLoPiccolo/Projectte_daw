@@ -6,8 +6,9 @@ import { SuccessService } from "../interfaces/error/successService";
 import { createCountry, getAllCountries, getCountryById, putCountry } from "../serveis/countryServeis";
 import { Response,Request } from "express";
 
-export function getAllCountryController(_req:Request,res: Response): Response {
-    return res.status(200).json(getAllCountries())
+export async function getAllCountriesController(_req: Request, res: Response): Promise<Response> {
+    const countryBD: CountryBD[] = await getAllCountries();
+    return res.status(200).json(countryBD);
 }
 
 export function getCountryByIdController(req: Request, res: Response): Response {
