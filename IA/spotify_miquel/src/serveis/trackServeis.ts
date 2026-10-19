@@ -48,9 +48,7 @@ export async function getTrackById(idTrack: string
         data: result.recordset[0]
     };
 
-   /* return tracks.find(
-        (t: Promise<TrackBD[]>) => { return t.id === idTrack }
-    );*/
+   
 
 }
 
@@ -107,17 +105,28 @@ export async function putTrack(track: TrackBD, id: string | string[]): Promise<P
     return { success: true, data: result.rowsAffected[0], code: 201 };
 }
 
-export function deleteTrack(id: string | string[]): DeleteSuccessService | ErrorService {
+export async function deleteTrack(id: string | string[]): Promise<DeleteSuccessService | ErrorService> {
 
-    const index: number = tracks.findIndex(
-        (t: TrackBD) => { return t.id === id }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: `Track ${id} not found lol` };
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Delete from Track Where Track.id = @id`;
+    request.input("id", sql.UniqueIdentifier, id);
+
+    const result: IResult<TrackBD> = await request.query(queryText);
+
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found. fuck you"
+        }
     }
 
-    return { success: true, code: 204, index: index }
-
+    return {
+        success: true,
+        code: 204
+    };
 }
 
 
