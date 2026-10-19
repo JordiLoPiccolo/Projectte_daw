@@ -24,16 +24,15 @@ export async function getTrackByIdController(req: Request, res: Response): Promi
     return res.status(result.code).json(result);
 }
 
-export function postTrackController(req: Request, res: Response): Response {
-    const result: SuccessService<TrackBD> | ErrorService = createTrack(req.body);
+export async function postTrackController(req: Request, res: Response): Promise<Response> {
+
+    const result: SuccessService<TrackBD> | ErrorService = await createTrack(req.body);
     
         if (!result.success) {
             const errorResult = result as ErrorService;
             return res.status(result.code).json({ message: errorResult.message });
         }
     
-    
-        tracks.push((result as SuccessService<TrackBD>).data);
         return res.status(201).json(result);
 }
 
