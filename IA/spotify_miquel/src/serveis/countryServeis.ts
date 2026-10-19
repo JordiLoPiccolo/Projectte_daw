@@ -74,40 +74,58 @@ export async function createCountry(country: Country): Promise<SuccessService<nu
 
 }
 
-export function putCountry(country: CountryBD, id: string | string[]): PutSuccessService<CountryBD> | ErrorService {
+export async function putCountry(country: CountryBD, id: string | string[]): Promise<PutSuccessService<number> | ErrorService> {
     if (!isValidCountry(country)) {
-        return { success: false, code: 400, message: "adeu" };
+        return { success: false, code: 400, message: "fuck you" };
     }
 
+    const title: string = country.name.trim().replace(/\s+/g, " ");
 
-    const index: number = countries.findIndex(
-        (t: CountryBD) => { return t.id === id }
-    );
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `UPDATE COUNTRY SET name=@name
+        WHERE country.id=@id `;
 
-    if (index === -1) {
-        return { success: false, code: 404, message: `Pais invalid, com tu.` };
+    request.input("name", sql.NVarChar, title);
+    request.input("id", sql.UniqueIdentifier, id);
+
+    const result: IResult<number> = await request.query(queryText);
+
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Country not found. fuck you"
+        }
+    }
+    return { success: true, data: result.rowsAffected[0], code: 200 };
+}
+
+export async function deleteCountry(id: string | string[]): Promise<DeleteSuccessService | ErrorService> {
+
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Delete from Country Where Country.id = @id`;
+    request.input("id", sql.UniqueIdentifier, id);
+
+    const result: IResult<CountryBD> = await request.query(queryText);
+
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Country not found. fuck you"
+        }
     }
 
-    const countryBD: CountryBD = {
-        id: id as string,
-        name: country.name.trim().replace(/\s+/g, " "),
-
+    return {
+        success: true,
+        code: 204
     };
-
-    return { success: true, data: countryBD, code: 201, index: index };
 }
 
-export function deleteCountry(id: string | string[]): DeleteSuccessService | ErrorService {
 
-    const index: number = countries.findIndex(
-        (t: CountryBD) => { return t.id === id }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: `Track ${id} not found lol` };
-    }
 
-    return { success: true, code: 204, index: index }
-
-}
 
 
