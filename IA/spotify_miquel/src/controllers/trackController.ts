@@ -36,19 +36,15 @@ export async function postTrackController(req: Request, res: Response): Promise<
         return res.status(201).json(result);
 }
 
-export function putTrackController(req: Request, res: Response): Response {
-    const result: SuccessService<TrackBD> | ErrorService = putTrack(req.body, req.params.id);
+export async function putTrackController(req: Request, res: Response): Promise<Response> {
+    const result: PutSuccessService<number> | ErrorService = await putTrack(req.body,req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const index: number = (result as PutSuccessService<TrackBD>).index;
-    tracks[index] = (result as PutSuccessService<TrackBD>).data;
-
-
-    return res.status(200).json(result);
+    return res.status(201).json(result);
 }
 
 export function deleteTrackController(req: Request, res: Response): Response {
