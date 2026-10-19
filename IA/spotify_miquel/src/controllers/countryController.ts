@@ -35,19 +35,15 @@ export async function postCountryController(req: Request, res: Response): Promis
         return res.status(201).json(result);
 }
 
-export function putCountryController(req: Request, res: Response): Response {
-    const result: SuccessService<CountryBD> | ErrorService = putCountry(req.body, req.params.id);
-    
-        if (!result.success) {
-            const errorResult = result as ErrorService;
-            return res.status(result.code).json({ message: errorResult.message });
-        }
-    
-        const index: number = (result as PutSuccessService<CountryBD>).index;
-        countries[index] = (result as PutSuccessService<CountryBD>).data;
-    
-    
-        return res.status(200).json(countries[index]);
+export async function putCountryController(req: Request, res: Response): Promise<Response> {
+    const result: PutSuccessService<number> | ErrorService = await putCountry(req.body,req.params.id as string);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
+    }
+
+    return res.status(201).json(result);
 }
 
 export function deleteCountryController(req: Request, res: Response): Response {
