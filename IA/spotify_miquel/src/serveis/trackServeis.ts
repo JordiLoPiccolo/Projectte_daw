@@ -115,7 +115,7 @@ export async function deleteTrack(id: string | string[]): Promise<DeleteSuccessS
 
     const result: IResult<TrackBD> = await request.query(queryText);
 
-    if (result.recordset.length === 0) {
+    if (result.rowsAffected[0] === 0) {
         return {
             success: false,
             code: 404,

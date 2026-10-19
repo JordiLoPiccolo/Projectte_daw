@@ -111,7 +111,7 @@ export async function deleteCountry(id: string | string[]): Promise<DeleteSucces
 
     const result: IResult<CountryBD> = await request.query(queryText);
 
-    if (result.recordset.length === 0) {
+    if (result.rowsAffected[0] === 0) {
         return {
             success: false,
             code: 404,
