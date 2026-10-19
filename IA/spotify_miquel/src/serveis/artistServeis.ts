@@ -54,26 +54,26 @@ export async function getArtistById(id: string
 
 }
 
-export function createArtist(artist: Artist): SuccessService<ArtistBD> | ErrorService {
-
-
+export async function createArtist(artist: Artist): Promise<SuccessService<number> | ErrorService> {
 
     if (!isValidArtist(artist)) {
         return { success: false, code: 400, message: "fuck you" };
     }
 
-    // les correctes son dades
-    const uuid: string = randomUUID();
+    const title: string = artist.rName.trim().replace(/\s+/g, " ");
 
-    const ArtistRecord: ArtistBD = {
-        id: uuid,
-        aName: artist.aName.trim().replace(/\s+/g, " "),
-        rName: artist.rName,
-        country: artist.country
-    };
-    artists.push(ArtistRecord);
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `INSERT INTO ARTIST(name,pseudonym,country_id) 
+        VALUES(@name,@pseudonym,@country_id)`;
+    
+    request.input("name", sql.NVarChar, title);
+    request.input("pseudonym", sql.NVarChar, artist.aName);
+    request.input("country_id", sql.UniqueIdentifier, artist.country);
 
-    return { success: true, data: ArtistRecord, code: 201 };
+    const result: IResult<number> = await request.query(queryText);
+
+    return { success: true, data: result.rowsAffected[0], code: 201 };
 
 
 }
