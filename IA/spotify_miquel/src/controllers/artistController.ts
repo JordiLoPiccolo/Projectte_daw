@@ -47,8 +47,8 @@ export async function putArtistController(req: Request, res: Response): Promise<
     return res.status(201).json(result);
 }
 
-export async function deleteTrackController(req: Request, res: Response): Promise<Response> {
-    const result: DeleteSuccessService | ErrorService = await deleteTrack(req.params.id as string);
+export async function deleteArtistController(req: Request, res: Response): Promise<Response> {
+    const result: DeleteSuccessService | ErrorService = await deleteArtist(req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
