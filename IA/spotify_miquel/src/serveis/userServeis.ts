@@ -23,22 +23,22 @@ export async function getAllUsers(): Promise<UserBD[]> {
     return result.recordset;
 }
 
-export async function getTrackById(idTrack: string
-): Promise<SelectSuccessService<TrackBD> | ErrorService> {
+export async function getUserById(id: string
+): Promise<SelectSuccessService<UserBD> | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
-    const queryText: string = `Select * from Track Where Track.id = @id`;
-    request.input("id", sql.UniqueIdentifier, idTrack);
+    const queryText: string = `Select * from User Where User.id = @id`;
+    request.input("id", sql.UniqueIdentifier, id);
 
-    const result: IResult<TrackBD> = await request.query(queryText);
+    const result: IResult<UserBD> = await request.query(queryText);
 
     if (result.recordset.length === 0) {
         return {
             success: false,
             code: 404,
-            message: "Track not found. fuck you"
+            message: "User not found. fuck you"
         }
     }
 
