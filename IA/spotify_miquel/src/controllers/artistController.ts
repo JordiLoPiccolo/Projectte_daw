@@ -5,11 +5,11 @@ import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
 import { SuccessService } from "../interfaces/error/successService";
-import { createArtist, deleteArtist, getAllArtist, getArtistById, putArtist } from "../serveis/artistServeis";
+import { createArtist, deleteArtist, getAllArtists, getArtistById, putArtist } from "../serveis/artistServeis";
 import { Response,Request } from "express";
 
 export async function getAllArtistsController(_req: Request, res: Response): Promise<Response> {
-    const artistBD: ArtistBD[] = await getAllArtist();
+    const artistBD: ArtistBD[] = await getAllArtists();
     return res.status(200).json(artistBD);
 }
 
