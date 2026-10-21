@@ -7,74 +7,126 @@ import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { users } from "../data/user/users";
 import { User } from "../interfaces/user/user";
 import { isValidUser } from "../validators/userValidator";
+import { ConnectionPool, IResult } from "mssql";
+import { getConnection } from "../config/database";
+import sql from "mssql";
+import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
 
-export function getAllUsers(): UserBD[] {
-    return users;
+export async function getAllTracks(): Promise<UserBD[]> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Select * from User`;
+
+    const result: IResult<UserBD> = await request.query(queryText);
+
+    return result.recordset;
 }
 
-export function getUserById(id: string): UserBD | undefined {
+export async function getTrackById(idTrack: string
+): Promise<SelectSuccessService<TrackBD> | ErrorService> {
 
-    return users.find(
-        (t: UserBD) => { return t.id === id }
-    );
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Select * from Track Where Track.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idTrack);
+
+    const result: IResult<TrackBD> = await request.query(queryText);
+
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found. fuck you"
+        }
+    }
+
+    return {
+        success: true,
+        code: 200,
+        data: result.recordset[0]
+    };
+
+
 
 }
 
-export function createUser(user: User): SuccessService<UserBD> | ErrorService {
+export async function createTrack(track: Track): Promise<SuccessService<number> | ErrorService> {
 
-    if (!isValidUser(user)) {
+    if (!isValidTrack(track)) {
         return { success: false, code: 400, message: "fuck you" };
     }
 
-    // les correctes son dades
-    const uuid: string = randomUUID();
+    const title: string = track.title.trim().replace(/\s+/g, " ");
 
-    const userRecord: UserBD = {
-        id: uuid,
-        email: user.email.trim().replace(/\s+/g, " "),
-        country: user.country,
-    };
-    users.push(userRecord);
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `INSERT INTO TRACK(title,artist_id,duration) 
+        VALUES(@title,@artist_id,@duration)`;
 
-    return { success: true, data: userRecord, code: 201 };
+    request.input("title", sql.NVarChar, title);
+    request.input("artist_id", sql.UniqueIdentifier, track.artist);
+    request.input("duration", sql.Numeric, track.duration);
+
+    const result: IResult<number> = await request.query(queryText);
+
+    return { success: true, data: result.rowsAffected[0], code: 201 };
 
 
 }
 
-export function putUser(user: UserBD, id: string | string[]): PutSuccessService<UserBD> | ErrorService {
-    if (!isValidUser(user)) {
-        return { success: false, code: 400, message: "adeu" };
+export async function putTrack(track: TrackBD, id: string | string[]): Promise<PutSuccessService<number> | ErrorService> {
+    if (!isValidTrack(track)) {
+        return { success: false, code: 400, message: "fuck you" };
     }
 
-    const idUser: string = user.id as string;
-    const index: number = users.findIndex(
-        (t: UserBD) => { return t.id === id }
-    );
+    const title: string = track.title.trim().replace(/\s+/g, " ");
 
-    if (index === -1) {
-        return { success: false, code: 404, message: `Track ${id} not found lol` };
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `UPDATE TRACK SET title=@title,artist_id=@artist_id,duration=@duration)
+        WHERE track.id=@id `;
+
+    request.input("title", sql.NVarChar, title);
+    request.input("artist_id", sql.UniqueIdentifier, track.artist);
+    request.input("duration", sql.Numeric, track.duration);
+    request.input("id", sql.UniqueIdentifier, id);
+
+    const result: IResult<number> = await request.query(queryText);
+
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found. fuck you"
+        }
     }
-
-    const userBD: UserBD = {
-        id: id as string,
-        email: user.email.trim().replace(/\s+/g, " "),
-        country: user.country,
-    };
-
-    return { success: true, data: userBD, code: 201, index: index };
+    return { success: true, data: result.rowsAffected[0], code: 200 };
 }
 
-export function deleteUser(id: string | string[]): DeleteSuccessService | ErrorService {
+export async function deleteTrack(id: string | string[]): Promise<DeleteSuccessService | ErrorService> {
 
-    const index: number = users.findIndex(
-        (t: UserBD) => { return t.id === id }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: `Track ${id} not found lol` };
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Delete from Track Where Track.id = @id`;
+    request.input("id", sql.UniqueIdentifier, id);
+
+    const result: IResult<TrackBD> = await request.query(queryText);
+
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found. fuck you"
+        }
     }
 
-    return { success: true, code: 204, index: index }
-
+    return {
+        success: true,
+        code: 204
+    };
 }
 
 
