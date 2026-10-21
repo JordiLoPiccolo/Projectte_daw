@@ -1,9 +1,4 @@
-import { tracks } from "../../Data/track/track";
-import type { Track } from "../../Interfaces/Track";
 
-const totalTracks: number = tracks.length;
-const random: number = Math.floor(Math.random() * totalTracks);
-const track: Track = tracks[random]; 
 
 const SongCard = () => {
     return (
