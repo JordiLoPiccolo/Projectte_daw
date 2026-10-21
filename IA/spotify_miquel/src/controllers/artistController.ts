@@ -7,60 +7,52 @@ import { SuccessService } from "../interfaces/error/successService";
 import { createArtist, deleteArtist, getAllArtist, getArtistById, putArtist } from "../serveis/artistServeis";
 import { Response,Request } from "express";
 
-export function getAllArtistsController(_req:Request,res: Response): Response {
-    return res.status(200).json(getAllArtist());
+export async function getAllArtistsController(_req: Request, res: Response): Promise<Response> {
+    const artistBD: ArtistBD[] = await getAllArtist();
+    return res.status(200).json(artistBD);
 }
 
-export function getArtistByIdController(req: Request, res: Response): Response {
+export async function getTrackByIdController(req: Request, res: Response): Promise<Response> {
+
+    const result: SelectSuccessService<TrackBD> | ErrorService = await getTrackById(req.params.id as string);
 
 
-    const findArtist: ArtistBD | undefined = getArtistById(req.params.id as string);
-
-    if (!findArtist) {
-        return res.status(404).json({ message: `Artist ${findArtist} not found lol` });
+    if (!result.success) {
+        return res.status(result.code).json({ message: (result as ErrorService).message });
     }
-    return res.status(200).json(findArtist);
+    return res.status(result.code).json(result);
 }
 
-export function postArtistController(req: Request, res: Response): Response {
-    const result: SuccessService<ArtistBD> | ErrorService = createArtist(req.body);
+export async function postTrackController(req: Request, res: Response): Promise<Response> {
+
+    const result: SuccessService<TrackBD> | ErrorService = await createTrack(req.body);
     
         if (!result.success) {
             const errorResult = result as ErrorService;
             return res.status(result.code).json({ message: errorResult.message });
         }
     
-    
-        artists.push((result as SuccessService<ArtistBD>).data);
         return res.status(201).json(result);
 }
 
-export function putArtistController(req: Request, res: Response): Response {
-    const result: SuccessService<ArtistBD> | ErrorService = putArtist(req.body, req.params.id);
+export async function putTrackController(req: Request, res: Response): Promise<Response> {
+    const result: PutSuccessService<number> | ErrorService = await putTrack(req.body,req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const index: number = (result as PutSuccessService<ArtistBD>).index;
-    artists[index] = (result as PutSuccessService<ArtistBD>).data;
-
-
-    return res.status(200).json(result);
+    return res.status(201).json(result);
 }
 
-export function deleteArtistController(req: Request, res: Response): Response {
+export async function deleteTrackController(req: Request, res: Response): Promise<Response> {
+    const result: DeleteSuccessService | ErrorService = await deleteTrack(req.params.id as string);
 
-     const result: DeleteSuccessService | ErrorService = deleteArtist(req.params.id as string);
-    
-        if (!result.success) {
-            const errorResult = result as ErrorService;
-            return res.status(result.code).json({ message: errorResult.message });
-        }
-    
-        const index: number = (result as DeleteSuccessService).index;
-        artists.splice(index, 1);
-    
-        return res.status(204).json({ message: `Atrist delated` });
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
+    }
+
+    return res.status(201).send();
 }
