@@ -1,4 +1,5 @@
 import './App.css'
+import { day, month, year } from './Components/data';
 import { ObtenirReproduccions } from './Components/reproduccions';
 import SongCard from './Components/Songs/SongCard'
 import type { TrackView } from './Components/Songs/Types/TrackView';
@@ -14,12 +15,16 @@ function App() {
 
   const totalReproduccions: number = ObtenirReproduccions(track);
 
-  const trackX: TrackView ={
+  const trackX: TrackView = {
     ...track,
-    reproduccions : totalReproduccions
+    reproduccions: totalReproduccions
   }
+
   return (
     <>
+      <header>
+        Data:{day}-{month}-{year};
+      </header>
       <SongCard trackInfo={trackX} />
     </>
   )
