@@ -3,6 +3,7 @@ import { ArtistBD } from "../interfaces/artist/artistBD";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
+import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
 import { SuccessService } from "../interfaces/error/successService";
 import { createArtist, deleteArtist, getAllArtist, getArtistById, putArtist } from "../serveis/artistServeis";
 import { Response,Request } from "express";
@@ -12,9 +13,9 @@ export async function getAllArtistsController(_req: Request, res: Response): Pro
     return res.status(200).json(artistBD);
 }
 
-export async function getTrackByIdController(req: Request, res: Response): Promise<Response> {
+export async function getArtistByIdController(req: Request, res: Response): Promise<Response> {
 
-    const result: SelectSuccessService<TrackBD> | ErrorService = await getTrackById(req.params.id as string);
+    const result: SelectSuccessService<ArtistBD> | ErrorService = await getArtistById(req.params.id as string);
 
 
     if (!result.success) {
