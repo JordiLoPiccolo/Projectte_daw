@@ -36,8 +36,8 @@ export async function postArtistController(req: Request, res: Response): Promise
         return res.status(201).json(result);
 }
 
-export async function putTrackController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService<number> | ErrorService = await putTrack(req.body,req.params.id as string);
+export async function putArtistController(req: Request, res: Response): Promise<Response> {
+    const result: PutSuccessService<number> | ErrorService = await putArtist(req.body,req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
