@@ -1,16 +1,26 @@
 import './App.css'
+import { ObtenirReproduccions } from './Components/reproduccions';
 import SongCard from './Components/Songs/SongCard'
+import type { TrackView } from './Components/Songs/Types/TrackView';
 import { tracks } from './Data/track/track';
 import type { Track } from './Model/Track';
+
 function App() {
 
 
   const totalTracks: number = tracks.length;
   const random: number = Math.floor(Math.random() * totalTracks);
   const track: Track = tracks[random];
+
+  const totalReproduccions: number = ObtenirReproduccions(track);
+
+  const trackX: TrackView ={
+    ...track,
+    reproduccions : totalReproduccions
+  }
   return (
     <>
-      <SongCard title={track.title} artist={track.artist} duration={track.duration} />
+      <SongCard trackInfo={trackX} />
     </>
   )
 }
