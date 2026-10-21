@@ -24,9 +24,9 @@ export async function getArtistByIdController(req: Request, res: Response): Prom
     return res.status(result.code).json(result);
 }
 
-export async function postTrackController(req: Request, res: Response): Promise<Response> {
+export async function postArtistController(req: Request, res: Response): Promise<Response> {
 
-    const result: SuccessService<TrackBD> | ErrorService = await createTrack(req.body);
+    const result: SuccessService<ArtistBD> | ErrorService = await createArtist(req.body);
     
         if (!result.success) {
             const errorResult = result as ErrorService;
