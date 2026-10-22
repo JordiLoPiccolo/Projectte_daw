@@ -6,8 +6,9 @@ export function isValidTrack(track: Track): boolean {
         return false;
     }
 
-    if (track.artist === null || track.title === null || track.duration === null) {
-        return false
+    if (typeof track.title !== "string" || !track.artist
+        || typeof track.duration !== "number" || !Number.isFinite(track.duration)) {
+        return false;
     }
 
     const longTitol: number = track.title.trim().replace(/\s+/g, " ").length

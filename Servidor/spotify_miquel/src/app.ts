@@ -38,7 +38,3 @@ app.use("/albumtracks", albumTrackRouter);
 app.use("/playlisttracks", playlistTrackRouter);
 
 app.use("/histories", historyRouter);
-
-app.listen(APICONFIG.port, APICONFIG.host, () => {
-    console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
-});
