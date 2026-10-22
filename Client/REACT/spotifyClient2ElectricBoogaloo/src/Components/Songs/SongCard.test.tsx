@@ -1,0 +1,54 @@
+import { cleanup, render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it } from 'vitest'
+import SongCard from './SongCard'
+
+afterEach(cleanup)
+
+describe('SongCard', () => {
+  it('displays all the track details and its play count', () => {
+    render(
+      <SongCard
+        trackInfo={{
+          title: 'Rattle and Hum',
+          artist: 'U2',
+          duration: 90,
+          reproduccions: 1234,
+        }}
+      />,
+    )
+
+    expect(screen.getByRole('heading', { name: 'Títol: Rattle and Hum' })).toBeTruthy()
+    expect(screen.getByText('Artista: U2')).toBeTruthy()
+    expect(screen.getByText('Duració: 90')).toBeTruthy()
+    expect(screen.getByText('Total Reproduccions: 1234')).toBeTruthy()
+  })
+
+  it.each([
+    ['First Song', 'Artist One', 0, 0],
+    ['Song 2', 'Artist Two', 180, 1],
+    ['Track Three', 'The Band', 215, 42],
+    ['Quiet Night', 'Singer', 240, 999],
+    ['Live!', 'Group X', 301, 1200],
+    ['Cafe', 'Solo Artist', 199, 55000],
+    ['A-B-C', 'Various Artists', 1, 123456],
+    ['Instrumental', 'Composer', 600, 10],
+    ['Encore', 'Artist & Friends', 222, 999999],
+    ['Finale', 'DJ Example', 90, 2000000],
+  ])('renders title, artist, duration, and plays for "%s"', (title, artist, duration, plays) => {
+    render(
+      <SongCard
+        trackInfo={{
+          title,
+          artist,
+          duration,
+          reproduccions: plays,
+        }}
+      />,
+    )
+
+    expect(screen.getByRole('heading', { name: `Títol: ${title}` })).toBeTruthy()
+    expect(screen.getByText(`Artista: ${artist}`)).toBeTruthy()
+    expect(screen.getByText(`Duració: ${duration}`)).toBeTruthy()
+    expect(screen.getByText(`Total Reproduccions: ${plays}`)).toBeTruthy()
+  })
+})
