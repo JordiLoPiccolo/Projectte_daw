@@ -1,26 +1,27 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
+import { tracks } from '../../Data/track/track'
 import SongCard from './SongCard'
 
 afterEach(cleanup)
 
 describe('SongCard', () => {
-  it('displays all the track details and its play count', () => {
+  it.each(tracks)('displays every catalogue track: "$title"', (track) => {
+    const reproduccions = 1234
+
     render(
       <SongCard
         trackInfo={{
-          title: 'Rattle and Hum',
-          artist: 'U2',
-          duration: 90,
-          reproduccions: 1234,
+          ...track,
+          reproduccions,
         }}
       />,
     )
 
-    expect(screen.getByRole('heading', { name: 'Títol: Rattle and Hum' })).toBeTruthy()
-    expect(screen.getByText('Artista: U2')).toBeTruthy()
-    expect(screen.getByText('Duració: 90')).toBeTruthy()
-    expect(screen.getByText('Total Reproduccions: 1234')).toBeTruthy()
+    expect(screen.getByRole('heading', { name: `Títol: ${track.title}` })).toBeTruthy()
+    expect(screen.getByText(`Artista: ${track.artist}`)).toBeTruthy()
+    expect(screen.getByText(`Duració: ${track.duration}`)).toBeTruthy()
+    expect(screen.getByText(`Total Reproduccions: ${reproduccions}`)).toBeTruthy()
   })
 
   it.each([
