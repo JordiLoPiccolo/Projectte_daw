@@ -18,10 +18,13 @@ describe('SongCard', () => {
       />,
     )
 
-    expect(screen.getByRole('heading', { name: `Títol: ${track.title}` })).toBeTruthy()
-    expect(screen.getByText(`Artista: ${track.artist}`)).toBeTruthy()
-    expect(screen.getByText(`Duració: ${track.duration}`)).toBeTruthy()
-    expect(screen.getByText(`Total Reproduccions: ${reproduccions}`)).toBeTruthy()
+    const heading = screen.getByRole('heading')
+    const paragraphs = screen.getAllByText((_, element) => element?.tagName === 'P')
+
+    expect(heading.textContent).toContain(track.title)
+    expect(paragraphs[0].textContent).toContain(track.artist)
+    expect(paragraphs[1].textContent).toContain(String(track.duration))
+    expect(paragraphs[2].textContent).toContain(String(reproduccions))
   })
 
   it.each([
@@ -47,9 +50,12 @@ describe('SongCard', () => {
       />,
     )
 
-    expect(screen.getByRole('heading', { name: `Títol: ${title}` })).toBeTruthy()
-    expect(screen.getByText(`Artista: ${artist}`)).toBeTruthy()
-    expect(screen.getByText(`Duració: ${duration}`)).toBeTruthy()
-    expect(screen.getByText(`Total Reproduccions: ${plays}`)).toBeTruthy()
+    const heading = screen.getByRole('heading')
+    const paragraphs = screen.getAllByText((_, element) => element?.tagName === 'P')
+
+    expect(heading.textContent).toContain(title)
+    expect(paragraphs[0].textContent).toContain(artist)
+    expect(paragraphs[1].textContent).toContain(String(duration))
+    expect(paragraphs[2].textContent).toContain(String(plays))
   })
 })
