@@ -28,12 +28,12 @@ describe('SongCard', () => {
     ['Song 2', 'Artist Two', 180, 1],
     ['Track Three', 'The Band', 215, 42],
     ['Quiet Night', 'Singer', 240, 999],
-    ['Live!', 'Group X', 301, 1200],
+    ['Live!', 'Group X', 111, 1200],
     ['Cafe', 'Solo Artist', 199, 55000],
     ['A-B-C', 'Various Artists', 1, 123456],
     ['Instrumental', 'Composer', 600, 10],
-    ['Encore', 'Artist & Friends', 222, 999999],
-    ['Finale', 'DJ Example', 90, 2000000],
+    ['Encore', 'Artist & Freieiends', 222, 9999],
+    ['Shit', 'DJ Example', 90, 2000000],
   ])('renders title, artist, duration, and plays for "%s"', (title, artist, duration, plays) => {
     render(
       <SongCard
