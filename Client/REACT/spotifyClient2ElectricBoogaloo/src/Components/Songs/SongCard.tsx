@@ -13,6 +13,12 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
         const tr = (prev: number) => { return prev + inc }
         setTotalReproduccions(tr);
     }
+
+    function handleReset() {
+        setLikes(!viewCon);
+        setTotalLikes(0);
+        setTotalReproduccions(0);
+    }
     
     function handleLike() {
         setTotalLikes((SettotalLikes) => SettotalLikes + (viewCon ? -1 : 1))
@@ -20,6 +26,7 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
     }
     return (
         <>
+            <p><button onClick={() => handleRandom()}>Random</button></p>
             <h1>Títol: {trackInfo.title}</h1>
             <p>Artista: {trackInfo.artist}</p>
             <p>Duració: {trackInfo.duration}</p>
@@ -28,6 +35,7 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
             <p><button onClick={() => handleClickPlay(5)}>Play 5 times</button></p>
             <p><button onClick={() => handleClickPlay(10)}>Play 10 times</button></p>
             <p><img src={viewCon ? icon2 : icon1} onClick={() => handleLike()}></img>{totalLikes}</p>
+            <p><button onClick={() => handleReset()}>Reset</button></p>
         </>
     )
 }
