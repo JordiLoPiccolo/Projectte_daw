@@ -2,15 +2,12 @@ import { useState } from "react";
 import type { SongCardProps } from "./Types/SongCardProps";
 import icon1 from "../../assets/blackThumbs.png";
 import icon2 from "../../assets/greenThumbs.png";
-import { tracks } from '../../Data/track/track';
-import type { Track } from '../../Model/Track';
+
 
 const SongCard = ({ trackInfo }: SongCardProps) => {
 
     let [totalReproduccions, setTotalReproduccions] = useState<number>(trackInfo.reproduccions);
-    let [titol, setTitol] = useState<string>(trackInfo.title);
-    let [artista, setArtista] = useState<string>(trackInfo.artist);
-    let [duracio, setDuracio] = useState<number>(trackInfo.duration);
+   
     let likes: number = 0;
     const [viewCon, setLikes] = useState<boolean>(false);
     let [totalLikes, setTotalLikes] = useState<number>(likes);
@@ -31,21 +28,13 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
         setLikes((previousViewCon) => !previousViewCon);
     }
 
-    function handleRandom() {
-        const totalTracks: number = tracks.length;
-        const random: number = Math.floor(Math.random() * totalTracks);
-        const track: Track = tracks[random];
-
-        setTitol(track.title);
-        setArtista(track.artist);
-        setDuracio(track.duration);
-    }
+    
     return (
         <>
-            <p><button onClick={() => handleRandom()}>Random</button></p>
-            <h1>Títol: {titol}</h1>
-            <p>Artista: {artista}</p>
-            <p>Duració: {duracio}</p>
+            
+            <h1>Títol: {trackInfo.title}</h1>
+            <p>Artista: {trackInfo.artist}</p>
+            <p>Duració: {trackInfo.duration}</p>
             <p>Total Reproduccions: {totalReproduccions}</p>
             <p><button onClick={() => handleClickPlay(1)}>Play</button></p>
             <p><button onClick={() => handleClickPlay(5)}>Play 5 times</button></p>
