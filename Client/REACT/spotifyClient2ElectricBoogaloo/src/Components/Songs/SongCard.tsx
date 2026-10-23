@@ -7,7 +7,7 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
     let [totalReproduccions, setTotalReproduccions] = useState<number>(trackInfo.reproduccions);
 
     function handleClickPlay(inc:number) {
-        const tr = (prev: number) => { return prev + 1 }
+        const tr = (prev: number) => { return prev + inc }
         setTotalReproduccions(tr);
     }
     return (
@@ -16,7 +16,7 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
             <p>Artista: {trackInfo.artist}</p>
             <p>Duració: {trackInfo.duration}</p>
             <p>Total Reproduccions: {totalReproduccions}</p>
-            <p><button onClick={()=>handleClickPlay(3)}>Play</button></p>
+            <p><button onClick={()=>handleClickPlay(1)}>Play</button></p>
         </>
     )
 }
