@@ -8,22 +8,15 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
     let [totalReproduccions, setTotalReproduccions] = useState<number>(trackInfo.reproduccions);
     let likes: number = 0;
     let iconLike = icon1;
-    let estatLike: boolean = false;
+    const [viewCon, setLikes] = useState<boolean>(false);
+
     function handleClickPlay(inc: number) {
         const tr = (prev: number) => { return prev + inc }
         setTotalReproduccions(tr);
     }
     
     function handleLike() {
-        if (!estatLike) {
-            likes += 1;
-            iconLike = icon2;
-            estatLike = true;
-        } else {
-            likes -= 1;
-            iconLike = icon1;
-            estatLike = false;
-        }
+        setLikes((previousViewCon) => !previousViewCon);
     }
     return (
         <>
@@ -34,7 +27,7 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
             <p><button onClick={() => handleClickPlay(1)}>Play</button></p>
             <p><button onClick={() => handleClickPlay(5)}>Play 5 times</button></p>
             <p><button onClick={() => handleClickPlay(10)}>Play 10 times</button></p>
-            <img src={iconLike} onClick={() => handleLike()}></img><p>{likes}</p>
+            <img src={viewCon ? icon2 : icon1} onClick={() => handleLike()}></img><p>{likes}</p>
         </>
     )
 }
