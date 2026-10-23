@@ -8,6 +8,7 @@ const SongCard = ({trackInfo}:SongCardProps) => {
             <p>Artista: {trackInfo.artist}</p>
             <p>Duració: {trackInfo.duration}</p>
             <p>Total Reproduccions: {trackInfo.reproduccions}</p>
+            <p><button onClick={handleClickPlay}>Play</button></p>
         </>
     )
 }
