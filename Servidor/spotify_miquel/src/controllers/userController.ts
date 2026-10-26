@@ -7,60 +7,52 @@ import { createUser, deleteUser, getAllUsers, getUserById, putUser } from "../se
 import { UserBD } from "../interfaces/user/userBD";
 import { users } from "../data/user/users";
 
-export function getAllUsersController(_req:Request,res: Response): Response {
-    return res.status(200).json(getAllUsers());
+export async function getAllUsersController(_req: Request, res: Response): Promise<Response> {
+    const usersBD: UserBD[] = await getAllUsers();
+    return res.status(200).json(usersBD);
 }
 
-export function getUserByIdController(req: Request, res: Response): Response {
+export async function getUserByIdController(req: Request, res: Response): Promise<Response> {
+
+    const result: SelectSuccessService<TrackBD> | ErrorService = await getTrackById(req.params.id as string);
 
 
-    const findUser: UserBD | undefined = getUserById(req.params.id as string);
-
-    if (!findUser) {
-        return res.status(404).json({ message: `Track ${findUser} not found lol` });
+    if (!result.success) {
+        return res.status(result.code).json({ message: (result as ErrorService).message });
     }
-    return res.status(200).json(findUser);
+    return res.status(result.code).json(result);
 }
 
-export function postUserController(req: Request, res: Response): Response {
-    const result: SuccessService<UserBD> | ErrorService = createUser(req.body);
-    
-        if (!result.success) {
-            const errorResult = result as ErrorService;
-            return res.status(result.code).json({ message: errorResult.message });
-        }
-    
-    
-        users.push((result as SuccessService<UserBD>).data);
-        return res.status(201).json(result);
-}
+export async function postTrackController(req: Request, res: Response): Promise<Response> {
 
-export function putUserController(req: Request, res: Response): Response {
-    const result: SuccessService<UserBD> | ErrorService = putUser(req.body, req.params.id);
+    const result: SuccessService<TrackBD> | ErrorService = await createTrack(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const index: number = (result as PutSuccessService<UserBD>).index;
-    users[index] = (result as PutSuccessService<UserBD>).data;
-
-
-    return res.status(200).json(result);
+    return res.status(201).json(result);
 }
 
-export function deleteUserController(req: Request, res: Response): Response {
+export async function putTrackController(req: Request, res: Response): Promise<Response> {
+    const result: PutSuccessService<number> | ErrorService = await putTrack(req.body, req.params.id as string);
 
-     const result: DeleteSuccessService | ErrorService = deleteUser(req.params.id as string);
-    
-        if (!result.success) {
-            const errorResult = result as ErrorService;
-            return res.status(result.code).json({ message: errorResult.message });
-        }
-    
-        const index: number = (result as DeleteSuccessService).index;
-        users.splice(index, 1);
-    
-        return res.status(204).json({ message: `Suser delated` });
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
+    }
+
+    return res.status(201).json(result);
+}
+
+export async function deleteTrackController(req: Request, res: Response): Promise<Response> {
+    const result: DeleteSuccessService | ErrorService = await deleteTrack(req.params.id as string);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
+    }
+
+    return res.status(201).send();
 }
