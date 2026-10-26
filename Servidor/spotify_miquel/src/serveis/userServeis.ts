@@ -50,20 +50,19 @@ export async function getUserById(id: string
 
 }
 
-export async function createUser(user: UserBD): Promise<SuccessService<number> | ErrorService> {
+export async function createUser(user: User): Promise<SuccessService<number> | ErrorService> {
 
     if (!isValidUser(user)) {
         return { success: false, code: 400, message: "fuck you" };
     }
 
-    const id: string = user.id.trim().replace(/\s+/g, " ");
+
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
-    const queryText: string = `INSERT INTO USER(id,email,country_id) 
-        VALUES(@id,@email,@country_id)`;
+    const queryText: string = `INSERT INTO USER(email,country_id) 
+        VALUES(@email,@country_id)`;
 
-    request.input("id", sql.UniqueIdentifier, id);
     request.input("email", sql.NVarChar, user.email);
     request.input("country_id", sql.UniqueIdentifier, user.country);
 
@@ -74,21 +73,19 @@ export async function createUser(user: UserBD): Promise<SuccessService<number> |
 
 }
 
-export async function putTrack(track: TrackBD, id: string | string[]): Promise<PutSuccessService<number> | ErrorService> {
-    if (!isValidTrack(track)) {
+export async function putUser(track: UserBD, id: string | string[]): Promise<PutSuccessService<number> | ErrorService> {
+    if (!isValidUser(track)) {
         return { success: false, code: 400, message: "fuck you" };
     }
 
-    const title: string = track.title.trim().replace(/\s+/g, " ");
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
-    const queryText: string = `UPDATE TRACK SET title=@title,artist_id=@artist_id,duration=@duration)
-        WHERE track.id=@id `;
+    const queryText: string = `UPDATE USER SET country_id=@country_id,email=@email)
+        WHERE user.id=@id `;
 
-    request.input("title", sql.NVarChar, title);
-    request.input("artist_id", sql.UniqueIdentifier, track.artist);
-    request.input("duration", sql.Numeric, track.duration);
+    request.input("country_id", sql.UniqueIdentifier, track.country);
+    request.input("email", sql.NVarChar, track.email);
     request.input("id", sql.UniqueIdentifier, id);
 
     const result: IResult<number> = await request.query(queryText);
@@ -97,7 +94,7 @@ export async function putTrack(track: TrackBD, id: string | string[]): Promise<P
         return {
             success: false,
             code: 404,
-            message: "Track not found. fuck you"
+            message: "User not found. fuck you"
         }
     }
     return { success: true, data: result.rowsAffected[0], code: 200 };
