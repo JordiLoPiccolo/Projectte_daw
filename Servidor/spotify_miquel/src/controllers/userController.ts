@@ -6,6 +6,7 @@ import { Response,Request } from "express";
 import { createUser, deleteUser, getAllUsers, getUserById, putUser } from "../serveis/userServeis";
 import { UserBD } from "../interfaces/user/userBD";
 import { users } from "../data/user/users";
+import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
 
 export async function getAllUsersController(_req: Request, res: Response): Promise<Response> {
     const usersBD: UserBD[] = await getAllUsers();
@@ -14,7 +15,7 @@ export async function getAllUsersController(_req: Request, res: Response): Promi
 
 export async function getUserByIdController(req: Request, res: Response): Promise<Response> {
 
-    const result: SelectSuccessService<TrackBD> | ErrorService = await getTrackById(req.params.id as string);
+    const result: SelectSuccessService<UserBD> | ErrorService = await getUserById(req.params.id as string);
 
 
     if (!result.success) {
