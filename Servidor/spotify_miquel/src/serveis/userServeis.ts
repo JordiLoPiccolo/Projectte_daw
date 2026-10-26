@@ -100,21 +100,21 @@ export async function putUser(track: UserBD, id: string | string[]): Promise<Put
     return { success: true, data: result.rowsAffected[0], code: 200 };
 }
 
-export async function deleteTrack(id: string | string[]): Promise<DeleteSuccessService | ErrorService> {
+export async function deleteUser(id: string | string[]): Promise<DeleteSuccessService | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
-    const queryText: string = `Delete from Track Where Track.id = @id`;
+    const queryText: string = `Delete from User Where User.id = @id`;
     request.input("id", sql.UniqueIdentifier, id);
 
-    const result: IResult<TrackBD> = await request.query(queryText);
+    const result: IResult<UserBD> = await request.query(queryText);
 
     if (result.rowsAffected[0] === 0) {
         return {
             success: false,
             code: 404,
-            message: "Track not found. fuck you"
+            message: "User not found. fuck you"
         }
     }
 
