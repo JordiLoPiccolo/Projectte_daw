@@ -24,9 +24,9 @@ export async function getUserByIdController(req: Request, res: Response): Promis
     return res.status(result.code).json(result);
 }
 
-export async function postTrackController(req: Request, res: Response): Promise<Response> {
+export async function postUserController(req: Request, res: Response): Promise<Response> {
 
-    const result: SuccessService<TrackBD> | ErrorService = await createTrack(req.body);
+    const result: SuccessService<UserBD> | ErrorService = await createUser(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
