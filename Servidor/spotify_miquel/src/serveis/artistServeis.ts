@@ -1,13 +1,10 @@
-import { randomUUID } from "crypto";
 import { ErrorService } from "../interfaces/error/errorService";
 import { SuccessService } from "../interfaces/error/successService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ArtistBD } from "../interfaces/artist/artistBD";
-import { artists } from "../data/artist/data.artist";
 import { Artist } from "../interfaces/artist/artist";
 import { isValidArtist } from "../validators/artistValidator";
-import { CountryBD } from "../interfaces/countries/countryBD";
 import { ConnectionPool, IResult } from "mssql";
 import { getConnection } from "../config/database";
 import sql from "mssql";

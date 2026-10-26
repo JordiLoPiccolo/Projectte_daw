@@ -1,10 +1,8 @@
-import { randomUUID } from "crypto";
 import { UserBD } from "../interfaces/user/userBD";
 import { ErrorService } from "../interfaces/error/errorService";
 import { SuccessService } from "../interfaces/error/successService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
-import { users } from "../data/user/users";
 import { User } from "../interfaces/user/user";
 import { isValidUser } from "../validators/userValidator";
 import { ConnectionPool, IResult } from "mssql";
@@ -52,22 +50,22 @@ export async function getUserById(id: string
 
 }
 
-export async function createUser(user: User): Promise<SuccessService<number> | ErrorService> {
+export async function createUser(user: UserBD): Promise<SuccessService<number> | ErrorService> {
 
     if (!isValidUser(user)) {
         return { success: false, code: 400, message: "fuck you" };
     }
 
-    const title: string = user.title.trim().replace(/\s+/g, " ");
+    const id: string = user.id.trim().replace(/\s+/g, " ");
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
-    const queryText: string = `INSERT INTO USER(title,artist_id,duration) 
-        VALUES(@title,@artist_id,@duration)`;
+    const queryText: string = `INSERT INTO USER(id,email,country_id) 
+        VALUES(@id,@email,@country_id)`;
 
-    request.input("title", sql.NVarChar, title);
-    request.input("artist_id", sql.UniqueIdentifier, user.artist);
-    request.input("duration", sql.Numeric, user.duration);
+    request.input("id", sql.UniqueIdentifier, id);
+    request.input("email", sql.NVarChar, user.email);
+    request.input("country_id", sql.UniqueIdentifier, user.country);
 
     const result: IResult<number> = await request.query(queryText);
 
