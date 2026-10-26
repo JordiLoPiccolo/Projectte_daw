@@ -36,6 +36,16 @@ function App() {
     setTrack(tr);
   }
 
+  function gestionarLikes() {
+    const tr = (prev: TrackView): TrackView => {
+      return {
+        ...prev,
+        "likes"
+      }
+    }
+    setTrack(tr);
+  }
+
   function handleRandom() {
     const tr = (prev: TrackView): TrackView => {
       return {
@@ -65,7 +75,7 @@ function App() {
       </header>
       
       <p><button onClick={() => handleRandom()}>Random</button></p>
-      <SongCard trackInfo={track} />
+      <SongCard trackInfo={track} play={ (inc:number) => incrementReproduction(inc) } like={() => gestionarLikes()} />
 
     </>
   )
