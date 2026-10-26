@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import './App.css'
-import { day, hour, minute, month, second, year } from './Components/data';
 import { ObtenirReproduccions } from './Components/reproduccions';
 import SongCard from './Components/Songs/SongCard'
 import type { TrackView } from './Components/Songs/Types/TrackView';
@@ -16,7 +15,7 @@ function App() {
     const track: Track = tracks[random];
     return track;
   }
-
+  const [user] = useState(() => randomUser());
   const track: Track = RandomTrack();
   let [ElTrack, setTrack] = useState<Track>(track);
 
@@ -31,12 +30,22 @@ function App() {
     reproduccions: totalReproduccions
   }
 
+  const [date, setDate] = useState(() => new Date());
+
+  function updateDate() {
+    setDate(new Date());
+  }
+
   return (
     <>
       <header>
-        Data:{day}-{month}-{year}  {hour}:{minute}:{second} ||
-        User: {randomUser()}
+        <h1>Spotify Miquel</h1>
+        Data:{date.getDate()}-{date.getMonth() + 1}-{date.getFullYear()}
+        {date.getHours()}:{date.getMinutes()}:{date.getSeconds()} ||
+        User: {user}
+        <p><button onClick={() => updateDate()}>Update data</button></p>
       </header>
+      
       <p><button onClick={() => handleRandom()}>Random</button></p>
       <SongCard trackInfo={trackX} />
 
