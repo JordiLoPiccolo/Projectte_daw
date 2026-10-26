@@ -36,8 +36,8 @@ export async function postUserController(req: Request, res: Response): Promise<R
     return res.status(201).json(result);
 }
 
-export async function putTrackController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService<number> | ErrorService = await putTrack(req.body, req.params.id as string);
+export async function putUserController(req: Request, res: Response): Promise<Response> {
+    const result: PutSuccessService<number> | ErrorService = await putUser(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
