@@ -6,6 +6,7 @@ import SongCard from './Components/Songs/SongCard'
 import type { TrackView } from './Components/Songs/Types/TrackView';
 import { tracks } from './Data/track/track';
 import type { Track } from './Model/Track';
+import { randomUser } from './Components/users';
 
 function App() {
 
@@ -13,13 +14,16 @@ function App() {
     const totalTracks: number = tracks.length;
     const random: number = Math.floor(Math.random() * totalTracks);
     const track: Track = tracks[random];
-    setTrack(track);
     return track;
   }
-  
+
   const track: Track = RandomTrack();
   let [ElTrack, setTrack] = useState<Track>(track);
 
+  function handleRandom() {
+    let randomTrack: Track = RandomTrack();
+    setTrack(randomTrack);
+  }
   const totalReproduccions: number = ObtenirReproduccions(ElTrack);
 
   const trackX: TrackView = {
@@ -30,11 +34,12 @@ function App() {
   return (
     <>
       <header>
-        Data:{day}-{month}-{year};
+        Data:{day}-{month}-{year} ||
+        User: {randomUser()}
       </header>
-      <p><button onClick={() => RandomTrack()}>Random</button></p>
+      <p><button onClick={() => handleRandom()}>Random</button></p>
       <SongCard trackInfo={trackX} />
-     
+
     </>
   )
 }
