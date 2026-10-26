@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css'
-import { day, month, year } from './Components/data';
+import { day, hour, minute, month, second, year } from './Components/data';
 import { ObtenirReproduccions } from './Components/reproduccions';
 import SongCard from './Components/Songs/SongCard'
 import type { TrackView } from './Components/Songs/Types/TrackView';
@@ -34,7 +34,7 @@ function App() {
   return (
     <>
       <header>
-        Data:{day}-{month}-{year} ||
+        Data:{day}-{month}-{year}  {hour}:{minute}:{second} ||
         User: {randomUser()}
       </header>
       <p><button onClick={() => handleRandom()}>Random</button></p>
