@@ -7,8 +7,10 @@ import { tracks } from './Data/track/track';
 import type { Track } from './Model/Track';
 import { randomUser } from './Components/users';
 
-function App() {
 
+
+
+function App() {
   function RandomTrack() {
     const totalTracks: number = tracks.length;
     const random: number = Math.floor(Math.random() * totalTracks);
@@ -16,20 +18,37 @@ function App() {
     return track;
   }
   const [user] = useState(() => randomUser());
-  const track: Track = RandomTrack();
-  let [ElTrack, setTrack] = useState<Track>(track);
+
+  const [track, setTrack] = useState<TrackView>(
+    {
+      ...tracks[Math.floor(Math.random() * tracks.length)],
+      reproduccions: Math.floor(Math.random() * 20000),
+      likes: Math.floor(Math.random() * 300)
+    });
+  
+  function incrementReproduction(inc: number) {
+    const tr = (prev: TrackView): TrackView => {
+      return {
+        ...prev,
+        "reproduccions": + prev.reproduccions + inc
+      }
+    }
+    setTrack(tr);
+  }
 
   function handleRandom() {
-    let randomTrack: Track = RandomTrack();
-    setTrack(randomTrack);
+    const tr = (prev: TrackView): TrackView => {
+      return {
+        ...tracks[Math.floor(Math.random() * tracks.length)],
+        "reproduccions": Math.floor(Math.random() * 20000),
+        likes: Math.floor(Math.random() * 300)
+      }
+    }
+    setTrack(tr);
   }
-  const totalReproduccions: number = ObtenirReproduccions(ElTrack);
+  const totalReproduccions: number = ObtenirReproduccions(track);
 
-  const trackX: TrackView = {
-    ...ElTrack,
-    reproduccions: totalReproduccions
-  }
-
+  
   const [date, setDate] = useState(() => new Date());
 
   function updateDate() {
@@ -46,7 +65,7 @@ function App() {
       </header>
       
       <p><button onClick={() => handleRandom()}>Random</button></p>
-      <SongCard trackInfo={trackX} />
+      <SongCard trackInfo={track} />
 
     </>
   )

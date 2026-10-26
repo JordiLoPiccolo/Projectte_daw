@@ -6,26 +6,22 @@ import icon2 from "../../assets/greenThumbs.png";
 
 const SongCard = ({ trackInfo }: SongCardProps) => {
 
-    let [totalReproduccions, setTotalReproduccions] = useState<number>(trackInfo.reproduccions);
+   
    
     let likes: number = 0;
     const [viewCon, setLikes] = useState<boolean>(false);
     let [totalLikes, setTotalLikes] = useState<number>(likes);
 
     function handleClickPlay(inc: number) {
-        const tr = (prev: number) => { return prev + inc }
-        setTotalReproduccions(tr);
+       
     }
 
     function handleReset() {
-        setLikes(!viewCon);
-        setTotalLikes(0);
-        setTotalReproduccions(0);
+       
     }
     
     function handleLike() {
-        setTotalLikes((SettotalLikes) => SettotalLikes + (viewCon ? -1 : 1))
-        setLikes((previousViewCon) => !previousViewCon);
+        
     }
 
     
@@ -35,7 +31,7 @@ const SongCard = ({ trackInfo }: SongCardProps) => {
             <h1>Títol: {trackInfo.title}</h1>
             <p>Artista: {trackInfo.artist}</p>
             <p>Duració: {trackInfo.duration}</p>
-            <p>Total Reproduccions: {totalReproduccions}</p>
+            <p>Total Reproduccions: {trackInfo.reproduccions}</p>
             <p><button onClick={() => handleClickPlay(1)}>Play</button></p>
             <p><button onClick={() => handleClickPlay(5)}>Play 5 times</button></p>
             <p><button onClick={() => handleClickPlay(10)}>Play 10 times</button></p>
