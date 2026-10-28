@@ -42,7 +42,7 @@ function App() {
         return { titol: "", reproduint: false };
       }
 
-      return { titol: "canco reproduint", reproduint: true };
+      return { titol: track.title, reproduint: true };
     });
    
     setTrack(tr);
