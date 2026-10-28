@@ -6,14 +6,20 @@ import { tracks } from './Data/track/track';
 import { randomUser } from './Components/users';
 import type { Like } from './Model/Like';
 import ReproCard from './Components/Reproductor/ReproCard';
+import type { reproductor } from './Model/Reproductor';
 
 
 
 
 function App() {
- 
+  let reproduintAra: reproductor = {
+    titol: "",
+    reproduint: false
+  };
   const [user] = useState(() => randomUser());
-
+  const [cancoReproduint, setReproduccio] = useState<reproductor>(
+    reproduintAra
+  );
   const [track, setTrack] = useState<TrackView>(
     {
       ...tracks[Math.floor(Math.random() * tracks.length)],
@@ -31,6 +37,21 @@ function App() {
         "reproduccions": + prev.reproduccions + inc
       }
     }
+
+    if (!reproduintAra.reproduint) {
+      const rp: reproductor = {
+        titol: "canco reproduint",
+        reproduint: true
+      }
+      setReproduccio(rp);
+    }else{
+      const rp:reproductor = {
+        titol: " ",
+        reproduint: false
+      }
+      setReproduccio(rp);
+    }
+   
     setTrack(tr);
   }
 
@@ -108,7 +129,7 @@ function App() {
       
       <p><button onClick={() => handleRandom()}>Random</button></p>
       <SongCard trackInfo={track} play={ (inc:number) => incrementReproduction(inc) } like={() => gestionarLikes()} reset ={()=> gestionarReset()} />
-      <ReproCard trackInfo={track} controlVolum={(pujabaixa: boolean) => handleVolum(pujabaixa) }/>
+      <ReproCard reproductor={cancoReproduint} controlVolum={(pujabaixa: boolean) => handleVolum(pujabaixa) }/>
     </>
   )
 }

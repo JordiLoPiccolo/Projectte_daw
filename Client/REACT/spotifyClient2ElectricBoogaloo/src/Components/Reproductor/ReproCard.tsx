@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { ReproCardProps } from "./ReproCardProps";
 
-const ReproCard = ({ trackInfo,controlVolum }: ReproCardProps)=>{
+const ReproCard = ({ reproductor,controlVolum }: ReproCardProps)=>{
     const [volum, setVolum] = useState(0);
 
     function handleVolum(pujabaixa: boolean) {
@@ -15,7 +15,7 @@ const ReproCard = ({ trackInfo,controlVolum }: ReproCardProps)=>{
             <p>Volum: {volum}</p>
             <button onClick={() => handleVolum(false)}> elft </button>
             <button onClick={() => handleVolum(true)}> raight</button>
-            <p>{trackInfo.title}</p>
+            <p>{reproductor.titol}</p>
            
         </>
     )

@@ -1,7 +1,7 @@
-import type { TrackView } from "../Songs/Types/TrackView";
+import type { reproductor } from "../../Model/Reproductor";
 
 export interface ReproCardProps {
-    trackInfo: TrackView;
+    reproductor: reproductor
     controlVolum: (pujabaixa:boolean) => number;
   
 }
