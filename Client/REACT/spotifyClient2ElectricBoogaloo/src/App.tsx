@@ -12,13 +12,12 @@ import type { reproductor } from './Model/Reproductor';
 
 
 function App() {
-  let reproduintAra: reproductor = {
-    titol: "",
-    reproduint: false
-  };
   const [user] = useState(() => randomUser());
   const [cancoReproduint, setReproduccio] = useState<reproductor>(
-    reproduintAra
+    {
+      titol: "",
+      reproduint: false
+    }
   );
   const [track, setTrack] = useState<TrackView>(
     {
@@ -38,19 +37,13 @@ function App() {
       }
     }
 
-    if (!reproduintAra.reproduint) {
-      const rp: reproductor = {
-        titol: "canco reproduint",
-        reproduint: true
+    setReproduccio((reproductorActual) => {
+      if (reproductorActual.reproduint) {
+        return { titol: "", reproduint: false };
       }
-      setReproduccio(rp);
-    }else{
-      const rp:reproductor = {
-        titol: " ",
-        reproduint: false
-      }
-      setReproduccio(rp);
-    }
+
+      return { titol: "canco reproduint", reproduint: true };
+    });
    
     setTrack(tr);
   }
