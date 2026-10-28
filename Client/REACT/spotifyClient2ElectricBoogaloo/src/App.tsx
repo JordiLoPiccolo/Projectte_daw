@@ -1,29 +1,26 @@
 import { useState } from 'react';
 import './App.css'
-import { ObtenirReproduccions } from './Components/reproduccions';
 import SongCard from './Components/Songs/SongCard'
 import type { TrackView } from './Components/Songs/Types/TrackView';
 import { tracks } from './Data/track/track';
-import type { Track } from './Model/Track';
 import { randomUser } from './Components/users';
+import type { Like } from './Model/Like';
 
 
 
 
 function App() {
-  function RandomTrack() {
-    const totalTracks: number = tracks.length;
-    const random: number = Math.floor(Math.random() * totalTracks);
-    const track: Track = tracks[random];
-    return track;
-  }
+ 
   const [user] = useState(() => randomUser());
 
   const [track, setTrack] = useState<TrackView>(
     {
       ...tracks[Math.floor(Math.random() * tracks.length)],
       reproduccions: Math.floor(Math.random() * 20000),
-      likes: Math.floor(Math.random() * 300)
+      likes: {
+      like: false,
+      totalLikes: 0
+  },
     });
   
   function incrementReproduction(inc: number) {
@@ -38,26 +35,39 @@ function App() {
 
   function gestionarLikes() {
     const tr = (prev: TrackView): TrackView => {
+      let increment: number = 1;
+      if (prev.likes.like) {
+        increment = -1;
+      }
+      const likeObj: Like = {
+        like: !prev.likes.like,
+        totalLikes:prev.likes.totalLikes + increment
+      }
+      
+      
       return {
         ...prev,
-        "likes"
-      }
+        likes: {
+          like: false,
+          totalLikes: 0
+        },
+      };
     }
     setTrack(tr);
   }
 
   function handleRandom() {
-    const tr = (prev: TrackView): TrackView => {
-      return {
-        ...tracks[Math.floor(Math.random() * tracks.length)],
-        "reproduccions": Math.floor(Math.random() * 20000),
-        likes: Math.floor(Math.random() * 300)
-      }
-    }
-    setTrack(tr);
+      const random: number = Math.floor(Math.random() * tracks.length)
+      const randomTrack:TrackView = {
+        ...tracks[random],
+        likes: {
+          like: true,
+          totalLikes: 180
+        },
+        "reproduccions": Math.floor(Math.random() * 200)
+      };
+    setTrack(randomTrack);
   }
-  const totalReproduccions: number = ObtenirReproduccions(track);
-
   
   const [date, setDate] = useState(() => new Date());
 
