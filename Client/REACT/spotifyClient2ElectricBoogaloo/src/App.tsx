@@ -24,11 +24,11 @@ function App() {
       ...tracks[Math.floor(Math.random() * tracks.length)],
       reproduccions: Math.floor(Math.random() * 20000),
       likes: {
-      like: false,
-      totalLikes: 0
-  },
+        like: false,
+        totalLikes: 0
+      },
     });
-  
+
   function incrementReproduction(inc: number) {
     const tr = (prev: TrackView): TrackView => {
       return {
@@ -44,8 +44,15 @@ function App() {
 
       return { titol: track.title, reproduint: true };
     });
-   
+
     setTrack(tr);
+  }
+
+  function aturarReproduccio() {
+    setReproduccio({
+      titol: "no s'està reproduint cap canco",
+      reproduint: false
+    });
   }
 
   function gestionarLikes() {
@@ -56,10 +63,10 @@ function App() {
       }
       const likeObj: Like = {
         like: !prev.likes.like,
-        totalLikes:prev.likes.totalLikes + increment
+        totalLikes: prev.likes.totalLikes + increment
       }
-      
-      
+
+
       return {
         ...prev,
         likes: likeObj
@@ -69,15 +76,15 @@ function App() {
   }
 
   function handleRandom() {
-      const random: number = Math.floor(Math.random() * tracks.length)
-      const randomTrack:TrackView = {
-        ...tracks[random],
-        likes: {
-          like: false,
-          totalLikes: 180
-        },
-        "reproduccions": Math.floor(Math.random() * 200)
-      };
+    const random: number = Math.floor(Math.random() * tracks.length)
+    const randomTrack: TrackView = {
+      ...tracks[random],
+      likes: {
+        like: false,
+        totalLikes: 180
+      },
+      "reproduccions": Math.floor(Math.random() * 200)
+    };
     setTrack(randomTrack);
   }
 
@@ -95,16 +102,12 @@ function App() {
     setTrack(tr);
   }
 
-  function handleVolum(PujaBaixa: boolean) {
+  function handleVolum(pujabaixa: number) {
     let volum: number;
-    if (PujaBaixa) {
-      volum = + 1;
-    } else {
-      volum = - 1;
-    }
+    volum = + pujabaixa;
     return volum
   }
-  
+
   const [date, setDate] = useState(() => new Date());
 
   function updateDate() {
@@ -119,10 +122,11 @@ function App() {
         User: {user}
         <p><button onClick={() => updateDate()}>Update data</button></p>
       </header>
-      
+
       <p><button onClick={() => handleRandom()}>Random</button></p>
-      <SongCard trackInfo={track} play={ (inc:number) => incrementReproduction(inc) } like={() => gestionarLikes()} reset ={()=> gestionarReset()} />
-      <ReproCard reproductor={cancoReproduint} controlVolum={(pujabaixa: boolean) => handleVolum(pujabaixa) }/>
+      <SongCard trackInfo={track} play={(inc: number) => incrementReproduction(inc)} like={() => gestionarLikes()} reset={() => gestionarReset()} />
+      <hr></hr>
+      <ReproCard reproductor={cancoReproduint} controlVolum={(pujabaixa: number) => handleVolum(pujabaixa)} stop={aturarReproduccio} />
     </>
   )
 }

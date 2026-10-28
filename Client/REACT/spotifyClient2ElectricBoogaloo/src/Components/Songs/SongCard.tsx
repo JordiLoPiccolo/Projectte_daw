@@ -27,8 +27,6 @@ const SongCard = ({ trackInfo,play,like,reset }: SongCardProps) => {
             <p>Duració: {trackInfo.duration}</p>
             <p>Total Reproduccions: {trackInfo.reproduccions}</p>
             <p><button onClick={() => handleClickPlay(1)}>Play</button></p>
-            <p><button onClick={() => handleClickPlay(5)}>Play 5 times</button></p>
-            <p><button onClick={() => handleClickPlay(10)}>Play 10 times</button></p>
             <p><img onClick={() => handleLike()} src = {trackInfo.likes.like?icon2:icon1}></img>{trackInfo.likes.totalLikes}</p>
             <p><button onClick={() => handleReset()}>Reset</button></p>
         </>
