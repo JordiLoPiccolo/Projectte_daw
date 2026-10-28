@@ -47,10 +47,7 @@ function App() {
       
       return {
         ...prev,
-        likes: {
-          like: false,
-          totalLikes: 0
-        },
+        likes: likeObj
       };
     }
     setTrack(tr);
