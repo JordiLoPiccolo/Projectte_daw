@@ -80,6 +80,16 @@ function App() {
     }
     setTrack(tr);
   }
+
+  function handleVolum(PujaBaixa: boolean) {
+    let volum: number;
+    if (PujaBaixa) {
+      volum = + 1;
+    } else {
+      volum = - 1;
+    }
+    return volum
+  }
   
   const [date, setDate] = useState(() => new Date());
 
@@ -98,7 +108,7 @@ function App() {
       
       <p><button onClick={() => handleRandom()}>Random</button></p>
       <SongCard trackInfo={track} play={ (inc:number) => incrementReproduction(inc) } like={() => gestionarLikes()} reset ={()=> gestionarReset()} />
-      <ReproCard trackInfo={track} />
+      <ReproCard trackInfo={track} controlVolum={(pujabaixa: boolean) => handleVolum(pujabaixa) }/>
     </>
   )
 }
