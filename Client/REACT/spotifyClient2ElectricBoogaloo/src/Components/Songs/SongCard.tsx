@@ -3,7 +3,7 @@ import icon1 from "../../assets/blackThumbs.png";
 import icon2 from "../../assets/greenThumbs.png";
 
 
-const SongCard = ({ trackInfo,play,like }: SongCardProps) => {
+const SongCard = ({ trackInfo,play,like,reset }: SongCardProps) => {
 
 
     function handleClickPlay(inc: number) {
@@ -11,7 +11,7 @@ const SongCard = ({ trackInfo,play,like }: SongCardProps) => {
     }
 
     function handleReset() {
-       
+        reset();
     }
     
     function handleLike() {

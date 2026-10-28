@@ -5,6 +5,7 @@ import type { TrackView } from './Components/Songs/Types/TrackView';
 import { tracks } from './Data/track/track';
 import { randomUser } from './Components/users';
 import type { Like } from './Model/Like';
+import ReproCard from './Components/Reproductor/ReproCard';
 
 
 
@@ -58,12 +59,26 @@ function App() {
       const randomTrack:TrackView = {
         ...tracks[random],
         likes: {
-          like: true,
+          like: false,
           totalLikes: 180
         },
         "reproduccions": Math.floor(Math.random() * 200)
       };
     setTrack(randomTrack);
+  }
+
+  function gestionarReset() {
+    const tr = (prev: TrackView): TrackView => {
+      return {
+        ...prev,
+        likes: {
+          like: false,
+          totalLikes: 0
+        },
+        "reproduccions": 0
+      }
+    }
+    setTrack(tr);
   }
   
   const [date, setDate] = useState(() => new Date());
@@ -82,8 +97,8 @@ function App() {
       </header>
       
       <p><button onClick={() => handleRandom()}>Random</button></p>
-      <SongCard trackInfo={track} play={ (inc:number) => incrementReproduction(inc) } like={() => gestionarLikes()} />
-
+      <SongCard trackInfo={track} play={ (inc:number) => incrementReproduction(inc) } like={() => gestionarLikes()} reset ={()=> gestionarReset()} />
+      <ReproCard trackInfo={track} />
     </>
   )
 }
