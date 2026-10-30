@@ -25,9 +25,9 @@ export async function getAlbumByIdController(req: Request, res: Response): Promi
     return res.status(result.code).json(result);
 }
 
-export async function postTrackController(req: Request, res: Response): Promise<Response> {
+export async function postAlbumController(req: Request, res: Response): Promise<Response> {
 
-    const result: SuccessService<TrackBD> | ErrorService = await createTrack(req.body);
+    const result: SuccessService<AlbumBD> | ErrorService = await createAlbum(req.body);
     
         if (!result.success) {
             const errorResult = result as ErrorService;
