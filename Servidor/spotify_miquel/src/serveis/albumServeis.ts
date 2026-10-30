@@ -23,22 +23,22 @@ export async function getAllAlbums(): Promise<AlbumBD[]> {
     return result.recordset;
 }
 
-export async function getTrackById(idTrack: string
-): Promise<SelectSuccessService<TrackBD> | ErrorService> {
+export async function getAlbumById(id: string
+): Promise<SelectSuccessService<AlbumBD> | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
-    const queryText: string = `Select * from Track Where Track.id = @id`;
-    request.input("id", sql.UniqueIdentifier, idTrack);
+    const queryText: string = `Select * from Album Where Album.id = @id`;
+    request.input("id", sql.UniqueIdentifier, id);
 
-    const result: IResult<TrackBD> = await request.query(queryText);
+    const result: IResult<AlbumBD> = await request.query(queryText);
 
     if (result.recordset.length === 0) {
         return {
             success: false,
             code: 404,
-            message: "Track not found. fuck you"
+            message: "Album not found. fuck you"
         }
     }
 
