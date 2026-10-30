@@ -24,22 +24,22 @@ export async function getAllPlaylists(): Promise<PlaylistBD[]> {
     return result.recordset;
 }
 
-export async function getTrackById(idTrack: string
-): Promise<SelectSuccessService<TrackBD> | ErrorService> {
+export async function getPlaylistById(id: string
+): Promise<SelectSuccessService<PlaylistBD> | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
-    const queryText: string = `Select * from Track Where Track.id = @id`;
-    request.input("id", sql.UniqueIdentifier, idTrack);
+    const queryText: string = `Select * from Playlist Where Playlist.id = @id`;
+    request.input("id", sql.UniqueIdentifier, id);
 
-    const result: IResult<TrackBD> = await request.query(queryText);
+    const result: IResult<PlaylistBD> = await request.query(queryText);
 
     if (result.recordset.length === 0) {
         return {
             success: false,
             code: 404,
-            message: "Track not found. fuck you"
+            message: "Playlist not found. fuck you"
         }
     }
 
