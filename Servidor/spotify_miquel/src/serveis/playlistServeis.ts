@@ -64,7 +64,7 @@ export async function createPlaylist(playlist: Playlist): Promise<SuccessService
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
     const queryText: string = `INSERT INTO Playlist(title,user_id) 
-        VALUES(@title,@user_id,@duration)`;
+        VALUES(@title,@user_id)`;
 
     request.input("title", sql.NVarChar, title);
     request.input("user_id", sql.UniqueIdentifier, playlist.user);
@@ -76,21 +76,20 @@ export async function createPlaylist(playlist: Playlist): Promise<SuccessService
 
 }
 
-export async function putTrack(track: TrackBD, id: string | string[]): Promise<PutSuccessService<number> | ErrorService> {
-    if (!isValidTrack(track)) {
+export async function putPlaylist(playlist: PlaylistBD, id: string | string[]): Promise<PutSuccessService<number> | ErrorService> {
+    if (!isValidPlaylist(playlist)) {
         return { success: false, code: 400, message: "fuck you" };
     }
 
-    const title: string = track.title.trim().replace(/\s+/g, " ");
+    const title: string = playlist.title.trim().replace(/\s+/g, " ");
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
-    const queryText: string = `UPDATE TRACK SET title=@title,artist_id=@artist_id,duration=@duration)
-        WHERE track.id=@id `;
+    const queryText: string = `UPDATE PLAYLIST SET title=@title,user_id=@user_id)
+        WHERE playlist.id=@id `;
 
     request.input("title", sql.NVarChar, title);
-    request.input("artist_id", sql.UniqueIdentifier, track.artist);
-    request.input("duration", sql.Numeric, track.duration);
+    request.input("user_id", sql.UniqueIdentifier, playlist.user);
     request.input("id", sql.UniqueIdentifier, id);
 
     const result: IResult<number> = await request.query(queryText);
@@ -99,7 +98,7 @@ export async function putTrack(track: TrackBD, id: string | string[]): Promise<P
         return {
             success: false,
             code: 404,
-            message: "Track not found. fuck you"
+            message: "Playlist not found. fuck you"
         }
     }
     return { success: true, data: result.rowsAffected[0], code: 200 };
