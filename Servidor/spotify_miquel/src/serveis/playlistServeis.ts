@@ -8,74 +8,126 @@ import { playlists } from "../data/playlist/data.playlist";
 import { PlaylistBD } from "../interfaces/playlist/playlistBD";
 import { Playlist } from "../interfaces/playlist/playlist";
 import { isValidPlaylist } from "../validators/playlistValidator";
+import { ConnectionPool, IResult } from "mssql";
+import { getConnection } from "../config/database";
+import sql from "mssql";
+import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
 
-export function getAllPlaylists(): PlaylistBD[] {
-    return playlists;
+export async function getAllPlaylists(): Promise<PlaylistBD[]> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Select * from Playlist`;
+
+    const result: IResult<PlaylistBD> = await request.query(queryText);
+
+    return result.recordset;
 }
 
-export function getPlaylistById(id: string): PlaylistBD | undefined {
+export async function getTrackById(idTrack: string
+): Promise<SelectSuccessService<TrackBD> | ErrorService> {
 
-    return playlists.find(
-        (c: PlaylistBD) => { return c.id === id }
-    );
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Select * from Track Where Track.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idTrack);
+
+    const result: IResult<TrackBD> = await request.query(queryText);
+
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found. fuck you"
+        }
+    }
+
+    return {
+        success: true,
+        code: 200,
+        data: result.recordset[0]
+    };
+
+
 
 }
 
-export function createPlaylist(PList: Playlist): SuccessService<PlaylistBD> | ErrorService {
+export async function createTrack(track: Track): Promise<SuccessService<number> | ErrorService> {
 
-    if (!isValidPlaylist(PList)) {
+    if (!isValidTrack(track)) {
         return { success: false, code: 400, message: "fuck you" };
     }
 
-    // les correctes son dades
-    const uuid: string = randomUUID();
+    const title: string = track.title.trim().replace(/\s+/g, " ");
 
-    const PlaylistRecord: PlaylistBD = {
-        id: uuid,
-        title: PList.title.trim().replace(/\s+/g, " "),
-        user: PList.user.trim().replace(/\s+/g, " "),
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `INSERT INTO TRACK(title,artist_id,duration) 
+        VALUES(@title,@artist_id,@duration)`;
 
+    request.input("title", sql.NVarChar, title);
+    request.input("artist_id", sql.UniqueIdentifier, track.artist);
+    request.input("duration", sql.Numeric, track.duration);
+
+    const result: IResult<number> = await request.query(queryText);
+
+    return { success: true, data: result.rowsAffected[0], code: 201 };
+
+
+}
+
+export async function putTrack(track: TrackBD, id: string | string[]): Promise<PutSuccessService<number> | ErrorService> {
+    if (!isValidTrack(track)) {
+        return { success: false, code: 400, message: "fuck you" };
+    }
+
+    const title: string = track.title.trim().replace(/\s+/g, " ");
+
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `UPDATE TRACK SET title=@title,artist_id=@artist_id,duration=@duration)
+        WHERE track.id=@id `;
+
+    request.input("title", sql.NVarChar, title);
+    request.input("artist_id", sql.UniqueIdentifier, track.artist);
+    request.input("duration", sql.Numeric, track.duration);
+    request.input("id", sql.UniqueIdentifier, id);
+
+    const result: IResult<number> = await request.query(queryText);
+
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found. fuck you"
+        }
+    }
+    return { success: true, data: result.rowsAffected[0], code: 200 };
+}
+
+export async function deleteTrack(id: string | string[]): Promise<DeleteSuccessService | ErrorService> {
+
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Delete from Track Where Track.id = @id`;
+    request.input("id", sql.UniqueIdentifier, id);
+
+    const result: IResult<TrackBD> = await request.query(queryText);
+
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found. fuck you"
+        }
+    }
+
+    return {
+        success: true,
+        code: 204
     };
-    playlists.push(PlaylistRecord);
-
-    return { success: true, data: PlaylistRecord, code: 201 };
-
-
 }
 
-export function putPlayList(PList: PlaylistBD, id: string | string[]): PutSuccessService<PlaylistBD> | ErrorService {
-    if (!isValidPlaylist(PList)) {
-        return { success: false, code: 400, message: "adeu" };
-    }
 
-
-    const index: number = playlists.findIndex(
-        (t: PlaylistBD) => { return t.id === id }
-    );
-
-    if (index === -1) {
-        return { success: false, code: 404, message: `PlayList invalida, com tu.` };
-    }
-
-    const PlaylistBD: PlaylistBD = {
-        id: id as string,
-        title: PList.title.trim().replace(/\s+/g, " "),
-        user: PList.user.trim().replace(/\s+/g, " "),
-
-    };
-
-    return { success: true, data: PlaylistBD, code: 201, index: index };
-}
-
-export function deletePlaylist(id: string | string[]): DeleteSuccessService | ErrorService {
-
-    const index: number = playlists.findIndex(
-        (t: PlaylistBD) => { return t.id === id }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: `Playlist ${id} not found lol` };
-    }
-
-    return { success: true, code: 204, index: index }
-
-}
