@@ -2,17 +2,20 @@ import { useState } from 'react';
 import './App.css'
 import SongCard from './Components/Songs/SongCard'
 import type { TrackView } from './Components/Songs/Types/TrackView';
-import { tracks } from './Data/track/track';
 import { randomUser } from './Components/users';
 import type { Like } from './Model/Like';
 import ReproCard from './Components/Reproductor/ReproCard';
 import type { reproductor } from './Model/Reproductor';
 import ListSongs from './Components/Songs/ListSongs';
+import type { Track } from './Model/Track';
 
 
 
 
 function App() {
+
+  const [tracks, setTracks] = useState<Track[]>([])
+
   const [user] = useState(() => randomUser());
   const [cancoReproduint, setReproduccio] = useState<reproductor>(
     {
@@ -129,14 +132,19 @@ function App() {
 
       <p><button onClick={() => handleRandom()}>Random</button></p>
       <main>
-        <table>
-          <thead>
-            <title>List Songs</title>
-          </thead>
-          <tbody>
-            <ListSongs tracks={tracks} />
-          </tbody>
-        </table>
+        {
+          !tracks.length ?
+            <table>
+              <thead>
+                <title>List Songs</title>
+              </thead>
+              <tbody>
+                <ListSongs tracks={tracks} />
+              </tbody>
+            </table>
+            :<></>
+        }
+        
         <aside>
           <SongCard trackInfo={track} play={(inc: number) => incrementReproduction(inc)} like={() => gestionarLikes()} reset={() => gestionarReset()}></SongCard>
         </aside>
