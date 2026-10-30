@@ -7,6 +7,8 @@ import { randomUser } from './Components/users';
 import type { Like } from './Model/Like';
 import ReproCard from './Components/Reproductor/ReproCard';
 import type { reproductor } from './Model/Reproductor';
+import type { Track } from './Model/Track';
+import SongRow from './Components/Songs/SongRow';
 
 
 
@@ -116,6 +118,32 @@ function App() {
 
   return (
     <>
+      <main>
+        <table>
+          <thead>
+            <title>List Songs</title>
+          </thead>
+          <tbody>
+            {
+              tracks.map(
+                (t: Track) => {
+                  return <SongRow
+                    title={t.title}
+                    artist={t.artist}
+                    duration={t.duration}
+                  />
+                
+                }
+              )
+            }
+          </tbody>
+        </table>
+        <aside>
+          <SongCard trackInfo={track} play={(inc: number) => incrementReproduction(inc)} like={() => gestionarLikes()} reset={() => gestionarReset()}></SongCard>
+        </aside>
+      </main>
+
+
       <header>
         <h1>Spotify Miquel</h1>
         Data:{date.getDate()}-{date.getMonth() + 1}-{date.getFullYear()}  {date.getHours()}:{date.getMinutes()}:{date.getSeconds()} ||
