@@ -104,21 +104,21 @@ export async function putPlaylist(playlist: PlaylistBD, id: string | string[]): 
     return { success: true, data: result.rowsAffected[0], code: 200 };
 }
 
-export async function deleteTrack(id: string | string[]): Promise<DeleteSuccessService | ErrorService> {
+export async function deletePlaylist(id: string | string[]): Promise<DeleteSuccessService | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
-    const queryText: string = `Delete from Track Where Track.id = @id`;
+    const queryText: string = `Delete from Playlist Where Playlist.id = @id`;
     request.input("id", sql.UniqueIdentifier, id);
 
-    const result: IResult<TrackBD> = await request.query(queryText);
+    const result: IResult<PlaylistBD> = await request.query(queryText);
 
     if (result.rowsAffected[0] === 0) {
         return {
             success: false,
             code: 404,
-            message: "Track not found. fuck you"
+            message: "Playlist not found. fuck you"
         }
     }
 
