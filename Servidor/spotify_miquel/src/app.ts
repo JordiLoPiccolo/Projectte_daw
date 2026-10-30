@@ -9,12 +9,17 @@ import { playlistRouter } from "./rutes/playlistRutes";
 import { albumTrackRouter } from "./rutes/albumTrackRutes";
 import { playlistTrackRouter } from "./rutes/playlistTrackRutes";
 import { historyRouter } from "./rutes/historyRutes";
+import { corsOptions } from "./config/cors";
+import cors from "cors";
 
 
 //albumTrack + playlistTrack, només fer put i delete
 //history no es fa de moment
 
 export const app: Express = express();
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
