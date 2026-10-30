@@ -9,6 +9,7 @@ import ReproCard from './Components/Reproductor/ReproCard';
 import type { reproductor } from './Model/Reproductor';
 import type { Track } from './Model/Track';
 import SongRow from './Components/Songs/SongRow';
+import ListSongs from './Components/Songs/ListSongs';
 
 
 
@@ -118,30 +119,7 @@ function App() {
 
   return (
     <>
-      <main>
-        <table>
-          <thead>
-            <title>List Songs</title>
-          </thead>
-          <tbody>
-            {
-              tracks.map(
-                (t: Track) => {
-                  return <SongRow
-                    title={t.title}
-                    artist={t.artist}
-                    duration={t.duration}
-                  />
-                
-                }
-              )
-            }
-          </tbody>
-        </table>
-        <aside>
-          <SongCard trackInfo={track} play={(inc: number) => incrementReproduction(inc)} like={() => gestionarLikes()} reset={() => gestionarReset()}></SongCard>
-        </aside>
-      </main>
+      
 
 
       <header>
@@ -152,8 +130,32 @@ function App() {
       </header>
 
       <p><button onClick={() => handleRandom()}>Random</button></p>
-      <SongCard trackInfo={track} play={(inc: number) => incrementReproduction(inc)} like={() => gestionarLikes()} reset={() => gestionarReset()} />
-      <hr></hr>
+      <main>
+        <table>
+          <thead>
+            <title>List Songs</title>
+          </thead>
+          <tbody>
+            <ListSongs tracks={tracks} />
+            {
+              tracks.map(
+                (t: Track) => {
+                  return <SongRow
+                    id={t.id}
+                    title={t.title}
+                    artist={t.artist}
+                    duration={t.duration}
+                  />
+
+                }
+              )
+            }
+          </tbody>
+        </table>
+        <aside>
+          <SongCard trackInfo={track} play={(inc: number) => incrementReproduction(inc)} like={() => gestionarLikes()} reset={() => gestionarReset()}></SongCard>
+        </aside>
+      </main>
       <ReproCard reproductor={cancoReproduint} controlVolum={(pujabaixa: number) => handleVolum(pujabaixa)} stop={aturarReproduccio} />
     </>
   )

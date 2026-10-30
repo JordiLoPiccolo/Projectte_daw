@@ -6,10 +6,12 @@ const SongRow = (props: SongRowProps) => {
 
     return (
         <>
-            <h1>Títol: {props.title}</h1>
-            <p>Artista: {props.artist}</p>
-            <p>Duració: {props.duration}</p>
-        </>
+            <tr>
+            <td><b>Títol</b>: {props.title}</td>
+            <td><b>Artista</b>: {props.artist}</td>
+            <td><b>Durada</b>: {props.duration}</td>
+            </tr>
+            </>
     )
 }
 
