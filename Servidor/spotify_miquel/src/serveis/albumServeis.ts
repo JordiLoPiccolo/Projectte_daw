@@ -76,21 +76,21 @@ export async function createAlbum(album: Album): Promise<SuccessService<number> 
 
 }
 
-export async function putTrack(track: TrackBD, id: string | string[]): Promise<PutSuccessService<number> | ErrorService> {
-    if (!isValidTrack(track)) {
+export async function putAlbum(album: AlbumBD, id: string | string[]): Promise<PutSuccessService<number> | ErrorService> {
+    if (!isValidAlbum(album)) {
         return { success: false, code: 400, message: "fuck you" };
     }
 
-    const title: string = track.title.trim().replace(/\s+/g, " ");
+    const title: string = album.title.trim().replace(/\s+/g, " ");
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
-    const queryText: string = `UPDATE TRACK SET title=@title,artist_id=@artist_id,duration=@duration)
-        WHERE track.id=@id `;
+    const queryText: string = `UPDATE ALBUM SET title=@title,artist_id=@artist_id,date=@date)
+        WHERE album.id=@id `;
 
     request.input("title", sql.NVarChar, title);
-    request.input("artist_id", sql.UniqueIdentifier, track.artist);
-    request.input("duration", sql.Numeric, track.duration);
+    request.input("artist_id", sql.UniqueIdentifier, album.artist);
+    request.input("date", sql.Date, album.data);
     request.input("id", sql.UniqueIdentifier, id);
 
     const result: IResult<number> = await request.query(queryText);
@@ -99,7 +99,7 @@ export async function putTrack(track: TrackBD, id: string | string[]): Promise<P
         return {
             success: false,
             code: 404,
-            message: "Track not found. fuck you"
+            message: "Album not found. fuck you"
         }
     }
     return { success: true, data: result.rowsAffected[0], code: 200 };
