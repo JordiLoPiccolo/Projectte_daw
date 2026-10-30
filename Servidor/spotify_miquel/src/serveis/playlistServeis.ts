@@ -53,22 +53,21 @@ export async function getPlaylistById(id: string
 
 }
 
-export async function createTrack(track: Track): Promise<SuccessService<number> | ErrorService> {
+export async function createPlaylist(playlist: Playlist): Promise<SuccessService<number> | ErrorService> {
 
-    if (!isValidTrack(track)) {
+    if (!isValidPlaylist(playlist)) {
         return { success: false, code: 400, message: "fuck you" };
     }
 
-    const title: string = track.title.trim().replace(/\s+/g, " ");
+    const title: string = playlist.title.trim().replace(/\s+/g, " ");
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
-    const queryText: string = `INSERT INTO TRACK(title,artist_id,duration) 
-        VALUES(@title,@artist_id,@duration)`;
+    const queryText: string = `INSERT INTO Playlist(title,user_id) 
+        VALUES(@title,@user_id,@duration)`;
 
     request.input("title", sql.NVarChar, title);
-    request.input("artist_id", sql.UniqueIdentifier, track.artist);
-    request.input("duration", sql.Numeric, track.duration);
+    request.input("user_id", sql.UniqueIdentifier, playlist.user);
 
     const result: IResult<number> = await request.query(queryText);
 
