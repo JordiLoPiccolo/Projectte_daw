@@ -8,6 +8,7 @@ import ReproCard from './Components/Reproductor/ReproCard';
 import type { reproductor } from './Model/Reproductor';
 import ListSongs from './Components/Songs/ListSongs';
 import type { Track } from './Model/Track';
+import { ENV } from './Config/env';
 
 
 
@@ -36,7 +37,7 @@ function App() {
   
   async function carregarDadesTrack() {
  
-    const resposta:Response = await fetch("http://localhost:3000/tracks");
+    const resposta:Response = await fetch(`${ENV.API_BASE_URL}/tracks`);
     const listTrack: Track[] = await resposta.json() as Track[];  
     setTracks(listTrack);
   }
