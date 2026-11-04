@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css'
 import SongCard from './Components/Songs/SongCard'
 import type { TrackView } from './Components/Songs/Types/TrackView';
@@ -41,7 +41,12 @@ function App() {
     setTracks(listTrack);
   }
     
-    
+  useEffect(
+    () => {
+      carregarDadesTrack();
+    }, []
+  );
+
   function incrementReproduction(inc: number) {
     const tr = (prev: TrackView): TrackView => {
       return {
@@ -128,7 +133,7 @@ function App() {
   }
 
 
-  carregarDadesTrack();
+  
 
   return (
     <>
