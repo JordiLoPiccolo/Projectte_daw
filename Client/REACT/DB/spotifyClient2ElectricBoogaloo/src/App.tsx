@@ -7,15 +7,15 @@ import type { Like } from './Model/Like';
 import ReproCard from './Components/Reproductor/ReproCard';
 import type { reproductor } from './Model/Reproductor';
 import ListSongs from './Components/Songs/ListSongs';
-import type { Track } from './Model/Track';
 import { ENV } from './Config/env';
+import type { GETTrack } from './APIManagement/Tracks/Interfaces/Track';
 
 
 
 
 function App() {
 
-  const [tracks, setTracks] = useState<Track[]>([])
+  const [tracks, setTracks] = useState<GETTrack[]>([]);
 
   const [user] = useState(() => randomUser());
   const [cancoReproduint, setReproduccio] = useState<reproductor>(
@@ -38,7 +38,7 @@ function App() {
   async function carregarDadesTrack() {
  
     const resposta:Response = await fetch(`${ENV.API_BASE_URL}/tracks`);
-    const listTrack: Track[] = await resposta.json() as Track[];  
+    const listTrack: GETTrack[] = await resposta.json() as GETTrack[];  
     setTracks(listTrack);
   }
     
