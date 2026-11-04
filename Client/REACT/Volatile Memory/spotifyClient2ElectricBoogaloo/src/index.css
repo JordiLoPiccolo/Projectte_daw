@@ -1,5 +1,5 @@
 table {
-    position: absolute;
+    position: relative;
     margin: 50px;
     border: 2px solid black;
     padding: 3px;

@@ -8,6 +8,7 @@ import type { Like } from './Model/Like';
 import ReproCard from './Components/Reproductor/ReproCard';
 import type { reproductor } from './Model/Reproductor';
 import ListSongs from './Components/Songs/ListSongs';
+import ListHistory from './Components/Songs/ListHistory';
 
 
 
@@ -20,6 +21,7 @@ function App() {
       reproduint: false
     }
   );
+
   const [track, setTrack] = useState<TrackView>(
     {
       ...tracks[Math.floor(Math.random() * tracks.length)],
@@ -135,6 +137,15 @@ function App() {
           </thead>
           <tbody>
             <ListSongs tracks={tracks} />
+          </tbody>
+        </table>
+        
+        <table>
+          <thead>
+            <title>List Songs</title>
+          </thead>
+          <tbody>
+            <ListHistory Historytrack={track.title} />
           </tbody>
         </table>
         <aside>
