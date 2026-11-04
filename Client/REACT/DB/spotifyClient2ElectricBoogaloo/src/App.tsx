@@ -127,6 +127,9 @@ function App() {
     setDate(new Date());
   }
 
+
+  carregarDadesTrack();
+
   return (
     <>
       
@@ -142,7 +145,7 @@ function App() {
       <p><button onClick={() => handleRandom()}>Random</button></p>
       <main>
         {
-          !tracks.length ?
+          tracks.length > 0 ?
             <table>
               <thead>
                 <title>List Songs</title>
@@ -151,13 +154,11 @@ function App() {
                 <ListSongs tracks={tracks} />
               </tbody>
             </table>
-            :<p>
-              <button onClick={carregarDadesTrack}>Carrregar Canco</button>
-            </p>
+            :<></>
         }
         
         <aside>
-          <SongCard trackInfo={track} play={(inc: number) => incrementReproduction(inc)} like={() => gestionarLikes()} reset={() => gestionarReset()}></SongCard>
+          <SongCard trackInfo={track} play={(inc: number) => incrementReproduction(inc)} like={() => gestionarLikes()} reset={() => gestionarReset()}/>
         </aside>
       </main>
       <ReproCard reproductor={cancoReproduint} controlVolum={(pujabaixa: number) => handleVolum(pujabaixa)} stop={aturarReproduccio} />
