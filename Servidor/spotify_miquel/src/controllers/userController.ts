@@ -2,7 +2,7 @@ import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { SuccessService } from "../interfaces/error/successService";
-import { Response,Request } from "express";
+import { Response, Request } from "express";
 import { createUser, deleteUser, getAllUsers, getUserById, putUser } from "../serveis/userServeis";
 import { UserBD } from "../interfaces/user/userBD";
 import { users } from "../data/user/users";
@@ -15,7 +15,7 @@ export async function getAllUsersController(_req: Request, res: Response): Promi
 
 export async function getUserByIdController(req: Request, res: Response): Promise<Response> {
 
-    const result: SelectSuccessService<UserBD> | ErrorService = await getUserById(req.params.id as string);
+    const result: SelectSuccessServiceUserBD> | ErrorService = await getUserById(req.params.id as string);
 
 
     if (!result.success) {
@@ -26,7 +26,7 @@ export async function getUserByIdController(req: Request, res: Response): Promis
 
 export async function postUserController(req: Request, res: Response): Promise<Response> {
 
-    const result: SuccessService<UserBD> | ErrorService = await createUser(req.body);
+    const result: SuccessServiceUserBD> | ErrorService = await createUser(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -37,7 +37,7 @@ export async function postUserController(req: Request, res: Response): Promise<R
 }
 
 export async function putUserController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService<number> | ErrorService = await putUser(req.body, req.params.id as string);
+    const result: PutSuccessService | ErrorService = await putUser(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

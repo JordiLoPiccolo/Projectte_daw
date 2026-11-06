@@ -16,7 +16,7 @@ export async function getAllAlbumsController(_req: Request, res: Response): Prom
 
 export async function getAlbumByIdController(req: Request, res: Response): Promise<Response> {
 
-    const result: SelectSuccessService<AlbumBD> | ErrorService = await getAlbumById(req.params.id as string);
+    const result: SelectSuccessServiceAlbumBD> | ErrorService = await getAlbumById(req.params.id as string);
 
 
     if (!result.success) {
@@ -27,18 +27,18 @@ export async function getAlbumByIdController(req: Request, res: Response): Promi
 
 export async function postAlbumController(req: Request, res: Response): Promise<Response> {
 
-    const result: SuccessService<AlbumBD> | ErrorService = await createAlbum(req.body);
-    
-        if (!result.success) {
-            const errorResult = result as ErrorService;
-            return res.status(result.code).json({ message: errorResult.message });
-        }
-    
-        return res.status(201).json(result);
+    const result: SuccessServiceAlbumBD> | ErrorService = await createAlbum(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
+    }
+
+    return res.status(201).json(result);
 }
 
 export async function putAlbumController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService<number> | ErrorService = await putAlbum(req.body,req.params.id as string);
+    const result: PutSuccessService | ErrorService = await putAlbum(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

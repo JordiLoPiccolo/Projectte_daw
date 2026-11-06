@@ -14,7 +14,7 @@ export function getAllAlbumTracks(): AlbumTrackBD[] {
 
 
 
-export function createAlbumTrack(ATrack: AlbumTrack): SuccessService<AlbumTrackBD> | ErrorService {
+export function createAlbumTrack(ATrack: AlbumTrack): SuccessServiceAlbumTrackBD> | ErrorService {
 
     if (!isValidAlbumTrack(ATrack)) {
         return { success: false, code: 400, message: "fuck you" };

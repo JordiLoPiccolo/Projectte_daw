@@ -16,7 +16,7 @@ export function getAllPlaylistTracksController(_req: Request, res: Response): Re
 
 
 export function postPlaylistTrackController(req: Request, res: Response): Response {
-    const result: SuccessService<PlaylistTrackBD> | ErrorService = createPlaylistTrack(req.body);
+    const result: SuccessServicePlaylistTrackBD> | ErrorService = createPlaylistTrack(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -24,7 +24,7 @@ export function postPlaylistTrackController(req: Request, res: Response): Respon
     }
 
 
-    playlistTracks.push((result as SuccessService<PlaylistTrackBD>).data);
+    playlistTracks.push((result as SuccessServicePlaylistTrackBD >).data);
 
     return res.status(201).json(result);
 }

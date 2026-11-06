@@ -24,7 +24,7 @@ export async function getAllAlbums(): Promise<AlbumBD[]> {
 }
 
 export async function getAlbumById(id: string
-): Promise<SelectSuccessService<AlbumBD> | ErrorService> {
+): Promise<SelectSuccessServiceAlbumBD> | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
@@ -34,25 +34,25 @@ export async function getAlbumById(id: string
 
     const result: IResult<AlbumBD> = await request.query(queryText);
 
-    if (result.recordset.length === 0) {
-        return {
-            success: false,
-            code: 404,
-            message: "Album not found. fuck you"
-        }
-    }
-
+    if(result.recordset.length === 0) {
     return {
-        success: true,
-        code: 200,
-        data: result.recordset[0]
-    };
+        success: false,
+        code: 404,
+        message: "Album not found. fuck you"
+    }
+}
+
+return {
+    success: true,
+    code: 200,
+    data: result.recordset[0]
+};
 
 
 
 }
 
-export async function createAlbum(album: Album): Promise<SuccessService<number> | ErrorService> {
+export async function createAlbum(album: Album): Promise<SuccessService | ErrorService> {
 
     if (!isValidAlbum(album)) {
         return { success: false, code: 400, message: "fuck you" };
@@ -76,7 +76,7 @@ export async function createAlbum(album: Album): Promise<SuccessService<number> 
 
 }
 
-export async function putAlbum(album: AlbumBD, id: string | string[]): Promise<PutSuccessService<number> | ErrorService> {
+export async function putAlbum(album: AlbumBD, id: string | string[]): Promise<PutSuccessService | ErrorService> {
     if (!isValidAlbum(album)) {
         return { success: false, code: 400, message: "fuck you" };
     }

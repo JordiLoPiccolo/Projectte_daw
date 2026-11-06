@@ -24,7 +24,7 @@ export function getAlbumByIdController(req: Request, res: Response): Response {
 }
 
 export function postAlbumController(req: Request, res: Response): Response {
-    const result: SuccessService<AlbumBD> | ErrorService = createAlbum(req.body);
+    const result: SuccessServiceAlbumBD> | ErrorService = createAlbum(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -32,20 +32,20 @@ export function postAlbumController(req: Request, res: Response): Response {
     }
 
 
-    albums.push((result as SuccessService<AlbumBD>).data);
+    albums.push((result as SuccessServiceAlbumBD >).data);
     return res.status(201).json(result);
 }
 
 export function putAlbumController(req: Request, res: Response): Response {
-    const result: SuccessService<AlbumBD> | ErrorService = putAlbum(req.body, req.params.id);
+    const result: SuccessServiceAlbumBD> | ErrorService = putAlbum(req.body, req.params.id);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const index: number = (result as PutSuccessService<AlbumBD>).index;
-    albums[index] = (result as PutSuccessService<AlbumBD>).data;
+    const index: number = (result as PutSuccessServiceAlbumBD >).index;
+    albums[index] = (result as PutSuccessServiceAlbumBD >).data;
 
 
     return res.status(200).json(result);

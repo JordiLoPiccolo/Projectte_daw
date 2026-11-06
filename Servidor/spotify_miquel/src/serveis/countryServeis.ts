@@ -24,7 +24,7 @@ export async function getAllCountries(): Promise<CountryBD[]> {
 }
 
 export async function getCountryById(id: string
-    ): Promise<SelectSuccessService<CountryBD> | ErrorService> {
+): Promise<SelectSuccessServiceCountryBD> | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
@@ -34,25 +34,25 @@ export async function getCountryById(id: string
 
     const result: IResult<CountryBD> = await request.query(queryText);
 
-    if (result.recordset.length === 0) {
-        return {
-            success: false,
-            code: 404,
-            message: "Country not found. fuck you"
-        }
-    }
-
+    if(result.recordset.length === 0) {
     return {
-        success: true,
-        code: 200,
-        data: result.recordset[0]
-    };
+        success: false,
+        code: 404,
+        message: "Country not found. fuck you"
+    }
+}
 
-   
+return {
+    success: true,
+    code: 200,
+    data: result.recordset[0]
+};
+
+
 
 }
 
-export async function createCountry(country: Country): Promise<SuccessService<number> | ErrorService> {
+export async function createCountry(country: Country): Promise<SuccessService | ErrorService> {
 
     if (!isValidCountry(country)) {
         return { success: false, code: 400, message: "fuck you" };
@@ -64,9 +64,9 @@ export async function createCountry(country: Country): Promise<SuccessService<nu
     const request: sql.Request = pool.request();
     const queryText: string = `INSERT INTO COUNTRY(name) 
         VALUES(@name)`;
-    
+
     request.input("name", sql.NVarChar, title);
- 
+
     const result: IResult<number> = await request.query(queryText);
 
     return { success: true, data: result.rowsAffected[0], code: 201 };
@@ -74,7 +74,7 @@ export async function createCountry(country: Country): Promise<SuccessService<nu
 
 }
 
-export async function putCountry(country: CountryBD, id: string | string[]): Promise<PutSuccessService<number> | ErrorService> {
+export async function putCountry(country: CountryBD, id: string | string[]): Promise<PutSuccessService | ErrorService> {
     if (!isValidCountry(country)) {
         return { success: false, code: 400, message: "fuck you" };
     }

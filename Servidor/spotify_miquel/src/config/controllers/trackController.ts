@@ -6,7 +6,7 @@ import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
 import { SuccessService } from "../interfaces/error/successService";
 import { TrackBD } from "../interfaces/track/trackBD";
 import { createTrack, deleteTrack, getAllTracks, getTrackById, putTrack } from "../serveis/trackServeis";
-import { Response,Request } from "express";
+import { Response, Request } from "express";
 
 export async function getAllTracksController(_req: Request, res: Response): Promise<Response> {
     const tracksBD: TrackBD[] = await getAllTracks();
@@ -15,7 +15,7 @@ export async function getAllTracksController(_req: Request, res: Response): Prom
 
 export async function getTrackByIdController(req: Request, res: Response): Promise<Response> {
 
-    const result: SelectSuccessService<TrackBD> | ErrorService = await getTrackById(req.params.id as string);
+    const result: SelectSuccessServiceTrackBD> | ErrorService = await getTrackById(req.params.id as string);
 
 
     if (!result.success) {
@@ -26,18 +26,18 @@ export async function getTrackByIdController(req: Request, res: Response): Promi
 
 export async function postTrackController(req: Request, res: Response): Promise<Response> {
 
-    const result: SuccessService<TrackBD> | ErrorService = await createTrack(req.body);
-    
-        if (!result.success) {
-            const errorResult = result as ErrorService;
-            return res.status(result.code).json({ message: errorResult.message });
-        }
-    
-        return res.status(201).json(result);
+    const result: SuccessServiceTrackBD> | ErrorService = await createTrack(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
+    }
+
+    return res.status(201).json(result);
 }
 
 export async function putTrackController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService<number> | ErrorService = await putTrack(req.body,req.params.id as string);
+    const result: PutSuccessService | ErrorService = await putTrack(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

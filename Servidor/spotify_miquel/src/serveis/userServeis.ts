@@ -22,7 +22,7 @@ export async function getAllUsers(): Promise<UserBD[]> {
 }
 
 export async function getUserById(id: string
-): Promise<SelectSuccessService<UserBD> | ErrorService> {
+): Promise<SelectSuccessServiceUserBD> | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
@@ -32,25 +32,25 @@ export async function getUserById(id: string
 
     const result: IResult<UserBD> = await request.query(queryText);
 
-    if (result.recordset.length === 0) {
-        return {
-            success: false,
-            code: 404,
-            message: "User not found. fuck you"
-        }
-    }
-
+    if(result.recordset.length === 0) {
     return {
-        success: true,
-        code: 200,
-        data: result.recordset[0]
-    };
+        success: false,
+        code: 404,
+        message: "User not found. fuck you"
+    }
+}
+
+return {
+    success: true,
+    code: 200,
+    data: result.recordset[0]
+};
 
 
 
 }
 
-export async function createUser(user: User): Promise<SuccessService<number> | ErrorService> {
+export async function createUser(user: User): Promise<SuccessService | ErrorService> {
 
     if (!isValidUser(user)) {
         return { success: false, code: 400, message: "fuck you" };
@@ -73,7 +73,7 @@ export async function createUser(user: User): Promise<SuccessService<number> | E
 
 }
 
-export async function putUser(track: UserBD, id: string | string[]): Promise<PutSuccessService<number> | ErrorService> {
+export async function putUser(track: UserBD, id: string | string[]): Promise<PutSuccessService | ErrorService> {
     if (!isValidUser(track)) {
         return { success: false, code: 400, message: "fuck you" };
     }

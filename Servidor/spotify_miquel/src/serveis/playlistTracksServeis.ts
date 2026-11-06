@@ -18,8 +18,8 @@ export function getAllPlaylistTracks(): PlaylistTrackBD[] {
 
 
 
-export function createPlaylistTrack(PTrack: PlaylistTrack): SuccessService<PlaylistTrackBD> | ErrorService {
- 
+export function createPlaylistTrack(PTrack: PlaylistTrack): SuccessServicePlaylistTrackBD> | ErrorService {
+
     if (!isValidPlaylistTrack(PTrack)) {
         return { success: false, code: 400, message: "fuck you" };
     }

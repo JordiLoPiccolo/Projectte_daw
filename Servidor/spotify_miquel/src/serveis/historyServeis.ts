@@ -26,7 +26,7 @@ export function getHistoryById(id: string): HistoryBD | undefined {
 
 }
 
-export function createHistory(history: History): SuccessService<HistoryBD> | ErrorService {
+export function createHistory(history: History): SuccessServiceHistoryBD> | ErrorService {
 
 
 
@@ -42,7 +42,7 @@ export function createHistory(history: History): SuccessService<HistoryBD> | Err
         user: history.user.trim().replace(/\s+/g, " "),
         track: history.track.trim().replace(/\s+/g, " "),
         data: new Date(),
-        
+
     };
     histories.push(historyRecord);
 
@@ -51,7 +51,7 @@ export function createHistory(history: History): SuccessService<HistoryBD> | Err
 
 }
 
-export function putHistory(history: HistoryBD, id: string | string[]): PutSuccessService<HistoryBD> | ErrorService {
+export function putHistory(history: HistoryBD, id: string | string[]): PutSuccessServiceHistoryBD> | ErrorService {
     if (!isValidHistory(history)) {
         return { success: false, code: 400, message: "adeu" };
     }

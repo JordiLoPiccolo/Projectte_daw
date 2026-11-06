@@ -50,7 +50,7 @@ export async function getTrackById(idTrack: string
 
 }
 
-export async function createTrack(track: Track): Promise<SuccessService<number> | ErrorService> {
+export async function createTrack(track: Track): Promise<SuccessService | ErrorService> {
 
     if (!isValidTrack(track)) {
         return { success: false, code: 400, message: "fuck you" };

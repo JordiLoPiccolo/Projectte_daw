@@ -6,7 +6,7 @@ import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
 import { SuccessService } from "../interfaces/error/successService";
 import { createCountry, deleteCountry, getAllCountries, getCountryById, putCountry } from "../serveis/countryServeis";
-import { Response,Request } from "express";
+import { Response, Request } from "express";
 
 export async function getAllCountriesController(_req: Request, res: Response): Promise<Response> {
     const countryBD: CountryBD[] = await getAllCountries();
@@ -15,7 +15,7 @@ export async function getAllCountriesController(_req: Request, res: Response): P
 
 export async function getCountryByIdController(req: Request, res: Response): Promise<Response> {
 
-    const result: SelectSuccessService<CountryBD> | ErrorService = await getCountryById(req.params.id as string);
+    const result: SelectSuccessServiceCountryBD> | ErrorService = await getCountryById(req.params.id as string);
 
 
     if (!result.success) {
@@ -26,18 +26,18 @@ export async function getCountryByIdController(req: Request, res: Response): Pro
 
 export async function postCountryController(req: Request, res: Response): Promise<Response> {
 
-    const result: SuccessService<CountryBD> | ErrorService = await createCountry(req.body);
-    
-        if (!result.success) {
-            const errorResult = result as ErrorService;
-            return res.status(result.code).json({ message: errorResult.message });
-        }
-    
-        return res.status(201).json(result);
+    const result: SuccessServiceCountryBD> | ErrorService = await createCountry(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
+    }
+
+    return res.status(201).json(result);
 }
 
 export async function putCountryController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService<number> | ErrorService = await putCountry(req.body,req.params.id as string);
+    const result: PutSuccessService | ErrorService = await putCountry(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
