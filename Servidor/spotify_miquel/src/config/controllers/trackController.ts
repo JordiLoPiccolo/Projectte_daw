@@ -1,8 +1,8 @@
 import { tracks } from "../data/track/track";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ErrorService } from "../interfaces/error/errorService";
-import { PutSuccessService } from "../interfaces/error/putSuccesService";
-import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
+import { PutSuccessService< } from "../interfaces/error/putSuccesService";
+import { SelectSuccessService< } from "../interfaces/error/SelectSuccessService<";
 import { SuccessService } from "../interfaces/error/successService";
 import { TrackBD } from "../interfaces/track/trackBD";
 import { createTrack, deleteTrack, getAllTracks, getTrackById, putTrack } from "../serveis/trackServeis";
@@ -15,7 +15,7 @@ export async function getAllTracksController(_req: Request, res: Response): Prom
 
 export async function getTrackByIdController(req: Request, res: Response): Promise<Response> {
 
-    const result: SelectSuccessServiceTrackBD> | ErrorService = await getTrackById(req.params.id as string);
+    const result: SelectSuccessService<TrackBD> | ErrorService = await getTrackById(req.params.id as string);
 
 
     if (!result.success) {
@@ -37,7 +37,7 @@ export async function postTrackController(req: Request, res: Response): Promise<
 }
 
 export async function putTrackController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService | ErrorService = await putTrack(req.body, req.params.id as string);
+    const result: PutSuccessService<| ErrorService = await putTrack(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

@@ -1,6 +1,6 @@
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ErrorService } from "../interfaces/error/errorService";
-import { PutSuccessService } from "../interfaces/error/putSuccesService";
+import { PutSuccessService< } from "../interfaces/error/putSuccesService";
 import { SuccessService } from "../interfaces/error/successService";
 import { Response, Request } from "express";
 import { createUser, deleteUser, getAllUsers, getUserById, putUser } from "../serveis/userServeis";
@@ -43,8 +43,8 @@ export function putUserController(req: Request, res: Response): Response {
         return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const index: number = (result as PutSuccessServiceUserBD >).index;
-    users[index] = (result as PutSuccessServiceUserBD >).data;
+    const index: number = (result as PutSuccessService<UserBD>).index;
+    users[index] = (result as PutSuccessService<UserBD>).data;
 
 
     return res.status(200).json(result);

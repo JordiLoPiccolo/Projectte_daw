@@ -23,7 +23,7 @@ export async function getAllArtists(): Promise<ArtistBD[]> {
 
 
 export async function getArtistById(id: string
-): Promise<SelectSuccessServiceArtistBD> | ErrorService> {
+): Promise<SelectSuccessService<ArtistBD> | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
@@ -33,19 +33,19 @@ export async function getArtistById(id: string
 
     const result: IResult<ArtistBD> = await request.query(queryText);
 
-    if(result.recordset.length === 0) {
-    return {
-        success: false,
-        code: 404,
-        message: "Artist not found. fuck you"
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Artist not found. fuck you"
+        }
     }
-}
 
-return {
-    success: true,
-    code: 200,
-    data: result.recordset[0]
-};
+    return {
+        success: true,
+        code: 200,
+        data: result.recordset[0]
+    };
 
 
 
@@ -75,7 +75,7 @@ export async function createArtist(artist: Artist): Promise<SuccessService | Err
 
 }
 
-export async function putArtist(artist: ArtistBD, id: string | string[]): Promise<PutSuccessService | ErrorService> {
+export async function putArtist(artist: ArtistBD, id: string | string[]): Promise<PutSuccessService<Response>| ErrorService> {
     if (!isValidArtist(artist)) {
         return { success: false, code: 400, message: "fuck you" };
     }

@@ -22,7 +22,7 @@ export async function getAllUsers(): Promise<UserBD[]> {
 }
 
 export async function getUserById(id: string
-): Promise<SelectSuccessServiceUserBD> | ErrorService> {
+): Promise<SelectSuccessService<UserBD> | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
@@ -32,19 +32,19 @@ export async function getUserById(id: string
 
     const result: IResult<UserBD> = await request.query(queryText);
 
-    if(result.recordset.length === 0) {
-    return {
-        success: false,
-        code: 404,
-        message: "User not found. fuck you"
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "User not found. fuck you"
+        }
     }
-}
 
-return {
-    success: true,
-    code: 200,
-    data: result.recordset[0]
-};
+    return {
+        success: true,
+        code: 200,
+        data: result.recordset[0]
+    };
 
 
 
@@ -73,7 +73,7 @@ export async function createUser(user: User): Promise<SuccessService | ErrorServ
 
 }
 
-export async function putUser(track: UserBD, id: string | string[]): Promise<PutSuccessService | ErrorService> {
+export async function putUser(track: UserBD, id: string | string[]): Promise<PutSuccessService<Response>| ErrorService> {
     if (!isValidUser(track)) {
         return { success: false, code: 400, message: "fuck you" };
     }

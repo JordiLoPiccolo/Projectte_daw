@@ -16,7 +16,7 @@ export function getAllPlaylistTracksController(_req: Request, res: Response): Re
 
 
 export function postPlaylistTrackController(req: Request, res: Response): Response {
-    const result: SuccessServicePlaylistTrackBD> | ErrorService = createPlaylistTrack(req.body);
+    const result: SuccessService | ErrorService = createPlaylistTrack(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -24,7 +24,7 @@ export function postPlaylistTrackController(req: Request, res: Response): Respon
     }
 
 
-    playlistTracks.push((result as SuccessServicePlaylistTrackBD >).data);
+    playlistTracks.push((result as SuccessService).data);
 
     return res.status(201).json(result);
 }
@@ -39,8 +39,8 @@ export function deletePlaylistTrackController(req: Request, res: Response): Resp
         return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const index: number = (result as DeleteSuccessService).index;
-    playlistTracks.splice(index, 1);
+    
+    playlistTracks.splice( 1);
 
     return res.status(204).json({ message: `Plailit Truck delated` });
 }

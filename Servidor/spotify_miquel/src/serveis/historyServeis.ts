@@ -1,18 +1,15 @@
 import { randomUUID } from "crypto";
-
+import { ConnectionPool, IResult } from "mssql";
+import { getConnection } from "../config/database";
+import sql from "mssql";
 import { ErrorService } from "../interfaces/error/errorService";
 import { SuccessService } from "../interfaces/error/successService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
-import { CountryBD } from "../interfaces/countries/countryBD";
-import { countries } from "../data/country/country";
-import { Country } from "../interfaces/countries/country";
-import { isValidCountry } from "../validators/countryValidator";
 import { HistoryBD } from "../interfaces/history/historyBD";
 import { histories } from "../data/history/data.history";
 import { History } from "../interfaces/history/history";
 import { isValidHistory } from "../validators/historyValidator";
-import { UserBD } from "../interfaces/user/userBD";
 
 export function getAllHistories(): HistoryBD[] {
     return histories;
@@ -26,7 +23,7 @@ export function getHistoryById(id: string): HistoryBD | undefined {
 
 }
 
-export function createHistory(history: History): SuccessServiceHistoryBD> | ErrorService {
+export function createHistory(history: History): SuccessService | ErrorService {
 
 
 
@@ -46,12 +43,12 @@ export function createHistory(history: History): SuccessServiceHistoryBD> | Erro
     };
     histories.push(historyRecord);
 
-    return { success: true, data: historyRecord, code: 201 };
+    return { success: true, data: 0, code: 201 };
 
 
 }
 
-export function putHistory(history: HistoryBD, id: string | string[]): PutSuccessServiceHistoryBD> | ErrorService {
+export function putHistory(history: HistoryBD, id: string | string[]): PutSuccessService<HistoryBD> | ErrorService {
     if (!isValidHistory(history)) {
         return { success: false, code: 400, message: "adeu" };
     }
@@ -73,7 +70,7 @@ export function putHistory(history: HistoryBD, id: string | string[]): PutSucces
 
     };
 
-    return { success: true, data: historyBD, code: 201, index: index };
+    return { success: true, data: 0, code: 201 };
 }
 
 export function deleteHistory(id: string | string[]): DeleteSuccessService | ErrorService {
@@ -85,7 +82,29 @@ export function deleteHistory(id: string | string[]): DeleteSuccessService | Err
         return { success: false, code: 404, message: `History ${id} not found lol` };
     }
 
-    return { success: true, code: 204, index: index }
+    return { success: true, code: 204 }
+
+}
+
+export async function addTrackUserHistory(historyTrack: History): Promise<SuccessService | ErrorService> {
+
+    if (!isValidHistory(historyTrack)) {
+        return { success: false, code: 400, message: "fuck you" };
+    }
+
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `INSERT INTO History(user_id,track_id) 
+        VALUES(@user_id,@track_id)`;
+    
+    request.input("user_id", sql.UniqueIdentifier, historyTrack.user);
+    request.input("track_id", sql.UniqueIdentifier, historyTrack.track);
+
+
+    const result: IResult<number> = await request.query(queryText);
+
+    return { success: true, data: result.rowsAffected[0], code: 201 };
+
 
 }
 

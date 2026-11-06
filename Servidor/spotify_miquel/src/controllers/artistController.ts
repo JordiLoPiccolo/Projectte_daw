@@ -15,7 +15,7 @@ export async function getAllArtistsController(_req: Request, res: Response): Pro
 
 export async function getArtistByIdController(req: Request, res: Response): Promise<Response> {
 
-    const result: SelectSuccessServiceArtistBD> | ErrorService = await getArtistById(req.params.id as string);
+    const result: SelectSuccessService<ArtistBD> | ErrorService = await getArtistById(req.params.id as string);
 
 
     if (!result.success) {
@@ -37,7 +37,7 @@ export async function postArtistController(req: Request, res: Response): Promise
 }
 
 export async function putArtistController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService | ErrorService = await putArtist(req.body, req.params.id as string);
+    const result: PutSuccessService<| ErrorService = await putArtist(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

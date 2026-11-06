@@ -2,8 +2,8 @@ import { artists } from "../data/artist/data.artist";
 import { ArtistBD } from "../interfaces/artist/artistBD";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ErrorService } from "../interfaces/error/errorService";
-import { PutSuccessService } from "../interfaces/error/putSuccesService";
-import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
+import { PutSuccessService< } from "../interfaces/error/putSuccesService";
+import { SelectSuccessService< } from "../interfaces/error/SelectSuccessService<";
 import { SuccessService } from "../interfaces/error/successService";
 import { createArtist, deleteArtist, getAllArtists, getArtistById, putArtist } from "../serveis/artistServeis";
 import { Response, Request } from "express";
@@ -15,7 +15,7 @@ export async function getAllArtistsController(_req: Request, res: Response): Pro
 
 export async function getArtistByIdController(req: Request, res: Response): Promise<Response> {
 
-    const result: SelectSuccessServiceArtistBD> | ErrorService = await getArtistById(req.params.id as string);
+    const result: SelectSuccessService<ArtistBD> | ErrorService = await getArtistById(req.params.id as string);
 
 
     if (!result.success) {
@@ -37,7 +37,7 @@ export async function postArtistController(req: Request, res: Response): Promise
 }
 
 export async function putArtistController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService | ErrorService = await putArtist(req.body, req.params.id as string);
+    const result: PutSuccessService<| ErrorService = await putArtist(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

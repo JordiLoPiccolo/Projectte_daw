@@ -1,7 +1,7 @@
 import { histories } from "../data/history/data.history";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ErrorService } from "../interfaces/error/errorService";
-import { PutSuccessService } from "../interfaces/error/putSuccesService";
+import { PutSuccessService< } from "../interfaces/error/putSuccesService";
 import { SuccessService } from "../interfaces/error/successService";
 import { HistoryBD } from "../interfaces/history/historyBD";
 import { createHistory, deleteHistory, getAllHistories, getHistoryById, putHistory } from "../serveis/historyServeis";
@@ -43,8 +43,8 @@ export function putHistoryController(req: Request, res: Response): Response {
         return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const index: number = (result as PutSuccessServiceHistoryBD >).index;
-    histories[index] = (result as PutSuccessServiceHistoryBD >).data;
+    const index: number = (result as PutSuccessService<HistoryBD>).index;
+    histories[index] = (result as PutSuccessService<HistoryBD>).data;
 
 
     return res.status(200).json(result);

@@ -15,7 +15,7 @@ export async function getAllUsersController(_req: Request, res: Response): Promi
 
 export async function getUserByIdController(req: Request, res: Response): Promise<Response> {
 
-    const result: SelectSuccessServiceUserBD> | ErrorService = await getUserById(req.params.id as string);
+    const result: SelectSuccessService<UserBD> | ErrorService = await getUserById(req.params.id as string);
 
 
     if (!result.success) {
@@ -26,7 +26,7 @@ export async function getUserByIdController(req: Request, res: Response): Promis
 
 export async function postUserController(req: Request, res: Response): Promise<Response> {
 
-    const result: SuccessServiceUserBD> | ErrorService = await createUser(req.body);
+    const result: SuccessService | ErrorService = await createUser(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -37,7 +37,7 @@ export async function postUserController(req: Request, res: Response): Promise<R
 }
 
 export async function putUserController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService | ErrorService = await putUser(req.body, req.params.id as string);
+    const result: PutSuccessService<Response> | ErrorService = await putUser(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

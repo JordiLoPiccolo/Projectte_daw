@@ -5,6 +5,7 @@ import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
 import { SuccessService } from "../interfaces/error/successService";
 import { TrackBD } from "../interfaces/track/trackBD";
+import { addTrackUserHistory } from "../serveis/historyServeis";
 import { createTrack, deleteTrack, getAllTracks, getTrackById, putTrack } from "../serveis/trackServeis";
 import { Response, Request } from "express";
 
@@ -60,7 +61,7 @@ export async function deleteTrackController(req: Request, res: Response): Promis
 
 export async function postTrackUserHistoryController(req: Request, res: Response) {
 
-    const result: SuccessService | ErrorService = await addTrackUserHistory(req.body);
+    const result: SuccessService | ErrorService = await addTrackUserHistory(req.body); 
 
     if (!result.success) {
         const errorResult = result as ErrorService;

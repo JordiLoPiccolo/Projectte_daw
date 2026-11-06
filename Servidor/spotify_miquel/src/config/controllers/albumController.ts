@@ -3,7 +3,7 @@ import { tracks } from "../data/track/track";
 import { AlbumBD } from "../interfaces/album/albumBd";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ErrorService } from "../interfaces/error/errorService";
-import { PutSuccessService } from "../interfaces/error/putSuccesService";
+import { PutSuccessService< } from "../interfaces/error/putSuccesService";
 import { SuccessService } from "../interfaces/error/successService";
 import { createAlbum, deleteAlbum, getAlbumById, getAllAlbums, putAlbum } from "../serveis/albumServeis";
 import { Response, Request } from "express";
@@ -44,8 +44,8 @@ export function putAlbumController(req: Request, res: Response): Response {
         return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const index: number = (result as PutSuccessServiceAlbumBD >).index;
-    albums[index] = (result as PutSuccessServiceAlbumBD >).data;
+    const index: number = (result as PutSuccessService<AlbumBD>).index;
+    albums[index] = (result as PutSuccessService<AlbumBD>).data;
 
 
     return res.status(200).json(result);

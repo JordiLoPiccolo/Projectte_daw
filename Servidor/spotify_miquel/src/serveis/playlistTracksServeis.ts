@@ -18,7 +18,7 @@ export function getAllPlaylistTracks(): PlaylistTrackBD[] {
 
 
 
-export function createPlaylistTrack(PTrack: PlaylistTrack): SuccessServicePlaylistTrackBD> | ErrorService {
+export function createPlaylistTrack(PTrack: PlaylistTrack): SuccessService | ErrorService {
 
     if (!isValidPlaylistTrack(PTrack)) {
         return { success: false, code: 400, message: "fuck you" };
@@ -35,7 +35,7 @@ export function createPlaylistTrack(PTrack: PlaylistTrack): SuccessServicePlayli
     };
     playlistTracks.push(PlaylistTrackRecord);
 
-    return { success: true, data: PlaylistTrackRecord, code: 201 };
+    return { success: true, data: 1, code: 201 };
 
 
 }
@@ -49,6 +49,6 @@ export function deletePlaylistTrack(id: string | string[]): DeleteSuccessService
         return { success: false, code: 404, message: `PlaylistTrack ${id} not found lol` };
     }
 
-    return { success: true, code: 204, index: index }
+    return { success: true, code: 204 }
 
 }

@@ -10,6 +10,7 @@ import { getConnection } from "../config/database";
 import sql from "mssql";
 import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
 
+
 export async function getAllTracks(): Promise<TrackBD[]> {
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();

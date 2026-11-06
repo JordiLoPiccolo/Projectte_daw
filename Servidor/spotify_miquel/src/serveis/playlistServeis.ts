@@ -25,7 +25,7 @@ export async function getAllPlaylists(): Promise<PlaylistBD[]> {
 }
 
 export async function getPlaylistById(id: string
-): Promise<SelectSuccessServicePlaylistBD> | ErrorService> {
+): Promise<SelectSuccessService<PlaylistBD> | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
@@ -35,19 +35,19 @@ export async function getPlaylistById(id: string
 
     const result: IResult<PlaylistBD> = await request.query(queryText);
 
-    if(result.recordset.length === 0) {
-    return {
-        success: false,
-        code: 404,
-        message: "Playlist not found. fuck you"
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Playlist not found. fuck you"
+        }
     }
-}
 
-return {
-    success: true,
-    code: 200,
-    data: result.recordset[0]
-};
+    return {
+        success: true,
+        code: 200,
+        data: result.recordset[0]
+    };
 
 
 
@@ -76,7 +76,7 @@ export async function createPlaylist(playlist: Playlist): Promise<SuccessService
 
 }
 
-export async function putPlaylist(playlist: PlaylistBD, id: string | string[]): Promise<PutSuccessService | ErrorService> {
+export async function putPlaylist(playlist: PlaylistBD, id: string | string[]): Promise<PutSuccessService<Response>| ErrorService> {
     if (!isValidPlaylist(playlist)) {
         return { success: false, code: 400, message: "fuck you" };
     }

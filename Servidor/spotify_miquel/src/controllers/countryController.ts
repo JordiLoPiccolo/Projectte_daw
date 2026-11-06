@@ -15,7 +15,7 @@ export async function getAllCountriesController(_req: Request, res: Response): P
 
 export async function getCountryByIdController(req: Request, res: Response): Promise<Response> {
 
-    const result: SelectSuccessServiceCountryBD> | ErrorService = await getCountryById(req.params.id as string);
+    const result: SelectSuccessService<CountryBD> | ErrorService = await getCountryById(req.params.id as string);
 
 
     if (!result.success) {
@@ -26,7 +26,7 @@ export async function getCountryByIdController(req: Request, res: Response): Pro
 
 export async function postCountryController(req: Request, res: Response): Promise<Response> {
 
-    const result: SuccessServiceCountryBD> | ErrorService = await createCountry(req.body);
+    const result: SuccessService | ErrorService = await createCountry(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -37,7 +37,7 @@ export async function postCountryController(req: Request, res: Response): Promis
 }
 
 export async function putCountryController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService | ErrorService = await putCountry(req.body, req.params.id as string);
+    const result: PutSuccessService<Response>| ErrorService = await putCountry(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

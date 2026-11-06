@@ -14,7 +14,7 @@ export function getAllAlbumTracks(): AlbumTrackBD[] {
 
 
 
-export function createAlbumTrack(ATrack: AlbumTrack): SuccessServiceAlbumTrackBD> | ErrorService {
+export function createAlbumTrack(ATrack: AlbumTrack): SuccessService| ErrorService {
 
     if (!isValidAlbumTrack(ATrack)) {
         return { success: false, code: 400, message: "fuck you" };
@@ -31,7 +31,7 @@ export function createAlbumTrack(ATrack: AlbumTrack): SuccessServiceAlbumTrackBD
     };
     albumTracks.push(AlbumTrackRecord);
 
-    return { success: true, data: AlbumTrackRecord, code: 201 };
+    return { success: true, data:0, code: 201 };
 
 
 }
@@ -45,6 +45,6 @@ export function deleteAlbumTrack(id: string | string[]): DeleteSuccessService | 
         return { success: false, code: 404, message: `AlbumTrack ${id} not found lol` };
     }
 
-    return { success: true, code: 204, index: index }
+    return { success: true, code: 204 }
 
 }

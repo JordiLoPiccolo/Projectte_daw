@@ -1,5 +1,5 @@
 import { ErrorService } from "../interfaces/error/errorService";
-import { PutSuccessService } from "../interfaces/error/putSuccesService";
+import { PutSuccessService< } from "../interfaces/error/putSuccesService";
 import { SuccessService } from "../interfaces/error/successService";
 import { Response, Request } from "express";
 import { createPlaylist, getAllPlaylists, getPlaylistById, putPlayList } from "../serveis/playlistServeis";
@@ -42,8 +42,8 @@ export function putPlaylistController(req: Request, res: Response): Response {
         return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const index: number = (result as PutSuccessServicePlaylistBD >).index;
-    playlists[index] = (result as PutSuccessServicePlaylistBD >).data;
+    const index: number = (result as PutSuccessService<PlaylistBD>).index;
+    playlists[index] = (result as PutSuccessService<PlaylistBD>).data;
 
 
     return res.status(200).json(playlists[index]);
@@ -59,7 +59,7 @@ export function deletePlaylistController(req: Request, res: Response): Response 
         return res.status(result.code).json({ message: errorResult.message });
     }
 
-    const index: number = (result as PutSuccessServicePlaylistBD >).index;
+    const index: number = (result as PutSuccessService<PlaylistBD>).index;
 
     playlists.splice(index, 1);
 

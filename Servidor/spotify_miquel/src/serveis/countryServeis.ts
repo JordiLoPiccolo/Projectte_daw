@@ -24,7 +24,7 @@ export async function getAllCountries(): Promise<CountryBD[]> {
 }
 
 export async function getCountryById(id: string
-): Promise<SelectSuccessServiceCountryBD> | ErrorService> {
+): Promise<SelectSuccessService<CountryBD> | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
@@ -34,19 +34,19 @@ export async function getCountryById(id: string
 
     const result: IResult<CountryBD> = await request.query(queryText);
 
-    if(result.recordset.length === 0) {
-    return {
-        success: false,
-        code: 404,
-        message: "Country not found. fuck you"
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Country not found. fuck you"
+        }
     }
-}
 
-return {
-    success: true,
-    code: 200,
-    data: result.recordset[0]
-};
+    return {
+        success: true,
+        code: 200,
+        data: result.recordset[0]
+    };
 
 
 
@@ -74,7 +74,7 @@ export async function createCountry(country: Country): Promise<SuccessService | 
 
 }
 
-export async function putCountry(country: CountryBD, id: string | string[]): Promise<PutSuccessService | ErrorService> {
+export async function putCountry(country: CountryBD, id: string | string[]): Promise<PutSuccessService<Response>| ErrorService> {
     if (!isValidCountry(country)) {
         return { success: false, code: 400, message: "fuck you" };
     }
