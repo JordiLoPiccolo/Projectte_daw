@@ -3,8 +3,8 @@ import { tracks } from "../data/track/track";
 import { AlbumBD } from "../interfaces/album/albumBd";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ErrorService } from "../interfaces/error/errorService";
-import { PutSuccessService< } from "../interfaces/error/putSuccesService";
-import { SelectSuccessService< } from "../interfaces/error/SelectSuccessService<";
+import { PutSuccessService } from "../interfaces/error/putSuccesService";
+import { SelectSuccessService } from "../interfaces/error/SelectsuccessService";
 import { SuccessService } from "../interfaces/error/successService";
 import { createAlbum, deleteAlbum, getAlbumById, getAllAlbums, putAlbum } from "../serveis/albumServeis";
 import { Response, Request } from "express";
@@ -27,7 +27,7 @@ export async function getAlbumByIdController(req: Request, res: Response): Promi
 
 export async function postAlbumController(req: Request, res: Response): Promise<Response> {
 
-    const result: SuccessServiceAlbumBD> | ErrorService = await createAlbum(req.body);
+    const result: SuccessService | ErrorService = await createAlbum(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -38,7 +38,7 @@ export async function postAlbumController(req: Request, res: Response): Promise<
 }
 
 export async function putAlbumController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService<| ErrorService = await putAlbum(req.body, req.params.id as string);
+    const result: PutSuccessService<Response>| ErrorService = await putAlbum(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

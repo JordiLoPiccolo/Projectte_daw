@@ -9,6 +9,7 @@ import type { reproductor } from './Model/Reproductor';
 import ListSongs from './Components/Songs/ListSongs';
 import { ENV } from './Config/env';
 import type { GETTrack } from './APIManagement/Tracks/Interfaces/Track';
+import type { AddHistory } from './APIManagement/History/Interfaces/HistoryCreate';
 
 
 
@@ -48,7 +49,7 @@ function App() {
     }, []
   );
 
-  function incrementReproduction(inc: number) {
+  async function incrementReproduction(inc: number) {
     const tr = (prev: TrackView): TrackView => {
       return {
         ...prev,
@@ -64,6 +65,26 @@ function App() {
       return { titol: track.title, reproduint: true };
     });
 
+    const newHistory: AddHistory = {
+      user: "jesucrist",
+      track: tracks[0].id
+    };
+
+    const response: Response = await fetch(
+      "http://localhost:3000/tracks/user/history",
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(newHistory)
+      }
+
+    
+    );
+    if (!response.ok) {
+      return false;
+    }
     setTrack(tr);
   }
 

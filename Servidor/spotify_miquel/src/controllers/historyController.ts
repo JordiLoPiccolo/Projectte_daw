@@ -1,7 +1,7 @@
 import { histories } from "../data/history/data.history";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
 import { ErrorService } from "../interfaces/error/errorService";
-import { PutSuccessService< } from "../interfaces/error/putSuccesService";
+import { PutSuccessService} from "../interfaces/error/putSuccesService";
 import { SuccessService } from "../interfaces/error/successService";
 import { HistoryBD } from "../interfaces/history/historyBD";
 import { createHistory, deleteHistory, getAllHistories, getHistoryById, putHistory } from "../serveis/historyServeis";
@@ -23,7 +23,7 @@ export function getHistoryByIdController(req: Request, res: Response): Response 
 }
 
 export function postHistoryController(req: Request, res: Response): Response {
-    const result: SuccessServiceHistoryBD> | ErrorService = createHistory(req.body);
+    const result: SuccessService | ErrorService = createHistory(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -31,12 +31,12 @@ export function postHistoryController(req: Request, res: Response): Response {
     }
 
 
-    histories.push((result as SuccessServiceHistoryBD >).data);
+    histories.push((result as SuccessService).data);
     return res.status(201).json(result);
 }
 
 export function putHistoryController(req: Request, res: Response): Response {
-    const result: SuccessServiceHistoryBD> | ErrorService = putHistory(req.body, req.params.id);
+    const result: SuccessService | ErrorService = putHistory(req.body, req.params.id);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

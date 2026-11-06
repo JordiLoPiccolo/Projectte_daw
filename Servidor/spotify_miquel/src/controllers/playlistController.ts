@@ -1,8 +1,8 @@
 import { ErrorService } from "../interfaces/error/errorService";
-import { PutSuccessService< } from "../interfaces/error/putSuccesService";
+import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { SuccessService } from "../interfaces/error/successService";
 import { Response, Request } from "express";
-import { createPlaylist, getAllPlaylists, getPlaylistById, putPlayList } from "../serveis/playlistServeis";
+import { createPlaylist, getAllPlaylists, getPlaylistById, putPlaylist } from "../serveis/playlistServeis";
 import { PlaylistBD } from "../interfaces/playlist/playlistBD";
 import { playlists } from "../data/playlist/data.playlist";
 
@@ -21,7 +21,7 @@ export function getPlaylistByIdController(req: Request, res: Response): Response
 }
 
 export function postPlaylistController(req: Request, res: Response): Response {
-    const result: SuccessServicePlaylistBD> | ErrorService = createPlaylist(req.body);
+    const result: SuccessService | ErrorService = createPlaylist(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -29,13 +29,13 @@ export function postPlaylistController(req: Request, res: Response): Response {
     }
 
 
-    playlists.push((result as SuccessServicePlaylistBD >).data);
+    playlists.push((result as SuccessService).data);
 
     return res.status(201).json(result);
 }
 
 export function putPlaylistController(req: Request, res: Response): Response {
-    const result: SuccessServicePlaylistBD> | ErrorService = putPlayList(req.body, req.params.id);
+    const result: SuccessService | ErrorService = putPlayList(req.body, req.params.id);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -52,7 +52,7 @@ export function putPlaylistController(req: Request, res: Response): Response {
 export function deletePlaylistController(req: Request, res: Response): Response {
 
 
-    const result: SuccessServicePlaylistBD> | ErrorService = putPlayList(req.body, req.params.id);
+    const result: SuccessService | ErrorService = putPlayList(req.body, req.params.id);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

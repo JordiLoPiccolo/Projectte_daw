@@ -12,7 +12,7 @@ export function getAllAlbumTracksController(_req: Request, res: Response): Respo
 
 
 export function postAlbumTrackController(req: Request, res: Response): Response {
-    const result: SuccessServiceAlbumTrackBD> | ErrorService = createAlbumTrack(req.body);
+    const result: SuccessService| ErrorService = createAlbumTrack(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -20,7 +20,7 @@ export function postAlbumTrackController(req: Request, res: Response): Response 
     }
 
 
-    albumTracks.push((result as SuccessServiceAlbumTrackBD >).data);
+    albumTracks.push((result as SuccessService).data);
 
     return res.status(201).json(result);
 }
