@@ -85,6 +85,9 @@ function App() {
     if (!response.ok) {
       return false;
     }
+
+    const result = await response.json();
+    
     setTrack(tr);
   }
 
