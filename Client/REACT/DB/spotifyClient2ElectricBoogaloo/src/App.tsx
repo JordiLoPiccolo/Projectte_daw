@@ -49,6 +49,8 @@ function App() {
     }, []
   );
 
+//IMPORTANT: select sum(like) from dbo.Likes where track_id="....";
+
   async function incrementReproduction(inc: number) {
     const tr = (prev: TrackView): TrackView => {
       return {
@@ -89,6 +91,7 @@ function App() {
     }
 
     const result = await response.json();
+    console.log(result)
     
     
   }
