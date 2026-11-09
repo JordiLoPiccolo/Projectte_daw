@@ -193,7 +193,7 @@ function App() {
         }
         
         <aside>
-          <SongCard trackInfo={track} play={(inc: number) => incrementReproduction(inc)} like={() => gestionarLikes()} reset={() => gestionarReset()}/>
+          <SongCard trackInfo={track} reproduint={cancoReproduint.reproduint} play={(inc: number) => incrementReproduction(inc)} like={() => gestionarLikes()} reset={() => gestionarReset()}/>
         </aside>
       </main>
       <ReproCard reproductor={cancoReproduint} controlVolum={(pujabaixa: number) => handleVolum(pujabaixa)} stop={aturarReproduccio} />

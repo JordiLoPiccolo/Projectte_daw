@@ -4,25 +4,18 @@ import type { HistoryListProps } from "./Types/HistoryListProps";
 let History: string[] = [];
 
 const ListHistory = (props: HistoryListProps) => {
-
-    History.push(props.Historytrack);
     return (
         <>
             {
-                History.map(
-
-                    (t: string) => {
+                props.history.map(
+                    (entry, index) => {
                         return (
-                            <>
-                                <tr>
-                                    <td><b>Títol</b>: {t}</td>
-                                    <td>{new Date().toTimeString().slice(0, 8)}</td>
-                                </tr>
-                            </>
+                            <tr key={`${entry.time}-${entry.title}-${index}`}>
+                                <td><b>Títol</b>: {entry.title}</td>
+                                <td>{entry.time}</td>
+                            </tr>
                         )
-
                     }
-
                 )
             }
         </>

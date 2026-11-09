@@ -1,5 +1,9 @@
 
+export interface HistoryEntry {
+    title: string;
+    time: string;
+}
 
 export interface HistoryListProps {
-    Historytrack: string;
+    history: HistoryEntry[];
 }
