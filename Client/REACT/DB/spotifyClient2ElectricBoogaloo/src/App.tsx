@@ -64,7 +64,9 @@ function App() {
 
       return { titol: track.title, reproduint: true };
     });
-
+    
+    setTrack(tr);
+    
     const newHistory: AddHistory = {
       user: "jesucrist",
       track: tracks[0].id
@@ -88,7 +90,7 @@ function App() {
 
     const result = await response.json();
     
-    setTrack(tr);
+    
   }
 
   function aturarReproduccio() {
