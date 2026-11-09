@@ -1,10 +1,7 @@
-import { randomUUID } from "crypto";
-
 import { ErrorService } from "../interfaces/error/errorService";
 import { SuccessService } from "../interfaces/error/successService";
 import { PutSuccessService } from "../interfaces/error/putSuccesService";
 import { DeleteSuccessService } from "../interfaces/error/deleteSuccesService";
-import { playlists } from "../data/playlist/data.playlist";
 import { PlaylistBD } from "../interfaces/playlist/playlistBD";
 import { Playlist } from "../interfaces/playlist/playlist";
 import { isValidPlaylist } from "../validators/playlistValidator";

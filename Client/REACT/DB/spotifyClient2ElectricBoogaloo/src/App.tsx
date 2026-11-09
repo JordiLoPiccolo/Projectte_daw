@@ -81,7 +81,7 @@ function App() {
     setTrack(tr);
     
     const newHistory: AddHistory = {
-      user: "jesucrist",
+      user: "921C4AA8-930B-4A10-91D0-CB3BCD3B12C4",
       track: tracks[0].id
     };
 
@@ -197,16 +197,17 @@ function App() {
                 <title>List Songs</title>
               </thead>
               <tbody>
-                <ListSongs tracks={tracks} />
+                <ListSongs tracks={tracks} onPlay={() => incrementReproduction(1)} />
               </tbody>
             </table>
             :<></>
         }
+        <PlaylistCard playlists={playlists} />
         
         <aside>
           <SongCard trackInfo={track} reproduint={cancoReproduint.reproduint} play={(inc: number) => incrementReproduction(inc)} like={() => gestionarLikes()} reset={() => gestionarReset()}/>
         </aside>
-        <PlaylistCard playlists={playlists} />
+        
       </main>
       <ReproCard reproductor={cancoReproduint} controlVolum={(pujabaixa: number) => handleVolum(pujabaixa)} stop={aturarReproduccio} />
     </>
