@@ -197,7 +197,7 @@ function App() {
                 <title>List Songs</title>
               </thead>
               <tbody>
-                <ListSongs tracks={tracks} onPlay={() => incrementReproduction(1)} />
+                <ListSongs tracks={tracks} onPlay={() => incrementReproduction(1)} setTrack={setTrack} />
               </tbody>
             </table>
             :<></>

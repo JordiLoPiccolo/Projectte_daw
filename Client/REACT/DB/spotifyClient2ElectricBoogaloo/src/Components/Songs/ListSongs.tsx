@@ -16,7 +16,14 @@ const ListSongs = (props: SongListProps) => {
                             title={t.title}
                             artist={t.artist}
                             duration={t.duration}
-                            onPlay={() => props.onPlay(t)}
+                            onPlay={() => {
+                                props.setTrack({
+                                    ...t,
+                                    likes: { like: false, totalLikes: 0 },
+                                    reproduccions: 0
+                                });
+                                props.onPlay(t);
+                            }}
                         />
 
                     }

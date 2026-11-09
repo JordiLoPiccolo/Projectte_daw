@@ -7,10 +7,12 @@ table {
 }
 
 #playlist{
+    max-width: 50%;
+    
     position: absolute;
-        margin: 50px;
-        border: 2px solid black;
-        padding: 3px;
-        right: 50px;
-        top:55%;
+    margin: 50px;
+    border: 2px solid black;
+    padding: 3px;
+    right: 50px;
+    top:55%;
 }
