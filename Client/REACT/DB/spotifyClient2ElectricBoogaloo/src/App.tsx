@@ -10,6 +10,8 @@ import ListSongs from './Components/Songs/ListSongs';
 import { ENV } from './Config/env';
 import type { GETTrack } from './APIManagement/Tracks/Interfaces/Track';
 import type { AddHistory } from './APIManagement/History/Interfaces/HistoryCreate';
+import type { GETPlaylist } from './APIManagement/Playlists/Interface/Playlist';
+import PlaylistCard from './Components/LlistaReproduccio/PlaylistCard';
 
 
 
@@ -17,6 +19,7 @@ import type { AddHistory } from './APIManagement/History/Interfaces/HistoryCreat
 function App() {
 
   const [tracks, setTracks] = useState<GETTrack[]>([]);
+  const [playlists, setPlaylist] = useState<GETPlaylist[]>([]);
 
   const [user] = useState(() => randomUser());
   const [cancoReproduint, setReproduccio] = useState<reproductor>(
@@ -42,10 +45,18 @@ function App() {
     const listTrack: GETTrack[] = await resposta.json() as GETTrack[];  
     setTracks(listTrack);
   }
+
+  async function carregarDadesPlaylist() {
+
+    const resposta: Response = await fetch(`${ENV.API_BASE_URL}/playlists`);
+    const listPlaylist: GETPlaylist[] = await resposta.json() as GETPlaylist[];
+    setPlaylist(listPlaylist);
+  }
     
   useEffect(
     () => {
       carregarDadesTrack();
+      carregarDadesPlaylist();
     }, []
   );
 
@@ -195,6 +206,7 @@ function App() {
         <aside>
           <SongCard trackInfo={track} reproduint={cancoReproduint.reproduint} play={(inc: number) => incrementReproduction(inc)} like={() => gestionarLikes()} reset={() => gestionarReset()}/>
         </aside>
+        <PlaylistCard playlists={playlists} />
       </main>
       <ReproCard reproductor={cancoReproduint} controlVolum={(pujabaixa: number) => handleVolum(pujabaixa)} stop={aturarReproduccio} />
     </>

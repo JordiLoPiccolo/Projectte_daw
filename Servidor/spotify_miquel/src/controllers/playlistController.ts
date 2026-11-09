@@ -6,8 +6,9 @@ import { createPlaylist, getAllPlaylists, getPlaylistById, putPlaylist } from ".
 import { PlaylistBD } from "../interfaces/playlist/playlistBD";
 import { playlists } from "../data/playlist/data.playlist";
 
-export function getAllPlaylistController(_req: Request, res: Response): Response {
-    return res.status(200).json(getAllPlaylists())
+export async function getAllPlaylistController(_req: Request, res: Response): Promise<Response> {
+    const playlists: PlaylistBD[] = await getAllPlaylists();
+    return res.status(200).json(playlists);
 }
 
 export function getPlaylistByIdController(req: Request, res: Response): Response {
