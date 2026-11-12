@@ -8,8 +8,7 @@ const PlaylistCard = ({ playlists }: PlaylistCardProps) => {
                 <div>
                     <tr>
                         <td><h3>{playlist.title}</h3></td>
-                        <td> || </td>
-                    <td><b>Usuari</b>: {playlist.user_id}</td>
+                        <td><button >Mostra Cancons</button></td>
                     </tr>
               </div>
             ))}
