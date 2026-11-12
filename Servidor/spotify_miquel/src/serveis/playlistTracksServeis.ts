@@ -49,6 +49,8 @@ export function deletePlaylistTrack(id: string | string[]): DeleteSuccessService
         return { success: false, code: 404, message: `PlaylistTrack ${id} not found lol` };
     }
 
+    playlistTracks.splice(index, 1);
+
     return { success: true, code: 204 }
 
 }
