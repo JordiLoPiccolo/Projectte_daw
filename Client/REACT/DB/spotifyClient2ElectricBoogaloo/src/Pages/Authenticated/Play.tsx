@@ -163,11 +163,9 @@ const Play = () => {
         return volum
     }
 
-    const [date, setDate] = useState(() => new Date());
+    
 
-    function updateDate() {
-        setDate(new Date());
-    }
+   
 
 
 
@@ -175,15 +173,7 @@ const Play = () => {
     return (
         <>
 
-
-
-            <header>
-                <h1>Spotify Miquel</h1>
-                Data:{date.getDate()}-{date.getMonth() + 1}-{date.getFullYear()}  {date.getHours()}:{date.getMinutes()}:{date.getSeconds()} ||
-                User: {user}
-                <p><button onClick={() => updateDate()}>Update data</button></p>
-            </header>
-
+           
             <p><button onClick={() => handleRandom()}>Random</button></p>
             <main>
                 {
