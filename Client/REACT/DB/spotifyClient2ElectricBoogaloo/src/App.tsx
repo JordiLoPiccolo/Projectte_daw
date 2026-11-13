@@ -9,7 +9,7 @@ import { randomUser } from './Components/users';
 
 function App() {
 
-  
+
   const [user] = useState(() => randomUser());
   const [date, setDate] = useState(() => new Date());
 
@@ -26,13 +26,12 @@ function App() {
     </header>
 
     <Routes>
-      <Route>
+      <Route path="/Play" element={<Play/>}>
         
       </Route>
     </Routes>
   </BrowserRouter> 
  
-  Play();
 }
 
 

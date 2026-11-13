@@ -7,7 +7,6 @@ import PlaylistCard from '../../Components/LlistaReproduccio/PlaylistCard';
 import ListSongs from '../../Components/Songs/ListSongs';
 import SongCard from '../../Components/Songs/SongCard';
 import type { TrackView } from '../../Components/Songs/Types/TrackView';
-import { randomUser } from '../../Components/users';
 import { ENV } from '../../Config/env';
 import type { Like } from '../../Model/Like';
 import type { reproductor } from '../../Model/Reproductor';
@@ -17,7 +16,6 @@ const Play = () => {
     const [tracks, setTracks] = useState<GETTrack[]>([]);
     const [playlists, setPlaylist] = useState<GETPlaylist[]>([]);
 
-    const [user] = useState(() => randomUser());
     const [cancoReproduint, setReproduccio] = useState<reproductor>(
         {
             titol: "",
