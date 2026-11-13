@@ -3,6 +3,7 @@ import './App.css'
 import Play from './Pages/Authenticated/Play';
 import { useState } from 'react';
 import { randomUser } from './Components/users';
+import Menu from './Components/PageEstructure/Menu/Menu';
 
 
 
@@ -24,7 +25,7 @@ function App() {
         User: {user}
         <p><button onClick={() => updateDate()}>Update data</button></p>
       </header>
-
+      <Menu />
       <Routes>
         <Route path="/Play" element={<Play />}>
 
