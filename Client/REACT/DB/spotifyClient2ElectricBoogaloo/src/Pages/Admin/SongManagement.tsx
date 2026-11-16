@@ -57,12 +57,12 @@ function addSong() {
                         </table>
                         : <></>
                 }
-                <button onClick={addSong}>nova</button>
+           
             </main>
             {
                 newSong ?
-                    <AddSongForm />
-                    : <></>
+                    <AddSongForm refreshSongs={carregarDadesTrack} />
+                    : <button onClick={addSong}>nova</button>
             }
         </>
     )
