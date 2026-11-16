@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import type { GETTrack } from '../../APIManagement/Tracks/Interfaces/Track';
 import type { GETPlaylist } from '../../APIManagement/Playlists/Interface/Playlist';
 import ReproCard from '../../Components/Reproductor/ReproCard';
-import type { AddHistory } from '../../APIManagement/History/Interfaces/HistoryCreate';
 import PlaylistCard from '../../Components/LlistaReproduccio/PlaylistCard';
 import ListSongs from '../../Components/Songs/ListSongs';
 import SongCard from '../../Components/Songs/SongCard';
@@ -11,6 +10,7 @@ import { ENV } from '../../Config/env';
 import type { Like } from '../../Model/Like';
 import type { reproductor } from '../../Model/Reproductor';
 import type { GETPlaylistTracks } from '../../APIManagement/PlaylistTrack/Interface/PlaylistTrack';
+import { getIncrementReproduction } from './getIncrementReproduction';
 
 
 const Play = () => {
@@ -67,6 +67,7 @@ const Play = () => {
 
     //IMPORTANT: select sum(like) from dbo.Likes where track_id="....";
 
+
     async function incrementReproduction(inc: number, selectedTrack?: GETTrack) {
         const trackToPlay = selectedTrack ?? tracks.find((currentTrack) => currentTrack.id === currentTrackId);
 
@@ -90,30 +91,10 @@ const Play = () => {
 
         const trackId = trackToPlay?.id ?? currentTrackId;
         if (!trackId) return;
-        const newHistory: AddHistory = {
-            user: "921C4AA8-930B-4A10-91D0-CB3BCD3B12C4",
-            track: trackId
-        };
-
-        const response: Response = await fetch(
-            "http://localhost:3000/tracks/user/history",
-            {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify(newHistory)
-            }
-
-
-        );
-        if (!response.ok) {
+        const historyAdded = await getIncrementReproduction(trackId);
+        if (!historyAdded) {
             return false;
         }
-
-        const result = await response.json();
-        console.log(result)
-
 
     }
 
