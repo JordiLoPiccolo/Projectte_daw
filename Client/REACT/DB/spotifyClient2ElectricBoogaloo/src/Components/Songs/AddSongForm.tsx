@@ -73,11 +73,11 @@ const AddSongFrom = (props:AddSongFormProps) => {
                             name="artist"
                             required >
                             {
-                                artists.map(
+                               /* artists.map(
                                     (a: GETArtist) => (
                                         <option key={a.id} value={a.id}>{a.name}</option>
                                     )
-                                )    
+                                )    */
                             }
                         </select>
                         <button>Add</button> 

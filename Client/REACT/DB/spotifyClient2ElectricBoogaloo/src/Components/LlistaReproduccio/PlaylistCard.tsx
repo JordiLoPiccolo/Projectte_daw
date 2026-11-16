@@ -23,7 +23,7 @@ const PlaylistCard = ({ playlists, playlistTracks, tracks, onPlay }: PlaylistCar
             <h2>Playlists</h2>
             {playlists.map((playlist) => {
                 const playlistSongs = playlistTracks
-                    .filter((playlistTrack) => playlistTrack.user_id === playlist.user_id)
+                    .filter((playlistTrack) => playlistTrack.playlist_id === playlist.id)
                     .map((playlistTrack) => ({
                         playlistTrack,
                         track: tracks.find((track) => track.id === playlistTrack.track_id),
