@@ -62,7 +62,7 @@ function addSong() {
             {
                 newSong ?
                     <AddSongForm refreshSongs={carregarDadesTrack} />
-                    : <button onClick={addSong}>nova</button>
+                    : <button onClick={addSong}>nove</button>
             }
         </>
     )

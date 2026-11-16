@@ -23,7 +23,7 @@ const PlaylistCard = ({ playlists, playlistTracks, tracks, onPlay }: PlaylistCar
             <h2>Playlists</h2>
             {playlists.map((playlist) => {
                 const playlistSongs = playlistTracks
-                    .filter((playlistTrack) => playlistTrack.playlist_id === playlist.id)
+                    .filter((playlistTrack) => playlistTrack.playlist_id === playlist.id) 
                     .map((playlistTrack) => ({
                         playlistTrack,
                         track: tracks.find((track) => track.id === playlistTrack.track_id),
@@ -32,7 +32,8 @@ const PlaylistCard = ({ playlists, playlistTracks, tracks, onPlay }: PlaylistCar
                 const isExpanded = expandedPlaylists.has(playlist.id);
 
                 return (
-                    <article key={playlist.id}>
+                   
+                    < article key = { playlist.id } >
                         <h3>{playlist.title}</h3>
                         <button
                             type="button"

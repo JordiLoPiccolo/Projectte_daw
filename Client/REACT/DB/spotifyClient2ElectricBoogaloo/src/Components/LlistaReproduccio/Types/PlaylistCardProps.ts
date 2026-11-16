@@ -7,4 +7,6 @@ export interface PlaylistCardProps {
     playlistTracks: GETPlaylistTracks[];
     tracks: GETTrack[];
     onPlay: (track: GETTrack) => void;
+    
 }
+
