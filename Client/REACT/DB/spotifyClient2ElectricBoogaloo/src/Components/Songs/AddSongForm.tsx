@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type SubmitEvent } from "react";
 import { ENV } from "../../Config/env";
 import type { GETArtist } from "../../APIManagement/Artists/Interface/Artist";
+import type { SubmitFunction } from "react-router";
+import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TrackCreate";
+import { PostTrack } from "../../APIManagement/Tracks/PostTrack";
 
 const AddSongFrom = () => {
 
@@ -13,7 +16,7 @@ const AddSongFrom = () => {
             setArtists(listArtist);
         }
     
-        
+            
     
     
         useEffect(
@@ -22,12 +25,26 @@ const AddSongFrom = () => {
     
             }, []
         );
+        
+    async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        const dades = new FormData(event.currentTarget);
+        
+        const song: TrackCreate = {
+            title: String(dades.get("title") ?? "").trim(),
+            artist: String(dades.get("artist") ?? "").trim(),
+            duration: Number(dades.get("duration") ?? "")
+        };
+
+        await PostTrack(song);
+    }
     
 
     return (
         <>
             <h1>Afegir Canco</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <p>
                     <label>
                         Títol:
@@ -64,6 +81,9 @@ const AddSongFrom = () => {
                     </label>
                     
                 </p>
+                <button type="submit"> 
+                    Desa
+                </button>
             </form>
         </>
     )
