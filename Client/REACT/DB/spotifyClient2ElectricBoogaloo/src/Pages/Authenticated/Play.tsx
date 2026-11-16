@@ -10,11 +10,14 @@ import type { TrackView } from '../../Components/Songs/Types/TrackView';
 import { ENV } from '../../Config/env';
 import type { Like } from '../../Model/Like';
 import type { reproductor } from '../../Model/Reproductor';
+import type { GETPlaylistTracks } from '../../APIManagement/PlaylistTrack/Interface/PlaylistTrack';
 
 
 const Play = () => {
     const [tracks, setTracks] = useState<GETTrack[]>([]);
     const [playlists, setPlaylist] = useState<GETPlaylist[]>([]);
+    const [playlistTracks, setPlaylistTracks] = useState<GETPlaylistTracks[]>([]);
+    const [currentTrackId, setCurrentTrackId] = useState<string | null>(null);
 
     const [cancoReproduint, setReproduccio] = useState<reproductor>(
         {
@@ -47,36 +50,49 @@ const Play = () => {
         setPlaylist(listPlaylist);
     }
 
+    async function carregarDadesPlaylistTracks() {
+
+        const resposta: Response = await fetch(`${ENV.API_BASE_URL}/playlistTracks`);
+        const listPlaylistTracks: GETPlaylistTracks[] = await resposta.json() as GETPlaylistTracks[];
+        setPlaylistTracks(listPlaylistTracks);
+    }
+
     useEffect(
         () => {
             carregarDadesTrack();
             carregarDadesPlaylist();
+            carregarDadesPlaylistTracks();
         }, []
     );
 
     //IMPORTANT: select sum(like) from dbo.Likes where track_id="....";
 
-    async function incrementReproduction(inc: number) {
-        const tr = (prev: TrackView): TrackView => {
-            return {
-                ...prev,
-                "reproduccions": + prev.reproduccions + inc
-            }
+    async function incrementReproduction(inc: number, selectedTrack?: GETTrack) {
+        const trackToPlay = selectedTrack ?? tracks.find((currentTrack) => currentTrack.id === currentTrackId);
+
+        if (selectedTrack) {
+            setCurrentTrackId(selectedTrack.id);
+            setTrack({
+                ...selectedTrack,
+                reproduccions: inc,
+                likes: { like: false, totalLikes: 0 },
+            });
+        } else {
+            setTrack((previousTrack: TrackView) => ({
+                ...previousTrack,
+                reproduccions: previousTrack.reproduccions + inc,
+            }));
         }
 
-        setReproduccio((reproductorActual) => {
-            if (reproductorActual.reproduint) {
-                return { titol: "", reproduint: false };
-            }
+        if (trackToPlay) {
+            setReproduccio({ titol: trackToPlay.title, reproduint: true });
+        }
 
-            return { titol: track.title, reproduint: true };
-        });
-
-        setTrack(tr);
-
+        const trackId = trackToPlay?.id ?? currentTrackId;
+        if (!trackId) return;
         const newHistory: AddHistory = {
             user: "921C4AA8-930B-4A10-91D0-CB3BCD3B12C4",
-            track: tracks[0].id
+            track: trackId
         };
 
         const response: Response = await fetch(
@@ -129,6 +145,8 @@ const Play = () => {
     }
 
     function handleRandom() {
+        if (tracks.length === 0) return;
+
         const random: number = Math.floor(Math.random() * tracks.length)
         const randomTrack: TrackView = {
             ...tracks[random],
@@ -139,6 +157,7 @@ const Play = () => {
             "reproduccions": Math.floor(Math.random() * 200)
         };
         setTrack(randomTrack);
+        setCurrentTrackId(tracks[random].id);
     }
 
     function gestionarReset() {
@@ -181,12 +200,17 @@ const Play = () => {
                                 <title>List Songs</title>
                             </thead>
                             <tbody>
-                                <ListSongs tracks={tracks} onPlay={() => incrementReproduction(1)} setTrack={setTrack} />
+                                <ListSongs tracks={tracks} onPlay={(selectedTrack) => incrementReproduction(1, selectedTrack)} setTrack={setTrack} />
                             </tbody>
                         </table>
                         : <></>
                 }
-                <PlaylistCard playlists={playlists} />
+                <PlaylistCard
+                    playlists={playlists}
+                    playlistTracks={playlistTracks}
+                    tracks={tracks}
+                    onPlay={(selectedTrack) => incrementReproduction(1, selectedTrack)}
+                />
 
                 <aside>
                     <SongCard trackInfo={track} reproduint={cancoReproduint.reproduint} play={(inc: number) => incrementReproduction(inc)} like={() => gestionarLikes()} reset={() => gestionarReset()} />

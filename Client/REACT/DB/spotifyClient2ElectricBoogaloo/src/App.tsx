@@ -4,6 +4,7 @@ import Play from './Pages/Authenticated/Play';
 import { useState } from 'react';
 import { randomUser } from './Components/users';
 import Menu from './Components/PageEstructure/Menu/Menu';
+import SongManagement from './Pages/Authenticated/SongManagement';
 
 
 
@@ -27,8 +28,8 @@ function App() {
       </header>
       <Menu />
       <Routes>
-        <Route path="/Play" element={<Play />}>
-
+        <Route path="/Play" element={<Play />}/>
+        <Route path="/SongManagement" element={<SongManagement />}>
         </Route>
       </Routes>
     </BrowserRouter>
