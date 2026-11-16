@@ -10,7 +10,7 @@ import { ENV } from '../../Config/env';
 import type { Like } from '../../Model/Like';
 import type { reproductor } from '../../Model/Reproductor';
 import type { GETPlaylistTracks } from '../../APIManagement/PlaylistTrack/Interface/PlaylistTrack';
-import { getIncrementReproduction } from './getIncrementReproduction';
+import { getIncrementReproduction } from '../../Components/getIncrementReproduction';
 
 
 const Play = () => {
@@ -161,9 +161,9 @@ const Play = () => {
         return volum
     }
 
-    
 
-   
+
+
 
 
 
@@ -171,7 +171,7 @@ const Play = () => {
     return (
         <>
 
-           
+
             <p><button onClick={() => handleRandom()}>Random</button></p>
             <main>
                 {

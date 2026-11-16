@@ -4,7 +4,7 @@ import Play from './Pages/Authenticated/Play';
 import { useState } from 'react';
 import { randomUser } from './Components/users';
 import Menu from './Components/PageEstructure/Menu/Menu';
-import SongManagement from './Pages/Authenticated/SongManagement';
+import SongManagement from './Pages/Admin/SongManagement';
 
 
 

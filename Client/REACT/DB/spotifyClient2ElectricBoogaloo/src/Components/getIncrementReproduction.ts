@@ -1,5 +1,5 @@
-import type { AddHistory } from "../../APIManagement/History/Interfaces/HistoryCreate";
-import { ENV } from "../../Config/env";
+import type { AddHistory } from "../APIManagement/History/Interfaces/HistoryCreate";
+import { ENV } from "../Config/env";
 
 export async function getIncrementReproduction(trackId: string): Promise<boolean> {
     const newHistory: AddHistory = {
