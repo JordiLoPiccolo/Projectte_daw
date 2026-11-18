@@ -2,7 +2,6 @@ import { useEffect, useState, type SubmitEvent } from "react";
 import { ENV } from "../../Config/env";
 import type { GETArtist } from "../../APIManagement/Artists/Interface/Artist";
 import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TrackCreate";
-import { PostTrack } from "../../APIManagement/Tracks/PostTrack";
 import type { AddSongFormProps } from "./Types/AddSongFormProps";
 
 const AddSongFrom = (props:AddSongFormProps) => {
@@ -38,9 +37,8 @@ const AddSongFrom = (props:AddSongFormProps) => {
         };
 
         
-        await PostTrack(song);
-        dades.set("title","");
-        props.refreshSongs();
+        await props.submit(song);
+        
     }
     
 

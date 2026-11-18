@@ -8,6 +8,7 @@ import AddSongForm from "../../Components/Songs/AddSongForm";
 import type { FormState } from "./Types/FormState";
 import type { Track } from "../../Model/Track";
 import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TrackCreate";
+import { PostTrack } from "../../APIManagement/Tracks/PostTrack";
 
 
 const SongManagement = () => {
@@ -51,9 +52,12 @@ const SongManagement = () => {
         });
     }
 
-    function save(t:TrackCreate) {
-        
+    async function save(t: TrackCreate) {
+        await PostTrack(t);
+        await carregarDadesTrack();
+        setNewSong({ mode: "none" });
     }
+
     return (
         <>
             <main>
@@ -74,8 +78,8 @@ const SongManagement = () => {
 
             </main>
             {
-                newSong ?
-                    <AddSongForm refreshSongs={carregarDadesTrack} submit={ (t) => save(t)} />
+                newSong.mode === "new" ?
+                    <AddSongForm submit={ (t) => save(t)} />
                     : <button onClick={addSong}>nove</button>
             }
         </>

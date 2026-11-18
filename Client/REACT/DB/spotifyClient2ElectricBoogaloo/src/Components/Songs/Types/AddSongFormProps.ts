@@ -2,6 +2,5 @@ import type { TrackCreate } from "../../../APIManagement/Tracks/Interfaces/Track
 
 export interface AddSongFormProps{
 
-    refreshSongs: () => void;
     submit: (t: TrackCreate) => void;
 }
