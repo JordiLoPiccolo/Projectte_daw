@@ -58,6 +58,12 @@ const SongManagement = () => {
         setNewSong({ mode: "none" });
     }
 
+    async function update(t: TrackCreate) {
+        await PostTrack(t);
+        await carregarDadesTrack();
+        setNewSong({ mode: "none" });
+    }
+
     return (
         <>
             <main>
@@ -80,7 +86,9 @@ const SongManagement = () => {
             {
                 newSong.mode === "new" ?
                     <AddSongForm submit={ (t) => save(t)} />
-                    : <button onClick={addSong}>nove</button>
+                    : newSong.mode === "edit" ?
+                        <AddSongForm submit={(t) => update(t)} song={newSong.song} />
+                        :<button onClick={addSong}>nove</button>
             }
         </>
     )
