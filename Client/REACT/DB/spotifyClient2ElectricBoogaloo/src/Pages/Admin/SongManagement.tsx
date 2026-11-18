@@ -6,6 +6,7 @@ import { ENV } from "../../Config/env";
 import { getIncrementReproduction } from "../../Components/getIncrementReproduction";
 import AddSongForm from "../../Components/Songs/AddSongForm";
 import type { FormState } from "./Types/FormState";
+import type { Track } from "../../Model/Track";
 
 
 const SongManagement = () => {
@@ -42,11 +43,11 @@ const SongManagement = () => {
         setNewSong({ mode: "new" });
     }
   
-    function edit() {
+    function edit(t:Track) {
         setNewSong({
             mode: "edit",
-            song: ;
-        })
+            song: t
+        });
     }
     return (
         <>
