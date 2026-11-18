@@ -12,6 +12,7 @@ const SongRow = (props: SongRowProps) => {
             id: props.id,
             title: props.title,
             artist: props.artist,
+            artist_id: props.artist_id,
             duration: props.duration
         }
 

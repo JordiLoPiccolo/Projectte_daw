@@ -71,18 +71,23 @@ const AddSongFrom = (props:AddSongFormProps) => {
                     <p></p>
                     <label>
                         Artista:
-                        <select
-                            name="artist"
-                            defaultValue={props.song ? props.song.artist : ""}
-                            required >
-                            {
-                               /* artists.map(
-                                    (a: GETArtist) => (
-                                        <option key={a.id} value={a.id}>{a.name}</option>
-                                    )
-                                )    */
-                            }
-                        </select>
+                        {
+                            artists.length > 0
+                                ?
+                                <select
+                                name="artist"
+                                defaultValue={props.song?.artist_id}
+                                required >
+                                {
+                                    artists.map(
+                                         (a: GETArtist) => (
+                                             <option key={a.id} value={a.id}>{a.name}</option>
+                                         )
+                                     )    
+                                }
+                                </select>
+                                :<>Cagant els artistes</>
+                        }
                         <button>Add</button> 
                     </label>
                     
