@@ -5,11 +5,13 @@ import type { TrackView } from "../../Components/Songs/Types/TrackView";
 import { ENV } from "../../Config/env";
 import { getIncrementReproduction } from "../../Components/getIncrementReproduction";
 import AddSongForm from "../../Components/Songs/AddSongForm";
+import type { FormState } from "./Types/FormState";
 
 
 const SongManagement = () => {
 
     const [tracks, setTracks] = useState<GETTrack[]>([]);
+    const [newSong, setNewSong] = useState<FormState>({ mode: "none" });
     const [track, setTrack] = useState<TrackView>(
         {
             ...tracks[Math.floor(Math.random() * tracks.length)],
@@ -26,7 +28,7 @@ const SongManagement = () => {
         setTracks(listTrack);
     }
 
-    
+
 
 
     useEffect(
@@ -35,10 +37,16 @@ const SongManagement = () => {
 
         }, []
     );
-
-    const [newSong, setNewSong] = useState<boolean>(false);
-function addSong() {
-        setNewSong(true);
+  
+    function addSong() {
+        setNewSong({ mode: "new" });
+    }
+  
+    function edit() {
+        setNewSong({
+            mode: "edit",
+            song: ;
+        })
     }
     return (
         <>
@@ -57,7 +65,7 @@ function addSong() {
                         </table>
                         : <></>
                 }
-           
+
             </main>
             {
                 newSong ?
