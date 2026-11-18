@@ -70,7 +70,7 @@ const SongManagement = () => {
                                 <title>List Songs</title>
                             </thead>
                             <tbody>
-                                <ListSongs tracks={tracks} onPlay={(selectedTrack) => getIncrementReproduction(selectedTrack.id)} setTrack={setTrack} />
+                                <ListSongs tracks={tracks} edit={edit} onPlay={(selectedTrack) => getIncrementReproduction(selectedTrack.id)} setTrack={setTrack} />
                             </tbody>
                         </table>
                         : <></>

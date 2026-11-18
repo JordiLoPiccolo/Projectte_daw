@@ -13,9 +13,11 @@ const ListSongs = (props: SongListProps) => {
                     (t: GETTrack) => {
                         return <SongRow
                             id={t.id}
+                            key={t.id}
                             title={t.title}
                             artist={t.artist}
                             duration={t.duration}
+                            edit={props.edit}
                             onPlay={() => {
                                 props.setTrack({
                                     ...t,
