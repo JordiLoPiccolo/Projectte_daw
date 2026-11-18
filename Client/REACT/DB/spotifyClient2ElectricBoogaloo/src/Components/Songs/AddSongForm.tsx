@@ -52,6 +52,7 @@ const AddSongFrom = (props:AddSongFormProps) => {
                         <input
                             type="text"
                             name="title"
+                            defaultValue={props.song?props.song.title:""}
                             required/>
                     </label>
                 </p>
@@ -61,6 +62,7 @@ const AddSongFrom = (props:AddSongFormProps) => {
                         <input
                             type="number"
                             name="duaration"
+                            defaultValue={props.song ? props.song.duration : ""}
                             required />
                     </label>
                 </p>
@@ -71,6 +73,7 @@ const AddSongFrom = (props:AddSongFormProps) => {
                         Artista:
                         <select
                             name="artist"
+                            defaultValue={props.song ? props.song.artist : ""}
                             required >
                             {
                                /* artists.map(

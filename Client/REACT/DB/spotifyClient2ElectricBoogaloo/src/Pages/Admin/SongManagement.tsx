@@ -9,6 +9,7 @@ import type { FormState } from "./Types/FormState";
 import type { Track } from "../../Model/Track";
 import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TrackCreate";
 import { PostTrack } from "../../APIManagement/Tracks/PostTrack";
+import { PutTrack } from "../../APIManagement/Tracks/PutTrack";
 
 
 const SongManagement = () => {
@@ -59,7 +60,8 @@ const SongManagement = () => {
     }
 
     async function update(t: TrackCreate) {
-        await PostTrack(t);
+        const id = newSong.mode === "edit" ? newSong.song.id:"";
+        await PutTrack(t,id);
         await carregarDadesTrack();
         setNewSong({ mode: "none" });
     }
