@@ -7,6 +7,7 @@ import { getIncrementReproduction } from "../../Components/getIncrementReproduct
 import AddSongForm from "../../Components/Songs/AddSongForm";
 import type { FormState } from "./Types/FormState";
 import type { Track } from "../../Model/Track";
+import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TrackCreate";
 
 
 const SongManagement = () => {
@@ -49,6 +50,10 @@ const SongManagement = () => {
             song: t
         });
     }
+
+    function save(t:TrackCreate) {
+        
+    }
     return (
         <>
             <main>
@@ -70,7 +75,7 @@ const SongManagement = () => {
             </main>
             {
                 newSong ?
-                    <AddSongForm refreshSongs={carregarDadesTrack} />
+                    <AddSongForm refreshSongs={carregarDadesTrack} submit={ (t) => save(t)} />
                     : <button onClick={addSong}>nove</button>
             }
         </>
